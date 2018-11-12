@@ -1,6 +1,6 @@
 {
   "nativescript": {
-    "id": "org.nativescript.NSIDE",
+    "id": "uk.co.bottledlogic.NSIDE",
     "tns-android": {
       "version": "5.0.0"
     },
@@ -8,7 +8,7 @@
       "version": "5.0.0"
     }
   },
-  "description": "NativeScript Application",
+  "description": "NativeScript IDE",
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "scripts": {
@@ -25,5 +25,5 @@
     "tslint": "~5.11.0",
     "typescript": "~2.7.2"
   },
-  "readme": "NativeScript Application"
+  "readme": "NativeScript IDE"
 }
