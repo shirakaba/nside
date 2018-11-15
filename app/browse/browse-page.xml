@@ -10,7 +10,7 @@
     <FlexboxLayout flexDirection="column">
         <!-- <Label class="page-icon fa" text="&#xf1ea;"></Label> -->
         <!-- <Label class="page-placeholder" text="Browse page content goes here"></Label> -->
-        <WebView height="100%" id="wv" loaded="{{ onWebViewLoaded }}" src="{{ webViewSrc }}" />
+        <!-- <WebView id="wv" height="100%" id="wv" loaded="{{ onWebViewLoaded }}" src="{{ webViewSrc }}" /> -->
         <!-- https://docs.nativescript.org/ui/styling#application-wide-css these can't flex for some reason -->
         <!-- <FlexboxLayout height="56px" flexDirection="row" alignItems="stretch"> -->
             <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/>

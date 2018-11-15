@@ -10,7 +10,7 @@ export class BrowseViewModel extends Observable {
     private static NSIDE_SERVER_URL: string = "http://localhost:8888/shirakaba.github.io/NSIDE/";
     // private static NSIDE_SERVER_URL: string = "https://agentcooper.github.io/typescript-play/";
     // private static NSIDE_SERVER_URL: string = "https://shirakaba.github.io/NSIDE/";
-    private webview?: WebView;
+    private webview?: WKWebView;
     private _webViewSrc: string = BrowseViewModel.NSIDE_SERVER_URL;
 
     get webViewSrc(): string { return this._webViewSrc; }
@@ -25,21 +25,23 @@ export class BrowseViewModel extends Observable {
 
         /* As we're just using a blank WKWebViewConfiguration
         * may not even need initWithFrameConfiguration() */
-        const wv: WKWebView = WKWebView.alloc()
-        .initWithFrameConfiguration(
-            // CGRectMake(5, 5, 5, 5),
-            CGRectZero,
-            WKWebViewConfiguration.alloc().init()
-        )
+        // const wv: WKWebView = WKWebView.alloc()
+        // .initWithFrameConfiguration(
+        //     // CGRectMake(5, 5, 5, 5),
+        //     CGRectZero,
+        //     WKWebViewConfiguration.alloc().init()
+        // )
 
-        wv.configuration.userContentController.addUserScript(
-            WKUserScript.alloc()
-            .initWithSourceInjectionTimeForMainFrameOnly(
-                "document.body.style.backgroundColor = 'orange';",
-                WKUserScriptInjectionTime.AtDocumentStart,
-                false
-            )
-        );
+        // wv.configuration.userContentController.addUserScript(
+        //     WKUserScript.alloc()
+        //     .initWithSourceInjectionTimeForMainFrameOnly(
+        //         "document.body.style.backgroundColor = 'orange';",
+        //         WKUserScriptInjectionTime.AtDocumentStart,
+        //         false
+        //     )
+        // );
+    }
+
     refresh() {
         if(this.webview) this.webview.reload();
     }
