@@ -5,8 +5,10 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
 
 export class BrowseViewModel extends Observable {
-    private static NSIDE_SERVER_URL: string = "https://agentcooper.github.io/typescript-play/index.html";
-    // private static NSIDE_SERVER_URL: string = "https://shirakaba.github.io/NSIDE/index.html";
+    // Don't append index.html!
+    private static NSIDE_SERVER_URL: string = "http://localhost:8888/shirakaba.github.io/NSIDE/";
+    // private static NSIDE_SERVER_URL: string = "https://agentcooper.github.io/typescript-play/";
+    // private static NSIDE_SERVER_URL: string = "https://shirakaba.github.io/NSIDE/";
     private webview?: WebView;
     private _webViewSrc: string = BrowseViewModel.NSIDE_SERVER_URL;
 
@@ -19,6 +21,24 @@ export class BrowseViewModel extends Observable {
 
     constructor() {
         super();
+
+        /* As we're just using a blank WKWebViewConfiguration
+        * may not even need initWithFrameConfiguration() */
+        const wv: WKWebView = WKWebView.alloc()
+        .initWithFrameConfiguration(
+            // CGRectMake(5, 5, 5, 5),
+            CGRectZero,
+            WKWebViewConfiguration.alloc().init()
+        )
+
+        wv.configuration.userContentController.addUserScript(
+            WKUserScript.alloc()
+            .initWithSourceInjectionTimeForMainFrameOnly(
+                "document.body.style.backgroundColor = 'orange';",
+                WKUserScriptInjectionTime.AtDocumentStart,
+                false
+            )
+        );
     }
 
     navigatingTo(args) {
