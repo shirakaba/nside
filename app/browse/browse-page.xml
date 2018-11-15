@@ -15,6 +15,7 @@
         <!-- <FlexboxLayout height="56px" flexDirection="row" alignItems="stretch"> -->
             <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/>
             <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active"/>
+            <Button text="Refresh" tap="{{ refresh }}" class="btn btn-primary btn-active"/>
         <!-- </FlexboxLayout> -->
     </FlexboxLayout>
 </Page>
