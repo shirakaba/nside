@@ -46,6 +46,29 @@ export class BrowseViewModel extends Observable {
         console.log("navigatingTo();");
         const page: Page = <Page> args.object;
         page.bindingContext = this;
+        console.log(`page.content:`, page.content);
+        const flexbox: FlexboxLayout = page.content as FlexboxLayout;
+        flexbox.eachChildView
+
+        let i: number = 0;
+        flexbox.eachChildView((view: View) => {
+            console.log(`flexbox.eachChildView[${i++}]`, view);
+            if(view.id === "wv"){
+                this.webview = view as WebView;
+                return true;
+            }
+            return false;
+        });
+        /* 0: WebView; 1: Button; 2: Button */
+        console.log("WKConfiguration coming up...");
+        console.log("WKConfiguration:", ((this.webview! as any) as WKWebView).configuration);
+
+        // let i: number = 0;
+        // page.eachChildView((view: View) => {
+        //     console.log(`page.eachChildView[${i++}]`, view);
+        //     return true;
+        // })
+        /* 0: FlexboxLayout; 1: ActionBar */
     }
 
     // handling WebView load finish event
