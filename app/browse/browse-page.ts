@@ -11,33 +11,34 @@ export function onNavigatingTo(args: NavigatedData) {
     page.bindingContext.navigatingTo(args);
 }
 
-export function createPage(): Page {
-    const stack = new StackLayout();
-    const label = new Label();
-    label.text = "Hello, world!";
-    stack.addChild(label);
+// export function createPage(): Page {
+//     const stack = new StackLayout();
+//     const label = new Label();
+//     label.text = "Hello, world!";
+//     stack.addChild(label);
 
-    const page = new Page();
-    page.className = "page";
-
-
-    const actionBar = new ActionBar();
-    actionBar.className = "action-bar";
-
-    const actionBarLabel = new Label();
-    actionBarLabel.className = "action-bar-title";
-    actionBarLabel.text = "Browse";
-
-    actionBar.titleView = actionBarLabel;
-
-    const fb = new FlexboxLayout();
-    fb.flexDirection = "column";
-    fb.addChild(new WKWebView())
+//     const page = new Page();
+//     page.className = "page";
 
 
-    // const contentView;
+//     const actionBar = new ActionBar();
+//     actionBar.className = "action-bar";
 
-    // Each page can have a single root view set via the content property
-    page.content = label;
-    return page;
-}
+//     const actionBarLabel = new Label();
+//     actionBarLabel.className = "action-bar-title";
+//     actionBarLabel.text = "Browse";
+
+//     actionBar.titleView = actionBarLabel;
+
+//     const fb = new FlexboxLayout();
+//     fb.flexDirection = "column";
+//     const wv = WKWebView.alloc().init();
+//     fb.addChild(wv)
+
+
+//     // const contentView;
+
+//     // Each page can have a single root view set via the content property
+//     page.content = label;
+//     return page;
+// }
