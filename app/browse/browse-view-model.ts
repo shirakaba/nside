@@ -1,8 +1,9 @@
 import { Observable } from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import { Page } from "tns-core-modules/ui/page";
+import { Page, View } from "tns-core-modules/ui/page";
 import { TextField } from "tns-core-modules/ui/text-field";
 import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
+import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 
 export class BrowseViewModel extends Observable {
     // Don't append index.html!
