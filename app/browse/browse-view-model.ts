@@ -40,6 +40,8 @@ export class BrowseViewModel extends Observable {
                 false
             )
         );
+    refresh() {
+        if(this.webview) this.webview.reload();
     }
 
     navigatingTo(args) {
