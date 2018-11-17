@@ -15,6 +15,7 @@
     "lint": "tslint \"app/**/*.ts\""
   },
   "dependencies": {
+    "nativescript-clipboard": "^1.1.7",
     "nativescript-theme-core": "~1.0.4",
     "tns-core-modules": "~5.0.0"
   },

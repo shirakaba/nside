@@ -4,6 +4,7 @@ import { Page, View } from "tns-core-modules/ui/page";
 import { TextField } from "tns-core-modules/ui/text-field";
 import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
+import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
     // Don't append index.html!
@@ -114,6 +115,16 @@ export class BrowseViewModel extends Observable {
         // setTimeout(() => {
         //     firstTextfield.focus(); // Shows the soft input method, ususally a soft keyboard.
         // }, 100);
+    }
+
+    run(){
+        Clipboard.getText()
+        .then((script: string) => {
+            eval(script);
+        })
+        .catch((e) => {
+            console.error(e);
+        });
     }
     
     onReturnPress(args) {

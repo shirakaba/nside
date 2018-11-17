@@ -3,18 +3,18 @@
     navigatingTo="onNavigatingTo"  
     xmlns="http://schemas.nativescript.org/tns.xsd">
 
-    <ActionBar class="action-bar">
+    <!-- <ActionBar class="action-bar">
         <Label class="action-bar-title" text="Browse"></Label>
-    </ActionBar>
+    </ActionBar> -->
 
     <FlexboxLayout flexDirection="column" alignItems="center">
         <!-- <Label class="page-icon fa" text="&#xf1ea;"></Label> -->
         <!-- <Label class="page-placeholder" text="Browse page content goes here"></Label> -->
-        <WebView id="wv" height="80%" width="100%" id="wv" loaded="{{ onWebViewLoaded }}" src="{{ webViewSrc }}" />
+        <WebView id="wv" height="90%" width="100%" id="wv" loaded="{{ onWebViewLoaded }}" src="{{ webViewSrc }}" />
         <!-- https://docs.nativescript.org/ui/styling#application-wide-css these can't flex for some reason -->
-        <!-- <FlexboxLayout height="56px" flexDirection="row" alignItems="stretch"> -->
+        <FlexboxLayout height="10%" flexDirection="row" alignItems="center" justifyContent="space-around">
             <!-- <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> -->
-            <TextField
+            <!-- <TextField
                 height="40px"
                 width="90%"
                 hint="Enter Javascript code"
@@ -27,9 +27,9 @@
                 focus="{{ onFocus }}" 
                 blur="{{ onBlur }}" 
                 class="input input-border"
-            />
-            <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active"/>
+            /> -->
+            <Button text="Run code on clipboard" tap="{{ run }}" class="btn btn-primary btn-active"/>
             <Button text="Refresh" tap="{{ refresh }}" class="btn btn-primary btn-active"/>
-        <!-- </FlexboxLayout> -->
+        </FlexboxLayout>
     </FlexboxLayout>
 </Page>
