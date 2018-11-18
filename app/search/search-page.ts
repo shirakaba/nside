@@ -3,5 +3,7 @@ import { SearchViewModel } from "./search-view-model";
 
 export function onNavigatingTo(args: NavigatedData) {
     const page = <Page>args.object;
-    page.bindingContext = new SearchViewModel();
+    const svm = new SearchViewModel();
+    page.bindingContext = svm;
+    svm.onNavigatingTo(args);
 }

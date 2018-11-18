@@ -13,7 +13,7 @@
         <!-- https://docs.nativescript.org/ui/styling#application-wide-css these can't flex for some reason -->
         <TextView
             id="input"
-            height="70%"
+            height="45%"
             width="100%"
             editable="true"
             loaded="{{ onTextViewLoaded }}"
@@ -29,7 +29,7 @@
             blur="{{ onInputBlur }}" 
             class="input input-border"
         />
-        <ScrollView height="20%">
+        <ScrollView height="45%">
             <TextView
                 id="output"
                 height="100%"

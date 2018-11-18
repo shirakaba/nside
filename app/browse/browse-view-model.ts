@@ -62,7 +62,9 @@ export class BrowseViewModel extends Observable {
             } else if(typeof value === "function"){
                 this.outputValue = value.toString();
             } else if(typeof value === "object"){
-                this.outputValue = value.toString() === "[object Object]" ? JSON.stringify(value, null, 2) : value;
+                // this.outputValue = value.toString() === "[object Object]" ? JSON.stringify(value, null, 2) : value;
+                this.outputValue = BrowseViewModel.customStringify(value);
+                // this.outputValue = BrowseViewModel.customStringify2(value);
             } else if(value === ""){
                 this.outputValue = '""';
             } else {
@@ -75,6 +77,26 @@ export class BrowseViewModel extends Observable {
             console.error(e);
         }
     }
+
+    static customStringify(v): string {
+        const cache = new Set();
+        return JSON.stringify(v, (key, value) => {
+          if(typeof value === 'object' && value !== null){
+            if(cache.has(value)) return; // Circular reference found, discard key
+            // Store value in our set
+            cache.add(value);
+          }
+          return value;
+        }, 2);
+      };
+
+    // static customStringify2(v): string {
+    //     try {
+    //         return JSON.stringify(v, null, 2);
+    //     } catch(e){
+    //         return v + " [contains circular references]";
+    //     }
+    // };
 
     onTextViewLoaded(args){
         const textView: TextView = <TextView>args.object;
