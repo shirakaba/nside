@@ -57,20 +57,18 @@ export class BrowseViewModel extends Observable {
                 .replace(new RegExp('\u2018|\u2019', "g"), "'")
             );
 
-            // const value = Function(this.textViewValue)();
-            // const value = Function('"use strict";return (' + this.textViewValue + ')')();
-
             if(typeof value === "undefined"){
                 this.outputValue = "undefined";
-            } if(typeof value === "object"){
-                this.outputValue = JSON.stringify(value, null, 2);
+            } else if(typeof value === "function"){
+                this.outputValue = value.toString();
+            } else if(typeof value === "object"){
+                this.outputValue = value.toString() === "[object Object]" ? JSON.stringify(value, null, 2) : value;
             } else if(value === ""){
                 this.outputValue = '""';
             } else {
                 this.outputValue = value;
             }
             this.output!.style.color = new Color("green");
-            // console.log(value.toString());
         } catch(e){
             this.output!.style.color = new Color("red");
             this.outputValue = e;
@@ -86,16 +84,16 @@ export class BrowseViewModel extends Observable {
         switch(textView.id){
             case "input":
                 this.input = textView;
-                textView.on("textChange", (argstv) => {
-                    console.dir(argstv);
-                    // this.outputValue = "";
-                });
+                // textView.on("textChange", (argstv) => {
+                //     console.dir(argstv);
+                //     // this.outputValue = "";
+                // });
                 break;
             case "output":
                 this.output = textView;
-                textView.on("textChange", (argstv) => {
-                    console.dir(argstv);
-                });
+                // textView.on("textChange", (argstv) => {
+                //     console.dir(argstv);
+                // });
                 break;
         }
     }
