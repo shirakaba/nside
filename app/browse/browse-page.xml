@@ -11,29 +11,14 @@
         <!-- <Label class="page-icon fa" text="&#xf1ea;"></Label> -->
         <!-- <Label class="page-placeholder" text="Browse page content goes here"></Label> -->
         <!-- https://docs.nativescript.org/ui/styling#application-wide-css these can't flex for some reason -->
-
-        <TextField
-            id="input"
-            height="45%"
-            width="100%"
-            hint="Enter Javascript code"
-            text='{{jsInput}}'
-            secure="false"
-            keyboardType="datetime"
-            returnKeyType="send" 
-            returnPress="{{ onReturnPress }}"
-            autocorrect="false"
-            focus="{{ onFocus }}" 
-            blur="{{ onBlur }}" 
-            class="input input-border"
-        />
         <TextView
-            id="input2"
-            height="45%"
+            id="input"
+            height="90%"
             width="100%"
             editable="true"
+            loaded="{{ onTextViewLoaded }}"
             hint="Enter Javascript code"
-            text='{{jsInput}}'
+            text='{{ textViewValue }}'
             secure="false"
             keyboardType="datetime"
             returnKeyType="send" 
