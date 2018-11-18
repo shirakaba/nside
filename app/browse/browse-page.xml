@@ -10,26 +10,43 @@
     <FlexboxLayout flexDirection="column" alignItems="center">
         <!-- <Label class="page-icon fa" text="&#xf1ea;"></Label> -->
         <!-- <Label class="page-placeholder" text="Browse page content goes here"></Label> -->
-        <WebView id="wv" height="90%" width="100%" id="wv" loaded="{{ onWebViewLoaded }}" src="{{ webViewSrc }}" />
         <!-- https://docs.nativescript.org/ui/styling#application-wide-css these can't flex for some reason -->
+
+        <TextField
+            id="input"
+            height="45%"
+            width="100%"
+            hint="Enter Javascript code"
+            text='{{jsInput}}'
+            secure="false"
+            keyboardType="datetime"
+            returnKeyType="send" 
+            returnPress="{{ onReturnPress }}"
+            autocorrect="false"
+            focus="{{ onFocus }}" 
+            blur="{{ onBlur }}" 
+            class="input input-border"
+        />
+        <TextView
+            id="input2"
+            height="45%"
+            width="100%"
+            editable="true"
+            hint="Enter Javascript code"
+            text='{{jsInput}}'
+            secure="false"
+            keyboardType="datetime"
+            returnKeyType="send" 
+            returnPress="{{ onReturnPress }}"
+            autocorrect="false"
+            focus="{{ onFocus }}" 
+            blur="{{ onBlur }}" 
+            class="input input-border"
+        />
         <FlexboxLayout height="10%" flexDirection="row" alignItems="center" justifyContent="space-around">
             <!-- <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> -->
-            <!-- <TextField
-                height="40px"
-                width="90%"
-                hint="Enter Javascript code"
-                text='{{jsInput}}'
-                secure="false"
-                keyboardType="datetime"
-                returnKeyType="send" 
-                returnPress="{{ onReturnPress }}"
-                autocorrect="false"
-                focus="{{ onFocus }}" 
-                blur="{{ onBlur }}" 
-                class="input input-border"
-            /> -->
-            <Button text="Run code on clipboard" tap="{{ run }}" class="btn btn-primary btn-active"/>
-            <Button text="Refresh" tap="{{ refresh }}" class="btn btn-primary btn-active"/>
+            <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active"/>
+            <Button text="Clear" tap="{{ clear }}" class="btn btn-primary btn-active"/>
         </FlexboxLayout>
     </FlexboxLayout>
 </Page>

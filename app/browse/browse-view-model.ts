@@ -2,52 +2,26 @@ import { Observable } from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { Page, View } from "tns-core-modules/ui/page";
 import { TextField } from "tns-core-modules/ui/text-field";
-import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
-    // Don't append index.html!
-    // private static NSIDE_SERVER_URL: string = "https://play.nativescript.org";
-    private static NSIDE_SERVER_URL: string = "https://codesandbox.io/s/react-ts";
-    // private static NSIDE_SERVER_URL: string = "http://localhost:8888/shirakaba.github.io/NSIDE/";
+    private textField?: TextField;
+    private _textFieldValue: string = "";
 
-    // private static NSIDE_SERVER_URL: string = "https://agentcooper.github.io/typescript-play/";
-    // private static NSIDE_SERVER_URL: string = "https://shirakaba.github.io/NSIDE/";
-    private webview?: WebView;
-    private _webViewSrc: string = BrowseViewModel.NSIDE_SERVER_URL;
-
-    get webViewSrc(): string { return this._webViewSrc; }
-    set webViewSrc(value: string) {
-        if (this._webViewSrc === value) return;
-        this._webViewSrc = value;
-        this.notifyPropertyChange('webViewSrc', value);
+    get textFieldValue(): string { return this._textFieldValue; }
+    set textFieldValue(value: string) {
+        if (this._textFieldValue === value) return;
+        this._textFieldValue = value;
+        this.notifyPropertyChange('textFieldValue', value);
     }
 
     constructor() {
         super();
-
-        /* As we're just using a blank WKWebViewConfiguration
-        * may not even need initWithFrameConfiguration() */
-        // const wv: WKWebView = WKWebView.alloc()
-        // .initWithFrameConfiguration(
-        //     // CGRectMake(5, 5, 5, 5),
-        //     CGRectZero,
-        //     WKWebViewConfiguration.alloc().init()
-        // )
-
-        // wv.configuration.userContentController.addUserScript(
-        //     WKUserScript.alloc()
-        //     .initWithSourceInjectionTimeForMainFrameOnly(
-        //         "document.body.style.backgroundColor = 'orange';",
-        //         WKUserScriptInjectionTime.AtDocumentStart,
-        //         false
-        //     )
-        // );
     }
 
-    refresh() {
-        if(this.webview) this.webview.reload();
+    clear() {
+        this.textFieldValue = "";
     }
 
     navigatingTo(args) {
@@ -56,61 +30,6 @@ export class BrowseViewModel extends Observable {
         page.bindingContext = this;
         console.log(`page.content:`, page.content);
         const flexbox: FlexboxLayout = page.content as FlexboxLayout;
-
-        // const wv: WKWebView = WKWebView.alloc()
-        // .initWithFrameConfiguration(
-        //     CGRectZero,
-        //     // CGRectMake(5, 5, 5, 5),
-        //     WKWebViewConfiguration.alloc().init()
-        // )
-
-        // wv.configuration.userContentController.addUserScript(
-        //     WKUserScript.alloc()
-        //     .initWithSourceInjectionTimeForMainFrameOnly(
-        //         "document.body.style.backgroundColor = 'orange';",
-        //         WKUserScriptInjectionTime.AtDocumentStart,
-        //         false
-        //     )
-        // );
-
-        // const wv = new WebView();
-        // console.log(`new WebView:`, wv);
-        // const wk: WKWebView = wv.createNativeView() as WKWebView;
-        // console.log(`nativeView:`, wk);
-        // wv.src = BrowseViewModel.NSIDE_SERVER_URL;
-        // wv.height = 100;
-
-        // flexbox.addChild(wv);
-        // flexbox.addChild(wk as any);
-
-        
-        // const flexbox = page.content as FlexboxLayout;
-        // flexbox.addChild(new WebView().createNativeView() as View);
-
-        // flexbox.eachChildView((view) => {
-        //     if(view.id === "wv"){
-        //         // this.webview = (view as WebView).ios as WKWebView;
-        //         console.log(`view:`, (view as WebView));
-
-
-        
-
-        //         // console.log(`view.canGoBack:`, (view as WebView).canGoBack);
-        //         // const native = (view as WebView).createNativeView();
-        //         // console.log(`view.ios:`, (view as WebView).ios as WKWebView);
-        //         // console.log(`view._ios:`, (view as any)._ios as WKWebView);
-
-        //         // console.log(`view.ios.configuration:`, ((view as WebView).ios as WKWebView).configuration);
-        //         return true;
-        //     }
-        //     return false;
-        // })
-
-        // console.log(`config:`, this.webview!.configuration);
-        
-
-        // flexbox.addChild(<any>wv as View); // We'll need a solution for Android...
-        // this.webview = wv;
     }
 
     firstTfLoaded(args) {
@@ -172,26 +91,5 @@ export class BrowseViewModel extends Observable {
         const textField: TextField = <TextField>args.object;
         // textField.dismissSoftInput();
         console.log("onBlur event");
-    }
-
-    // handling WebView load finish event
-    onWebViewLoaded(webargs) {
-        console.log("onWebViewLoaded();");
-        const page: Page = <Page> webargs.object.page;
-        this.webview = <WebView> webargs.object;
-        this.set("result", "WebView is still loading...");
-        this.set("enabled", false);
-
-        (<any>this.webview as WebView).on(WebView.loadFinishedEvent, (args: LoadEventData) => {
-            let message = "";
-            if (!args.error) {
-                message = `WebView finished loading of ${args.url}`;
-            } else {
-                message = `Error loading ${args.url} : ${args.error}`;
-            }
-
-            this.set("result", message);
-            console.log(`WebView message - ${message}`);
-        });
     }
 }
