@@ -16,7 +16,7 @@
             height="45%"
             width="100%"
             editable="true"
-            loaded="{{ onTextViewLoaded }}"
+            loaded="{{ onComponentLoaded }}"
             hint="Enter Javascript code"
             text='{{ inputValue }}'
             secure="false"
@@ -29,19 +29,26 @@
             blur="{{ onInputBlur }}" 
             class="input input-border"
         />
-        <ScrollView height="45%">
+        <TextField
+            id="intellisense"
+            height="5%"
+            width="100%"
+            editable="false"
+            loaded="{{ onComponentLoaded }}"
+            hint="(Intellisense)"
+            text='{{ intellisenseValue }}'
+            class="input input-border"
+            backgroundColor="rgb(220,220,240)"
+        />
+        <ScrollView height="40%">
             <TextView
                 id="output"
                 height="100%"
                 width="100%"
                 editable="false"
-                loaded="{{ onTextViewLoaded }}"
+                loaded="{{ onComponentLoaded }}"
                 hint="(Console output)"
                 text='{{ outputValue }}'
-                secure="false"
-                keyboardType="datetime"
-                returnKeyType="send" 
-                autocorrect="false"
                 class="input input-border"
                 backgroundColor="rgb(240,240,240)"
             />

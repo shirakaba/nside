@@ -1,12 +1,14 @@
 import { Observable } from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { Page, View, Color } from "tns-core-modules/ui/page";
+import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
     private input?: TextView;
+    private intellisense?: TextField;
     private output?: TextView;
 
     private _inputValue: string = "";
@@ -15,6 +17,14 @@ export class BrowseViewModel extends Observable {
         if (this._inputValue === value) return;
         this._inputValue = value;
         this.notifyPropertyChange('inputValue', value);
+    }
+
+    private _intellisenseValue: string = "";
+    get intellisenseValue(): string { return this._intellisenseValue; }
+    set intellisenseValue(value: string) {
+        if (this._intellisenseValue === value) return;
+        this._intellisenseValue = value;
+        this.notifyPropertyChange('intellisenseValue', value);
     }
 
     private _outputValue: string = "";
@@ -98,21 +108,23 @@ export class BrowseViewModel extends Observable {
     //     }
     // };
 
-    onTextViewLoaded(args){
-        const textView: TextView = <TextView>args.object;
+    onComponentLoaded(args){
+        const textView: TextView|TextField = <TextView|TextField>args.object;
         textView.style.fontFamily = "Courier New";
         textView.style.fontSize = 16;
 
         switch(textView.id){
             case "input":
-                this.input = textView;
+                this.input = textView as TextView;
                 // textView.on("textChange", (argstv) => {
                 //     console.dir(argstv);
                 //     // this.outputValue = "";
                 // });
                 break;
+            case "intellisense":
+                this.intellisense = textView as TextField;
             case "output":
-                this.output = textView;
+                this.output = textView as TextView;
                 // textView.on("textChange", (argstv) => {
                 //     console.dir(argstv);
                 // });
