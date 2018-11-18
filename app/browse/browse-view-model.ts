@@ -1,12 +1,13 @@
 import { Observable } from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import { Page, View } from "tns-core-modules/ui/page";
+import { Page, View, Color } from "tns-core-modules/ui/page";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
-    private textView?: TextView;
+    private input?: TextView;
+    private output?: TextView;
 
     private _inputValue: string = "";
     get inputValue(): string { return this._inputValue; }
@@ -50,14 +51,29 @@ export class BrowseViewModel extends Observable {
 
     run(){
         try {
-            const value: any = eval(this.inputValue);
+            const value: any = eval(
+                this.inputValue
+                .replace(new RegExp('\u201c|\u201d', "g"), '"')
+                .replace(new RegExp('\u2018|\u2019', "g"), "'")
+            );
 
             // const value = Function(this.textViewValue)();
             // const value = Function('"use strict";return (' + this.textViewValue + ')')();
 
-            this.outputValue = value;
-            console.log(value);
+            if(typeof value === "undefined"){
+                this.outputValue = "undefined";
+            } if(typeof value === "object"){
+                this.outputValue = JSON.stringify(value, null, 2);
+            } else if(value === ""){
+                this.outputValue = '""';
+            } else {
+                this.outputValue = value;
+            }
+            this.output!.style.color = new Color("green");
+            // console.log(value.toString());
         } catch(e){
+            this.output!.style.color = new Color("red");
+            this.outputValue = e;
             console.error(e);
         }
     }
@@ -67,19 +83,21 @@ export class BrowseViewModel extends Observable {
         textView.style.fontFamily = "Courier New";
         textView.style.fontSize = 16;
 
-        // switch(textView.id){
-        //     case "input":
-        //         textView.on("textChange", (argstv) => {
-        //             console.dir(argstv);
-        //             // this.outputValue = "";
-        //         });
-        //         break;
-        //     case "output":
-        //         textView.on("textChange", (argstv) => {
-        //             console.dir(argstv);
-        //         });
-        //         break;
-        // }
+        switch(textView.id){
+            case "input":
+                this.input = textView;
+                textView.on("textChange", (argstv) => {
+                    console.dir(argstv);
+                    // this.outputValue = "";
+                });
+                break;
+            case "output":
+                this.output = textView;
+                textView.on("textChange", (argstv) => {
+                    console.dir(argstv);
+                });
+                break;
+        }
     }
     
     onReturnPress(args) {
@@ -107,19 +125,20 @@ export class BrowseViewModel extends Observable {
         console.log(textView.maxLength);
     
         // setTimeout(() => {
-        //     textField.dismissSoftInput(); // Hides the soft input method, ususally a soft keyboard.
+        //     textView.dismissSoftInput(); // Hides the soft input method, ususally a soft keyboard.
         // }, 100);
+        // textView.dismissSoftInput();
     }
     
-    onFocus(args) {
+    onInputFocus(args) {
         // focus event will be triggered when the users enters the TextField
         console.log("onFocus event");
     }
     
-    onBlur(args) {
+    onInputBlur(args) {
         // blur event will be triggered when the user leaves the TextField
         const textView: TextView = <TextView>args.object;
-        // textField.dismissSoftInput();
+        // textView.dismissSoftInput();
         console.log("onBlur event");
     }
 }

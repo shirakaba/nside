@@ -21,11 +21,12 @@
             text='{{ inputValue }}'
             secure="false"
             keyboardType="datetime"
-            returnKeyType="send" 
+            returnKeyType="done"
+            autocapitalizationType="none"
             returnPress="{{ onReturnPress }}"
             autocorrect="false"
-            focus="{{ onFocus }}" 
-            blur="{{ onBlur }}" 
+            focus="{{ onInputFocus }}" 
+            blur="{{ onInputBlur }}" 
             class="input input-border"
         />
         <ScrollView height="20%">
@@ -42,6 +43,7 @@
                 returnKeyType="send" 
                 autocorrect="false"
                 class="input input-border"
+                backgroundColor="rgb(240,240,240)"
             />
         </ScrollView>
         <FlexboxLayout height="10%" flexDirection="row" alignItems="center" justifyContent="space-around">

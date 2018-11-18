@@ -7,16 +7,16 @@ http://docs.nativescript.org/cookbook/ui/tab-view
 
 <Frame defaultPage="browse/browse-page"></Frame>
 
-<!-- <TabView androidTabsPosition="bottom">
-    <TabViewItem title="Browse" ios:iconSource="res://tabIcons/browse" android:iconSource="res://browse">
+<TabView androidTabsPosition="bottom">
+    <TabViewItem title="Console" ios:iconSource="res://tabIcons/browse" android:iconSource="res://browse">
         <Frame defaultPage="browse/browse-page"></Frame>
     </TabViewItem>
-    
-    <TabViewItem title="Home" ios:iconSource="res://tabIcons/home" android:iconSource="res://home">
-        <Frame defaultPage="home/home-items-page"></Frame>
-    </TabViewItem>
 
-    <TabViewItem title="Search" ios:iconSource="res://tabIcons/search" android:iconSource="res://search">
+    <TabViewItem title="UI" ios:iconSource="res://tabIcons/search" android:iconSource="res://search">
         <Frame defaultPage="search/search-page"></Frame>
     </TabViewItem>
-</TabView> -->
+    
+    <TabViewItem title="Help" ios:iconSource="res://tabIcons/home" android:iconSource="res://home">
+        <Frame defaultPage="home/home-items-page"></Frame>
+    </TabViewItem>
+</TabView>
