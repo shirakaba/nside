@@ -116,10 +116,32 @@ export class BrowseViewModel extends Observable {
         switch(textView.id){
             case "input":
                 this.input = textView as TextView;
-                // textView.on("textChange", (argstv) => {
-                //     console.dir(argstv);
-                //     // this.outputValue = "";
-                // });
+                textView.on("textChange", (argstv) => {
+                    const value: string = (argstv as any).value as string;
+                    const splitOnLines: string[] = value.split('\n');
+                    let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
+                    const splitOnWhitespace: string[] = value.split(' ');
+                    finalLine = splitOnWhitespace.length > 1 ? splitOnWhitespace.slice(-1)[0]: splitOnWhitespace[0];
+
+                    console.log("splitOnLines: " + splitOnLines);
+                    console.log("finalLine: " + finalLine);
+                    if(typeof finalLine !== "undefined" && finalLine !== ""){
+                        // const matches: string[]|null = finalLine.match(new RegExp('\\.', 'g'));
+                        // console.log("matches: ", JSON.stringify(matches));
+                        // if(matches){
+                        //     const match = matches.slice(-1)[0];
+                        //     console.log("MATCH: " + match);
+                        // }
+                        const lastIndex: number = finalLine.lastIndexOf(".");
+                        const token: string = lastIndex > -1 ? finalLine.slice(0, lastIndex) : finalLine;
+                        const incomplete: string = lastIndex > -1 ? finalLine.slice(lastIndex + ".".length) : "";
+                        console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
+
+                    } else {
+                        console.log("NO MATCH");
+                    }
+                    // console.dir(argstv);
+                });
                 break;
             case "intellisense":
                 this.intellisense = textView as TextField;
