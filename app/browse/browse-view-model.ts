@@ -8,12 +8,20 @@ import * as Clipboard from "nativescript-clipboard";
 export class BrowseViewModel extends Observable {
     private textView?: TextView;
 
-    private _textViewValue: string = "";
-    get textViewValue(): string { return this._textViewValue; }
-    set textViewValue(value: string) {
-        if (this._textViewValue === value) return;
-        this._textViewValue = value;
-        this.notifyPropertyChange('textViewValue', value);
+    private _inputValue: string = "";
+    get inputValue(): string { return this._inputValue; }
+    set inputValue(value: string) {
+        if (this._inputValue === value) return;
+        this._inputValue = value;
+        this.notifyPropertyChange('inputValue', value);
+    }
+
+    private _outputValue: string = "";
+    get outputValue(): string { return this._outputValue; }
+    set outputValue(value: string) {
+        if (this._outputValue === value) return;
+        this._outputValue = value;
+        this.notifyPropertyChange('outputValue', value);
     }
 
     constructor() {
@@ -21,7 +29,8 @@ export class BrowseViewModel extends Observable {
     }
 
     clear() {
-        this.textViewValue = "";
+        this.inputValue = "";
+        this.outputValue = "";
     }
 
     navigatingTo(args) {
@@ -40,14 +49,17 @@ export class BrowseViewModel extends Observable {
     }
 
     run(){
-        Clipboard.getText()
-        .then((script: string) => {
-            console.log(`[CLIPBOARD] ` + script);
-            eval(script);
-        })
-        .catch((e) => {
+        try {
+            const value: any = eval(this.inputValue);
+
+            // const value = Function(this.textViewValue)();
+            // const value = Function('"use strict";return (' + this.textViewValue + ')')();
+
+            this.outputValue = value;
+            console.log(value);
+        } catch(e){
             console.error(e);
-        });
+        }
     }
 
     onTextViewLoaded(args){
@@ -55,9 +67,19 @@ export class BrowseViewModel extends Observable {
         textView.style.fontFamily = "Courier New";
         textView.style.fontSize = 16;
 
-        textView.on("textChange", (argstv) => {
-            console.dir(argstv);
-        });
+        // switch(textView.id){
+        //     case "input":
+        //         textView.on("textChange", (argstv) => {
+        //             console.dir(argstv);
+        //             // this.outputValue = "";
+        //         });
+        //         break;
+        //     case "output":
+        //         textView.on("textChange", (argstv) => {
+        //             console.dir(argstv);
+        //         });
+        //         break;
+        // }
     }
     
     onReturnPress(args) {

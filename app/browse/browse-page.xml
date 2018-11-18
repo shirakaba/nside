@@ -13,12 +13,12 @@
         <!-- https://docs.nativescript.org/ui/styling#application-wide-css these can't flex for some reason -->
         <TextView
             id="input"
-            height="90%"
+            height="70%"
             width="100%"
             editable="true"
             loaded="{{ onTextViewLoaded }}"
             hint="Enter Javascript code"
-            text='{{ textViewValue }}'
+            text='{{ inputValue }}'
             secure="false"
             keyboardType="datetime"
             returnKeyType="send" 
@@ -28,6 +28,22 @@
             blur="{{ onBlur }}" 
             class="input input-border"
         />
+        <ScrollView height="20%">
+            <TextView
+                id="output"
+                height="100%"
+                width="100%"
+                editable="false"
+                loaded="{{ onTextViewLoaded }}"
+                hint="(Console output)"
+                text='{{ outputValue }}'
+                secure="false"
+                keyboardType="datetime"
+                returnKeyType="send" 
+                autocorrect="false"
+                class="input input-border"
+            />
+        </ScrollView>
         <FlexboxLayout height="10%" flexDirection="row" alignItems="center" justifyContent="space-around">
             <!-- <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> -->
             <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active"/>
