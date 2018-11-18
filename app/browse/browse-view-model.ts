@@ -8,7 +8,10 @@ import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
     // Don't append index.html!
-    private static NSIDE_SERVER_URL: string = "http://localhost:8888/shirakaba.github.io/NSIDE/";
+    // private static NSIDE_SERVER_URL: string = "https://play.nativescript.org";
+    private static NSIDE_SERVER_URL: string = "https://codesandbox.io/s/react-ts";
+    // private static NSIDE_SERVER_URL: string = "http://localhost:8888/shirakaba.github.io/NSIDE/";
+
     // private static NSIDE_SERVER_URL: string = "https://agentcooper.github.io/typescript-play/";
     // private static NSIDE_SERVER_URL: string = "https://shirakaba.github.io/NSIDE/";
     private webview?: WebView;
@@ -120,6 +123,7 @@ export class BrowseViewModel extends Observable {
     run(){
         Clipboard.getText()
         .then((script: string) => {
+            console.log(`[CLIPBOARD] ` + script);
             eval(script);
         })
         .catch((e) => {
