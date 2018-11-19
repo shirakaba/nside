@@ -135,66 +135,7 @@ export class BrowseViewModel extends Observable {
         switch(textView.id){
             case "input":
                 this.input = textView as TextView;
-                textView.on("textChange", (argstv) => {
-                    const value: string = (argstv as any).value as string;
-                    const splitOnLines: string[] = value.split('\n');
-                    let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
-                    const splitOnWhitespace: string[] = value.split(' ');
-                    finalLine = splitOnWhitespace.length > 1 ? splitOnWhitespace.slice(-1)[0]: splitOnWhitespace[0];
-
-                    // console.log("splitOnLines: " + splitOnLines);
-                    // console.log("finalLine: " + finalLine);
-                    if(typeof finalLine !== "undefined" && finalLine !== ""){
-                        const lastIndex: number = finalLine.lastIndexOf(".");
-                        const token: string = lastIndex > -1 ? finalLine.slice(0, lastIndex) : finalLine;
-                        const incomplete: string = lastIndex > -1 ? finalLine.slice(lastIndex + ".".length) : "";
-                        console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
-                        if(token !== ""){
-                            try {
-                                const keyed: boolean = BrowseViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
-                                if(keyed){
-                                    let value: { own: string[], inherited: string[] };
-
-                                    if(incomplete === ""){
-                                        value = BrowseViewModel.evalInContext(
-                                            `let own = []; let inherited = [];\n` + 
-                                            `for(let key in ${token}){\n` +
-                                                `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
-                                            `}\n` + 
-                                            `let answer = { own: own, inherited: inherited }; answer`
-                                        )
-                                    } else {
-                                        value = BrowseViewModel.evalInContext(
-                                            `let own = []; let inherited = [];\n` + 
-                                            `for(let key in ${token}){\n` +
-                                                `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
-                                                `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
-                                            `}\n` + 
-                                            `let answer = { own: own, inherited: inherited }; answer`
-                                        )
-                                    }
-
-                                    this.ownPropsValue = value.own.join(', ');
-                                    this.inheritedPropsValue = value.inherited.join(', ');
-                                } else {
-                                    this.ownPropsValue = "";
-                                    this.inheritedPropsValue = "";
-                                }
-                            } catch(e){
-                                this.ownPropsValue = "";
-                                this.inheritedPropsValue = "";
-                            }
-                        } else {
-                            this.ownPropsValue = "";
-                            this.inheritedPropsValue = "";
-                        }
-                    } else {
-                        console.log("NO MATCH");
-                        this.ownPropsValue = "";
-                        this.inheritedPropsValue = "";
-                    }
-                    // console.dir(argstv);
-                });
+                BrowseViewModel.setUpInputTextView(textView);
                 break;
             case "ownProps":
                 this.ownProps = textView as TextField;
@@ -251,4 +192,68 @@ export class BrowseViewModel extends Observable {
         // textView.dismissSoftInput();
         console.log("onBlur event");
     }
+
+    private static setUpInputTextView(textView: TextView | TextField) {
+        textView.on("textChange", (argstv) => {
+            const value: string = (argstv as any).value as string;
+            const splitOnLines: string[] = value.split('\n');
+            let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
+            const splitOnWhitespace: string[] = value.split(' ');
+            finalLine = splitOnWhitespace.length > 1 ? splitOnWhitespace.slice(-1)[0] : splitOnWhitespace[0];
+            // console.log("splitOnLines: " + splitOnLines);
+            // console.log("finalLine: " + finalLine);
+            if (typeof finalLine !== "undefined" && finalLine !== "") {
+                const lastIndex: number = finalLine.lastIndexOf(".");
+                const token: string = lastIndex > -1 ? finalLine.slice(0, lastIndex) : finalLine;
+                const incomplete: string = lastIndex > -1 ? finalLine.slice(lastIndex + ".".length) : "";
+                console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
+                if (token !== "") {
+                    try {
+                        const keyed: boolean = BrowseViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
+                        if (keyed) {
+                            let value: {
+                                own: string[];
+                                inherited: string[];
+                            };
+                            if (incomplete === "") {
+                                value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
+                                    `for(let key in ${token}){\n` +
+                                    `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
+                                    `}\n` +
+                                    `let answer = { own: own, inherited: inherited }; answer`);
+                            }
+                            else {
+                                value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
+                                    `for(let key in ${token}){\n` +
+                                    `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
+                                    `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
+                                    `}\n` +
+                                    `let answer = { own: own, inherited: inherited }; answer`);
+                            }
+                            this.ownPropsValue = value.own.join(', ');
+                            this.inheritedPropsValue = value.inherited.join(', ');
+                        }
+                        else {
+                            this.ownPropsValue = "";
+                            this.inheritedPropsValue = "";
+                        }
+                    }
+                    catch (e) {
+                        this.ownPropsValue = "";
+                        this.inheritedPropsValue = "";
+                    }
+                }
+                else {
+                    this.ownPropsValue = "";
+                    this.inheritedPropsValue = "";
+                }
+            }
+            else {
+                console.log("NO MATCH");
+                this.ownPropsValue = "";
+                this.inheritedPropsValue = "";
+            }
+        });
+    }
+
 }
