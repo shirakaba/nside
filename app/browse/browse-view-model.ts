@@ -123,22 +123,35 @@ export class BrowseViewModel extends Observable {
                     const splitOnWhitespace: string[] = value.split(' ');
                     finalLine = splitOnWhitespace.length > 1 ? splitOnWhitespace.slice(-1)[0]: splitOnWhitespace[0];
 
-                    console.log("splitOnLines: " + splitOnLines);
-                    console.log("finalLine: " + finalLine);
+                    // console.log("splitOnLines: " + splitOnLines);
+                    // console.log("finalLine: " + finalLine);
                     if(typeof finalLine !== "undefined" && finalLine !== ""){
-                        // const matches: string[]|null = finalLine.match(new RegExp('\\.', 'g'));
-                        // console.log("matches: ", JSON.stringify(matches));
-                        // if(matches){
-                        //     const match = matches.slice(-1)[0];
-                        //     console.log("MATCH: " + match);
-                        // }
                         const lastIndex: number = finalLine.lastIndexOf(".");
                         const token: string = lastIndex > -1 ? finalLine.slice(0, lastIndex) : finalLine;
                         const incomplete: string = lastIndex > -1 ? finalLine.slice(lastIndex + ".".length) : "";
                         console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
-
+                        if(token !== ""){
+                            try {
+                                const keyed: boolean = eval(`typeof ${token} === "object" && ${token} !== null;`);
+                                if(keyed){
+                                    const value = eval(
+                                        incomplete === "" ? 
+                                            `Object.keys(${token})[0]` : 
+                                            `Object.keys(${token}).filter((k) => k.indexOf('${incomplete}') === 0)[0] || '<none>'`
+                                    );
+                                    this.intellisenseValue = value;
+                                } else {
+                                    this.intellisenseValue = "";
+                                }
+                            } catch(e){
+                                this.intellisenseValue = "";
+                            }
+                        } else {
+                            this.intellisenseValue = "";
+                        }
                     } else {
                         console.log("NO MATCH");
+                        this.intellisenseValue = "";
                     }
                     // console.dir(argstv);
                 });
