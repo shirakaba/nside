@@ -143,13 +143,29 @@ export class BrowseViewModel extends Observable {
                             try {
                                 const keyed: boolean = eval(`typeof ${token} === "object" && ${token} !== null;`);
                                 if(keyed){
+                                    let value: { own: string[], inherited: string[] };
 
-                                    const value = eval(
-                                        incomplete === "" ? 
-                                            `Object.keys(${token}).join(', ')` : 
-                                            `Object.keys(${token}).filter((k) => k.indexOf('${incomplete}') === 0).join(', ')`
-                                    );
-                                    this.ownPropsValue = value;
+                                    if(incomplete === ""){
+                                        value = eval(
+                                            `let own = []; let inherited = [];\n` + 
+                                            `for(let key in ${token}){\n` +
+                                                `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
+                                            `}\n` + 
+                                            `let answer = { own: own, inherited: inherited }; answer`
+                                        )
+                                    } else {
+                                        value = eval(
+                                            `let own = []; let inherited = [];\n` + 
+                                            `for(let key in ${token}){\n` +
+                                                `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
+                                                `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
+                                            `}\n` + 
+                                            `let answer = { own: own, inherited: inherited }; answer`
+                                        )
+                                    }
+                                    
+                                    this.ownPropsValue = value.own.join(', ');
+                                    this.inheritedPropsValue = value.inherited.join(', ');
                                 } else {
                                     this.ownPropsValue = "";
                                     this.inheritedPropsValue = "";
