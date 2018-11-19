@@ -1,6 +1,7 @@
 import { Observable } from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import { Page, View, Color } from "tns-core-modules/ui/page";
+import { Page, View, Color, ContentView } from "tns-core-modules/ui/page";
+import { Button } from "tns-core-modules/ui/button";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
@@ -12,6 +13,9 @@ export class BrowseViewModel extends Observable {
     private ownProps?: TextField;
     private inheritedProps?: TextField;
     private output?: TextView;
+    private design: ContentView = new ContentView();
+    private designButton?: Button;
+    private designing: boolean = false;
 
     private _inputValue: string = "";
     get inputValue(): string { return this._inputValue; }
@@ -47,6 +51,13 @@ export class BrowseViewModel extends Observable {
 
     constructor() {
         super();
+
+        this.design.style.width = 100;
+        this.design.style.height = 100;
+        this.design.id = "design";
+        // this.design.backgroundColor = new Color(255, 240, 240, 200);
+        // this.design.backgroundColor = new Color("orange");
+        this.design.backgroundColor = "orange";
     }
 
     clear() {
@@ -67,6 +78,30 @@ export class BrowseViewModel extends Observable {
         // setTimeout(() => {
         //     firstTextfield.focus(); // Shows the soft input method, ususally a soft keyboard.
         // }, 100);
+    }
+
+    toggleDesign(){
+        console.log("toggleDesign!");
+
+
+        if(this.designing){
+            const scrollView = this.design.parent;
+            scrollView._removeView(this.design);
+            scrollView._addView(this.output);
+
+            this.designButton.text = "Design";
+        } else {
+            // console.log('design:', this.design);
+            
+
+            const scrollView = this.output.parent;
+            scrollView._removeView(this.output);
+            scrollView._addView(this.design);
+            
+            this.designButton.text = "Debug";
+        }
+
+        this.designing = !this.designing;
     }
 
     run(){
@@ -90,9 +125,9 @@ export class BrowseViewModel extends Observable {
             } else {
                 this.outputValue = value;
             }
-            this.output!.style.color = new Color("green");
+            this.output.style.color = new Color("green");
         } catch(e){
-            this.output!.style.color = new Color("red");
+            this.output.style.color = new Color("red");
             this.outputValue = e;
             console.error(e);
         }
@@ -111,14 +146,6 @@ export class BrowseViewModel extends Observable {
         return stringified === "{}" ? v.toString() : stringified;
       };
 
-    // static customStringify2(v): string {
-    //     try {
-    //         return JSON.stringify(v, null, 2);
-    //     } catch(e){
-    //         return v + " [contains circular references]";
-    //     }
-    // };
-
     private static evalClosure(str: string): any {
         return eval(str);
     }
@@ -128,22 +155,44 @@ export class BrowseViewModel extends Observable {
     }
 
     onComponentLoaded(args){
-        const textView: TextView|TextField = <TextView|TextField>args.object;
-        textView.style.fontFamily = "Courier New";
-        textView.style.fontSize = 16;
+        const view: TextView|TextField|ContentView|Button = <TextView|TextField|ContentView|Button>args.object;
+        console.log("onComponentLoaded");
 
-        switch(textView.id){
+        switch(view.id){
             case "input":
-                this.input = textView as TextView;
-                BrowseViewModel.setUpInputTextView(textView);
+                view.style.fontFamily = "Courier New";
+                view.style.fontSize = 16;
+                this.input = view as TextView;
+                this.setUpInputTextView(this.input);
+                console.log("this.input assigned!", this.input);
                 break;
             case "ownProps":
-                this.ownProps = textView as TextField;
+                view.style.fontFamily = "Courier New";
+                view.style.fontSize = 16;
+                this.ownProps = view as TextField;
+                console.log("this.ownProps assigned!", this.ownProps);
                 break;
             case "inheritedProps":
-                this.inheritedProps = textView as TextField;
+                view.style.fontFamily = "Courier New";
+                view.style.fontSize = 16;
+                this.inheritedProps = view as TextField;
+                console.log("this.inheritedProps assigned!", this.inheritedProps);
+                break;
+            // case "design":
+            //     this.design = view as ContentView;
+            //     this.design.style.visibility = "collapse";
+            //     console.log("this.design assigned!", this.design);
+            //     break;
+            case "designButton":
+                this.designButton = view as Button;
+                this.designButton.text = "Design";
+                console.log("this.designButton assigned!", this.designButton);
+                break;
             case "output":
-                this.output = textView as TextView;
+                view.style.fontFamily = "Courier New";
+                view.style.fontSize = 16;
+                this.output = view as TextView;
+                console.log("this.output assigned!", this.output);
                 // textView.on("textChange", (argstv) => {
                 //     console.dir(argstv);
                 // });
@@ -193,7 +242,7 @@ export class BrowseViewModel extends Observable {
         console.log("onBlur event");
     }
 
-    private static setUpInputTextView(textView: TextView | TextField) {
+    private setUpInputTextView(textView: TextView | TextField) {
         textView.on("textChange", (argstv) => {
             const value: string = (argstv as any).value as string;
             const splitOnLines: string[] = value.split('\n');

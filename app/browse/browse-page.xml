@@ -65,11 +65,20 @@
                 class="input input-border"
                 backgroundColor="rgb(240,240,240)"
             />
+            <!-- <ContentView
+                id="design"
+                height="100%"
+                width="100%"
+                loaded="{{ onComponentLoaded }}"
+                backgroundColor="rgb(240,240,200)"
+            >
+            </ContentView> -->
         </ScrollView>
         <FlexboxLayout height="10%" flexDirection="row" alignItems="center" justifyContent="space-around">
             <!-- <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> -->
             <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active"/>
             <Button text="Clear" tap="{{ clear }}" class="btn btn-primary btn-active"/>
+            <Button id="designButton" loaded="{{ onComponentLoaded }}" text="Design" tap="{{ toggleDesign }}" class="btn btn-primary btn-active"/>
         </FlexboxLayout>
     </FlexboxLayout>
 </Page>
