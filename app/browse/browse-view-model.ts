@@ -189,7 +189,7 @@ export class BrowseViewModel extends Observable {
     onInputBlur(args) {
         // blur event will be triggered when the user leaves the TextField
         const textView: TextView = <TextView>args.object;
-        // textView.dismissSoftInput();
+        textView.dismissSoftInput();
         console.log("onBlur event");
     }
 
