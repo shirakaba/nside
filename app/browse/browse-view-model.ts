@@ -100,7 +100,7 @@ export class BrowseViewModel extends Observable {
 
     static customStringify(v): string {
         const cache = new Set();
-        return JSON.stringify(v, (key, value) => {
+        const stringified: string = JSON.stringify(v, (key, value) => {
           if(typeof value === 'object' && value !== null){
             if(cache.has(value)) return; // Circular reference found, discard key
             // Store value in our set
@@ -108,6 +108,7 @@ export class BrowseViewModel extends Observable {
           }
           return value;
         }, 2);
+        return stringified === "{}" ? v.toString() : stringified;
       };
 
     // static customStringify2(v): string {
