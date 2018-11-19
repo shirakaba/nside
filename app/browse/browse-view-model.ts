@@ -7,6 +7,7 @@ import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbo
 import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
+    public static readonly evalContext = {};
     private input?: TextView;
     private ownProps?: TextField;
     private inheritedProps?: TextField;
@@ -70,7 +71,7 @@ export class BrowseViewModel extends Observable {
 
     run(){
         try {
-            const value: any = eval(
+            const value: any = BrowseViewModel.evalInContext(
                 this.inputValue
                 .replace(new RegExp('\u201c|\u201d', "g"), '"')
                 .replace(new RegExp('\u2018|\u2019', "g"), "'")
@@ -117,6 +118,14 @@ export class BrowseViewModel extends Observable {
     //     }
     // };
 
+    private static evalClosure(str: string): any {
+        return eval(str);
+    }
+
+    private static evalInContext(str: string): any {
+        return BrowseViewModel.evalClosure.call(BrowseViewModel.evalContext, str);
+    }
+
     onComponentLoaded(args){
         const textView: TextView|TextField = <TextView|TextField>args.object;
         textView.style.fontFamily = "Courier New";
@@ -141,12 +150,12 @@ export class BrowseViewModel extends Observable {
                         console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
                         if(token !== ""){
                             try {
-                                const keyed: boolean = eval(`typeof ${token} === "object" && ${token} !== null;`);
+                                const keyed: boolean = BrowseViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
                                 if(keyed){
                                     let value: { own: string[], inherited: string[] };
 
                                     if(incomplete === ""){
-                                        value = eval(
+                                        value = BrowseViewModel.evalInContext(
                                             `let own = []; let inherited = [];\n` + 
                                             `for(let key in ${token}){\n` +
                                                 `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
@@ -154,7 +163,7 @@ export class BrowseViewModel extends Observable {
                                             `let answer = { own: own, inherited: inherited }; answer`
                                         )
                                     } else {
-                                        value = eval(
+                                        value = BrowseViewModel.evalInContext(
                                             `let own = []; let inherited = [];\n` + 
                                             `for(let key in ${token}){\n` +
                                                 `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
@@ -163,7 +172,7 @@ export class BrowseViewModel extends Observable {
                                             `let answer = { own: own, inherited: inherited }; answer`
                                         )
                                     }
-                                    
+
                                     this.ownPropsValue = value.own.join(', ');
                                     this.inheritedPropsValue = value.inherited.join(', ');
                                 } else {
