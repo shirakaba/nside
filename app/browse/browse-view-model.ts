@@ -8,7 +8,8 @@ import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
     private input?: TextView;
-    private intellisense?: TextField;
+    private ownProps?: TextField;
+    private inheritedProps?: TextField;
     private output?: TextView;
 
     private _inputValue: string = "";
@@ -19,12 +20,20 @@ export class BrowseViewModel extends Observable {
         this.notifyPropertyChange('inputValue', value);
     }
 
-    private _intellisenseValue: string = "";
-    get intellisenseValue(): string { return this._intellisenseValue; }
-    set intellisenseValue(value: string) {
-        if (this._intellisenseValue === value) return;
-        this._intellisenseValue = value;
-        this.notifyPropertyChange('intellisenseValue', value);
+    private _ownPropsValue: string = "";
+    get ownPropsValue(): string { return this._ownPropsValue; }
+    set ownPropsValue(value: string) {
+        if (this._ownPropsValue === value) return;
+        this._ownPropsValue = value;
+        this.notifyPropertyChange('ownPropsValue', value);
+    }
+
+    private _inheritedPropsValue: string = "";
+    get inheritedPropsValue(): string { return this._inheritedPropsValue; }
+    set inheritedPropsValue(value: string) {
+        if (this._inheritedPropsValue === value) return;
+        this._inheritedPropsValue = value;
+        this.notifyPropertyChange('inheritedPropsValue', value);
     }
 
     private _outputValue: string = "";
@@ -134,30 +143,38 @@ export class BrowseViewModel extends Observable {
                             try {
                                 const keyed: boolean = eval(`typeof ${token} === "object" && ${token} !== null;`);
                                 if(keyed){
+
                                     const value = eval(
                                         incomplete === "" ? 
-                                            `Object.keys(${token})[0]` : 
-                                            `Object.keys(${token}).filter((k) => k.indexOf('${incomplete}') === 0)[0] || '<none>'`
+                                            `Object.keys(${token}).join(', ')` : 
+                                            `Object.keys(${token}).filter((k) => k.indexOf('${incomplete}') === 0).join(', ')`
                                     );
-                                    this.intellisenseValue = value;
+                                    this.ownPropsValue = value;
                                 } else {
-                                    this.intellisenseValue = "";
+                                    this.ownPropsValue = "";
+                                    this.inheritedPropsValue = "";
                                 }
                             } catch(e){
-                                this.intellisenseValue = "";
+                                this.ownPropsValue = "";
+                                this.inheritedPropsValue = "";
                             }
                         } else {
-                            this.intellisenseValue = "";
+                            this.ownPropsValue = "";
+                            this.inheritedPropsValue = "";
                         }
                     } else {
                         console.log("NO MATCH");
-                        this.intellisenseValue = "";
+                        this.ownPropsValue = "";
+                        this.inheritedPropsValue = "";
                     }
                     // console.dir(argstv);
                 });
                 break;
-            case "intellisense":
-                this.intellisense = textView as TextField;
+            case "ownProps":
+                this.ownProps = textView as TextField;
+                break;
+            case "inheritedProps":
+                this.inheritedProps = textView as TextField;
             case "output":
                 this.output = textView as TextView;
                 // textView.on("textChange", (argstv) => {

@@ -30,17 +30,30 @@
             class="input input-border"
         />
         <TextField
-            id="intellisense"
+            id="ownProps"
             height="5%"
             width="100%"
             editable="false"
             loaded="{{ onComponentLoaded }}"
-            hint="(Intellisense)"
-            text='{{ intellisenseValue }}'
+            hint="(Own properties)"
+            text='{{ ownPropsValue }}'
+            class="input input-border"
+            backgroundColor="rgb(220,240,240)"
+            style="padding-left: 15px;"
+        />
+        <TextField
+            id="inheritedProps"
+            height="5%"
+            width="100%"
+            editable="false"
+            loaded="{{ onComponentLoaded }}"
+            hint="(Inherited properties)"
+            text='{{ inheritedPropsValue }}'
             class="input input-border"
             backgroundColor="rgb(220,220,240)"
+            style="padding-left: 15px;"
         />
-        <ScrollView height="40%">
+        <ScrollView height="35%">
             <TextView
                 id="output"
                 height="100%"
