@@ -1,6 +1,7 @@
 import { Observable } from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { Page, View, Color, ContentView } from "tns-core-modules/ui/page";
+import { ScrollView } from "tns-core-modules/ui/scroll-view";
 import { Button } from "tns-core-modules/ui/button";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
@@ -231,6 +232,11 @@ export class BrowseViewModel extends Observable {
 
     private setUpInputTextView(textView: TextView | TextField) {
         textView.on("textChange", (argstv) => {
+            const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
+            const inheritedPropsScroller: ScrollView = this.inheritedProps.parent as ScrollView;
+            ownPropsScroller.scrollToVerticalOffset(0, false);
+            inheritedPropsScroller.scrollToVerticalOffset(0, false);
+            
             const value: string = (argstv as any).value as string;
             const splitOnLines: string[] = value.split('\n');
             let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
