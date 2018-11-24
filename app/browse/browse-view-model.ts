@@ -106,20 +106,11 @@ export class BrowseViewModel extends Observable {
 
     run(){
         try {
-            const value: any = function(str){
-                return eval(str);
-            }
-            .call(
-                BrowseViewModel.evalContext,
+            const value: any = BrowseViewModel.evalInContext(
                 this.inputValue
                 .replace(new RegExp('\u201c|\u201d', "g"), '"')
                 .replace(new RegExp('\u2018|\u2019', "g"), "'")
             );
-            // const value: any = BrowseViewModel.evalInContext(
-            //     this.inputValue
-            //     .replace(new RegExp('\u201c|\u201d', "g"), '"')
-            //     .replace(new RegExp('\u2018|\u2019', "g"), "'")
-            // );
 
             if(typeof value === "undefined"){
                 this.outputValue = "undefined";
@@ -247,44 +238,26 @@ export class BrowseViewModel extends Observable {
                 console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
                 if (token !== "") {
                     try {
-                        // const keyed: boolean = BrowseViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
-                        const keyed: boolean = function(str){ return eval(str); }.call(BrowseViewModel.evalContext, `typeof ${token} === "object" && ${token} !== null;`);
+                        const keyed: boolean = BrowseViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
                         if (keyed) {
                             let value: {
                                 own: string[];
                                 inherited: string[];
                             };
                             if (incomplete === "") {
-                                value = function(str){ return eval(str); }.call(
-                                    BrowseViewModel.evalContext,
-                                    `let own = []; let inherited = [];\n` +
+                                value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
                                     `for(let key in ${token}){\n` +
                                     `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
                                     `}\n` +
-                                    `let answer = { own: own, inherited: inherited }; answer`
-                                );
-                                // value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
-                                //     `for(let key in ${token}){\n` +
-                                //     `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
-                                //     `}\n` +
-                                //     `let answer = { own: own, inherited: inherited }; answer`);
+                                    `let answer = { own: own, inherited: inherited }; answer`);
                             }
                             else {
-                                value = function(str){ return eval(str); }.call(
-                                    BrowseViewModel.evalContext,
-                                    `let own = []; let inherited = [];\n` +
+                                value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
                                     `for(let key in ${token}){\n` +
                                     `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
                                     `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
                                     `}\n` +
-                                    `let answer = { own: own, inherited: inherited }; answer`
-                                );
-                                // value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
-                                //     `for(let key in ${token}){\n` +
-                                //     `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
-                                //     `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
-                                //     `}\n` +
-                                //     `let answer = { own: own, inherited: inherited }; answer`);
+                                    `let answer = { own: own, inherited: inherited }; answer`);
                             }
                             this.ownPropsValue = value.own.join(', ');
                             this.inheritedPropsValue = value.inherited.join(', ');
