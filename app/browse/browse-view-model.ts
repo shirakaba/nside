@@ -8,7 +8,7 @@ import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbo
 import * as Clipboard from "nativescript-clipboard";
 
 export class BrowseViewModel extends Observable {
-    public static readonly evalContext = {};
+    public static readonly evalContext: any = {};
     private input?: TextView;
     private ownProps?: TextField;
     private inheritedProps?: TextField;
@@ -187,6 +187,8 @@ export class BrowseViewModel extends Observable {
                 this.design = view as ContentView;
                 this.design.style.visibility = "collapse";
                 console.log("this.design assigned!", this.design);
+                (global as any).design = this.design;
+                // BrowseViewModel.evalContext.design = this.design;
                 break;
             case "designButton":
                 this.designButton = view as Button;
@@ -241,35 +243,56 @@ export class BrowseViewModel extends Observable {
                 const token: string = lastIndex > -1 ? finalLine.slice(0, lastIndex) : finalLine;
                 const incomplete: string = lastIndex > -1 ? finalLine.slice(lastIndex + ".".length) : "";
                 console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
+                // Object.keys(global).forEach((key) => console.log(key));
+                // for(let key in global){ console.log(key); }
                 if (token !== "") {
                     try {
                         const keyed: boolean = BrowseViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
+                        let value: {
+                            own: string[];
+                            inherited: string[];
+                        };
                         if (keyed) {
-                            let value: {
-                                own: string[];
-                                inherited: string[];
-                            };
                             if (incomplete === "") {
-                                value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
+                                value = BrowseViewModel.evalInContext(
+                                    `let own = []; let inherited = [];\n` +
                                     `for(let key in ${token}){\n` +
-                                    `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
+                                        `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
                                     `}\n` +
-                                    `let answer = { own: own, inherited: inherited }; answer`);
+                                    `let answer = { own: own, inherited: inherited }; answer`
+                                );
                             }
                             else {
-                                value = BrowseViewModel.evalInContext(`let own = []; let inherited = [];\n` +
+                                // TODO: check on global, and auto-complete constructor names
+                                value = BrowseViewModel.evalInContext(
+                                    `let own = []; let inherited = [];\n` +
                                     `for(let key in ${token}){\n` +
                                     `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
-                                    `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
+                                        `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
                                     `}\n` +
-                                    `let answer = { own: own, inherited: inherited }; answer`);
+                                    `let answer = { own: own, inherited: inherited }; answer`
+                                );
                             }
                             this.ownPropsValue = value.own.join(', ');
                             this.inheritedPropsValue = value.inherited.join(', ');
                         }
                         else {
-                            this.ownPropsValue = "";
-                            this.inheritedPropsValue = "";
+                            if(lastIndex === -1){
+                                value = BrowseViewModel.evalInContext(
+                                    `let own = []; let inherited = [];\n` +
+                                    `for(let key in global){\n` +
+                                        `if(key.indexOf('${token}') !== 0) continue;\n` +
+                                        `global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
+                                    `}\n` +
+                                    `let answer = { own: own, inherited: inherited }; answer`
+                                );
+
+                                this.ownPropsValue = value.own.join(', ');
+                                this.inheritedPropsValue = value.inherited.join(', ');
+                            } else {
+                                this.ownPropsValue = "";
+                                this.inheritedPropsValue = "";
+                            }
                         }
                     }
                     catch (e) {
