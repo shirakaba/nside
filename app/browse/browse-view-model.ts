@@ -6,8 +6,6 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
-const keyboard: any = require( "nativescript-keyboardshowing" );
-console.log("keyboard is", keyboard.isShowing() ? "showing" : "hidden");
 
 export class BrowseViewModel extends Observable {
     public static readonly evalContext = {};
@@ -205,31 +203,6 @@ export class BrowseViewModel extends Observable {
     onReturnPress(args) {
         // returnPress event will be triggered when user submits a value
         const textView: TextView = <TextView>args.object;
-        // Gets or sets the placeholder text.
-        console.log(textView.hint);
-        // Gets or sets the input text.
-        console.log(textView.text);
-    
-        // Gets or sets the soft keyboard type. Options: "datetime" | "phone" | "number" | "url" | "email"
-        console.log(textView.keyboardType);
-        // Gets or sets the soft keyboard return key flavor. Options: "done" | "next" | "go" | "search" | "send"
-        console.log(textView.returnKeyType);
-        // Gets or sets the autocapitalization type. Options: "none" | "words" | "sentences" | "allcharacters"
-        console.log(textView.autocapitalizationType);
-    
-        // Gets or sets a value indicating when the text property will be updated.
-        console.log(textView.updateTextTrigger);
-        // Gets or sets whether the instance is editable.
-        console.log(textView.editable);
-        // Enables or disables autocorrection.
-        console.log(textView.autocorrect);
-        // Limits input to a certain number of characters.
-        console.log(textView.maxLength);
-    
-        // setTimeout(() => {
-        //     textView.dismissSoftInput(); // Hides the soft input method, ususally a soft keyboard.
-        // }, 100);
-        // textView.dismissSoftInput();
     }
     
     onInputFocus(args) {
@@ -244,26 +217,10 @@ export class BrowseViewModel extends Observable {
         const textView: TextView = <TextView>args.object;
         console.log("onBlur event for: " + textView.id);
 
-
         /* Looks like dismissSoftInput() was never needed on this callback after all, because it's run implicitly?
          * Just that the 'show soft keyboard' option is a bit confusing in the Simulator.
          */
-        // BUG: dismissSoftInput() itself triggers onBlur event.
-        // if(keyboard.isShowing() === "hidden"){
-        //     textView.dismissSoftInput();
-        // }
-
-        // setTimeout(() => {
-        //     textView.dismissSoftInput(); // Hides the soft input method, ususally a soft keyboard.
-        // }, 100);
-
-        // if(this.dismissKeyboardLatch === null){
-        //     textView.dismissSoftInput();
-        //     this.dismissKeyboardLatch = setTimeout(() => this.dismissKeyboardLatch = null, 100);
-        // }
     }
-
-    // private keyboardIsHidden: boolean = keyboard.isShowing() === "hidden";
 
     private setUpInputTextView(textView: TextView | TextField) {
         textView.on("textChange", (argstv) => {
