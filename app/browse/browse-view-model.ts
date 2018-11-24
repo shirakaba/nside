@@ -141,16 +141,18 @@ export class BrowseViewModel extends Observable {
 
     static customStringify(v): string {
         const cache = new Set();
-        const stringified: string = JSON.stringify(v, (key, value) => {
-          if(typeof value === 'object' && value !== null){
-            if(cache.has(value)) return; // Circular reference found, discard key
-            // Store value in our set
-            cache.add(value);
-          }
-          return value;
-        }, 2);
+            const stringified: string = JSON.stringify(v, (key, value) => {
+                if(typeof value === 'object' && value !== null){
+                    if(cache.has(value)) return; // Circular reference found, discard key
+                    // Store value in our set
+                    cache.add(value);
+                }
+                return value;
+            },
+            2
+        );
         return stringified === "{}" ? v.toString() : stringified;
-      };
+    };
 
     private static evalClosure(str: string): any {
         return eval(str);
