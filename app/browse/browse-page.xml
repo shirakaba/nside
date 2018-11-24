@@ -30,7 +30,7 @@
             class="input input-border"
         />
         <ScrollView height="5%" width="100%">
-            <TextField
+            <TextView
                 id="ownProps"
                 height="100%"
                 width="100%"
@@ -44,7 +44,7 @@
             />
         </ScrollView>
         <ScrollView height="5%" width="100%">
-            <TextField
+            <TextView
                 id="inheritedProps"
                 height="100%"
                 width="100%"
