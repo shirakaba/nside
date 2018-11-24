@@ -65,15 +65,15 @@
                 class="input input-border"
                 backgroundColor="rgb(240,240,240)"
             />
-            <!-- <ContentView
-                id="design"
-                height="100%"
-                width="100%"
-                loaded="{{ onComponentLoaded }}"
-                backgroundColor="rgb(240,240,200)"
-            >
-            </ContentView> -->
         </ScrollView>
+        <ContentView
+            id="design"
+            height="35%"
+            width="100%"
+            loaded="{{ onComponentLoaded }}"
+            backgroundColor="rgb(240,240,200)"
+        >
+        </ContentView>
         <FlexboxLayout height="10%" flexDirection="row" alignItems="center" justifyContent="space-around">
             <!-- <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> -->
             <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active"/>

@@ -52,12 +52,12 @@ export class BrowseViewModel extends Observable {
     constructor() {
         super();
 
-        this.design.style.width = 100;
-        this.design.style.height = 100;
-        this.design.id = "design";
-        // this.design.backgroundColor = new Color(255, 240, 240, 200);
-        // this.design.backgroundColor = new Color("orange");
-        this.design.backgroundColor = "orange";
+        // this.design.style.width = 100;
+        // this.design.style.height = 100;
+        // this.design.id = "design";
+        // // this.design.backgroundColor = new Color(255, 240, 240, 200);
+        // // this.design.backgroundColor = new Color("orange");
+        // this.design.backgroundColor = "orange";
     }
 
     clear() {
@@ -85,18 +85,23 @@ export class BrowseViewModel extends Observable {
 
 
         if(this.designing){
-            const scrollView = this.design.parent;
-            scrollView._removeView(this.design);
-            scrollView._addView(this.output);
+            // const flexboxLayout = this.design.parent;
+            // flexboxLayout._removeView(this.design);
+            // flexboxLayout._addView(this.output);
+
+            this.design.visibility = "collapse";
+            this.output.parent.style.visibility = "visible";
 
             this.designButton.text = "Design";
         } else {
             // console.log('design:', this.design);
             
 
-            const scrollView = this.output.parent;
-            scrollView._removeView(this.output);
-            scrollView._addView(this.design);
+            // const scrollView = this.output.parent;
+            // scrollView._removeView(this.output);
+            // scrollView._addView(this.design);
+            this.output.parent.style.visibility = "collapse";
+            this.design.visibility = "visible";
             
             this.designButton.text = "Debug";
         }
@@ -178,11 +183,11 @@ export class BrowseViewModel extends Observable {
                 this.inheritedProps = view as TextField;
                 console.log("this.inheritedProps assigned!", this.inheritedProps);
                 break;
-            // case "design":
-            //     this.design = view as ContentView;
-            //     this.design.style.visibility = "collapse";
-            //     console.log("this.design assigned!", this.design);
-            //     break;
+            case "design":
+                this.design = view as ContentView;
+                this.design.style.visibility = "collapse";
+                console.log("this.design assigned!", this.design);
+                break;
             case "designButton":
                 this.designButton = view as Button;
                 this.designButton.text = "Design";
