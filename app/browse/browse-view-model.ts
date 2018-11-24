@@ -252,25 +252,32 @@ export class BrowseViewModel extends Observable {
                             own: string[];
                             inherited: string[];
                         };
+                        const instantiateOwnInherited: string = `let own = []; let inherited = [];`;
+                        const returnAnswer: string = `let answer = { own: own, inherited: inherited }; answer`;
+
                         if (keyed) {
                             if (incomplete === "") {
                                 value = BrowseViewModel.evalInContext(
-                                    `let own = []; let inherited = [];\n` +
-                                    `for(let key in ${token}){\n` +
-                                        `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
-                                    `}\n` +
-                                    `let answer = { own: own, inherited: inherited }; answer`
+                                    [
+                                        instantiateOwnInherited,
+                                        `for(let key in ${token}){`,
+                                            `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
+                                        `}`,
+                                        returnAnswer
+                                    ].join('\n')
                                 );
                             }
                             else {
                                 // TODO: check on global, and auto-complete constructor names
                                 value = BrowseViewModel.evalInContext(
-                                    `let own = []; let inherited = [];\n` +
-                                    `for(let key in ${token}){\n` +
-                                    `if(key.indexOf('${incomplete}') !== 0) continue;\n` +
-                                        `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
-                                    `}\n` +
-                                    `let answer = { own: own, inherited: inherited }; answer`
+                                    [
+                                        instantiateOwnInherited,
+                                        `for(let key in ${token}){`,
+                                        `if(key.indexOf('${incomplete}') !== 0) continue;`,
+                                            `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
+                                        `}`,
+                                        returnAnswer
+                                    ].join('\n')
                                 );
                             }
                             this.ownPropsValue = value.own.join(', ');
@@ -279,12 +286,14 @@ export class BrowseViewModel extends Observable {
                         else {
                             if(lastIndex === -1){
                                 value = BrowseViewModel.evalInContext(
-                                    `let own = []; let inherited = [];\n` +
-                                    `for(let key in global){\n` +
-                                        `if(key.indexOf('${token}') !== 0) continue;\n` +
-                                        `global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);\n` +
-                                    `}\n` +
-                                    `let answer = { own: own, inherited: inherited }; answer`
+                                    [
+                                        instantiateOwnInherited,
+                                        `for(let key in global){`,
+                                            `if(key.indexOf('${token}') !== 0) continue;`,
+                                            `global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
+                                        `}`,
+                                        returnAnswer
+                                    ].join('\n')
                                 );
 
                                 this.ownPropsValue = value.own.join(', ');
