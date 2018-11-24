@@ -8,24 +8,29 @@ import { ViewBase } from "tns-core-modules/ui/page/page";
 //   </StackLayout>
 // </Page>
 
-export class HelperFunctions {
-    static printView(view: ViewBase, tabDepth: number = 0) {
-        let buffer: string = "";
-        view.eachChild((child) => {
-            const opener = new Array(tabDepth).fill("  ").join('') + "<" + child.typeName + ">";
-            buffer += opener + '\n';
+export function printView(view: ViewBase, tabDepth?: number) {
+    if(typeof tabDepth === "undefined") tabDepth = 0;
+    let buffer = "";
+    view.eachChild((child) => {
+        const opener = new Array(tabDepth).fill("  ").join('') + "<" + child.typeName;
+        buffer += opener;
 
-            child.eachChild((subchild) => {
-                buffer += HelperFunctions.printView(subchild, tabDepth + 1);
-                return true;
-            });
-
-            const closer = new Array(tabDepth).fill("  ").join('') + "<" + child.typeName + "/>";
-            buffer += closer + '\n';
-            
+        let children = 0;
+        child.eachChild((subchild) => {
+            if(children === 0) buffer += ">\n";
+            children++;
+            buffer += printView(subchild, tabDepth + 1);
             return true;
         });
-        if(tabDepth === 0) console.log(buffer);
-        return buffer;
-    }
+        if(children === 0){
+            buffer += "/>\n";
+        } else {
+            const closer = new Array(tabDepth).fill("  ").join('') + "<" + child.typeName + "/>";
+            buffer += closer + '\n';
+        }
+        
+        return true;
+    });
+    if(tabDepth === 0) console.log(buffer);
+    return buffer;
 }
