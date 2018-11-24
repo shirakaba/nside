@@ -29,34 +29,30 @@
             blur="{{ onInputBlur }}" 
             class="input input-border"
         />
-        <ScrollView height="5%" width="100%">
-            <TextField
-                id="ownProps"
-                height="100%"
-                width="100%"
-                editable="false"
-                loaded="{{ onComponentLoaded }}"
-                hint="(Own properties)"
-                text='{{ ownPropsValue }}'
-                class="input input-border"
-                backgroundColor="rgb(220,240,240)"
-                style="padding-left: 15px;"
-            />
-        </ScrollView>
-        <ScrollView height="5%" width="100%">
-            <TextField
-                id="inheritedProps"
-                height="100%"
-                width="100%"
-                editable="false"
-                loaded="{{ onComponentLoaded }}"
-                hint="(Inherited properties)"
-                text='{{ inheritedPropsValue }}'
-                class="input input-border"
-                backgroundColor="rgb(220,220,240)"
-                style="padding-left: 15px;"
-            />
-        </ScrollView>
+        <TextField
+            id="ownProps"
+            height="5%"
+            width="100%"
+            editable="false"
+            loaded="{{ onComponentLoaded }}"
+            hint="(Own properties)"
+            text='{{ ownPropsValue }}'
+            class="input input-border"
+            backgroundColor="rgb(220,240,240)"
+            style="padding-left: 15px;"
+        />
+        <TextField
+            id="inheritedProps"
+            height="5%"
+            width="100%"
+            editable="false"
+            loaded="{{ onComponentLoaded }}"
+            hint="(Inherited properties)"
+            text='{{ inheritedPropsValue }}'
+            class="input input-border"
+            backgroundColor="rgb(220,220,240)"
+            style="padding-left: 15px;"
+        />
         <ScrollView height="35%">
             <TextView
                 id="output"
