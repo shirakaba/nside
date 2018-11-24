@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "nativescript-clipboard": "^1.1.7",
+    "nativescript-keyboardshowing": "^1.0.0",
     "nativescript-theme-core": "~1.0.4",
     "tns-core-modules": "~5.0.0"
   },

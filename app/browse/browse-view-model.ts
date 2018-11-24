@@ -6,6 +6,8 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
+const keyboard: any = require( "nativescript-keyboardshowing" );
+console.log("keyboard is", keyboard.isShowing() ? "showing" : "hidden");
 
 export class BrowseViewModel extends Observable {
     public static readonly evalContext = {};
@@ -232,15 +234,36 @@ export class BrowseViewModel extends Observable {
     
     onInputFocus(args) {
         // focus event will be triggered when the users enters the TextField
-        console.log("onFocus event");
+        const textView: TextView = <TextView>args.object;
+        console.log("onFocus event for: " + textView.id);
     }
     
+    // TODO: remove 'nativescript-keyboardshowing' plugin.
     onInputBlur(args) {
         // blur event will be triggered when the user leaves the TextField
         const textView: TextView = <TextView>args.object;
-        textView.dismissSoftInput();
-        console.log("onBlur event");
+        console.log("onBlur event for: " + textView.id);
+
+
+        /* Looks like dismissSoftInput() was never needed on this callback after all, because it's run implicitly?
+         * Just that the 'show soft keyboard' option is a bit confusing in the Simulator.
+         */
+        // BUG: dismissSoftInput() itself triggers onBlur event.
+        // if(keyboard.isShowing() === "hidden"){
+        //     textView.dismissSoftInput();
+        // }
+
+        // setTimeout(() => {
+        //     textView.dismissSoftInput(); // Hides the soft input method, ususally a soft keyboard.
+        // }, 100);
+
+        // if(this.dismissKeyboardLatch === null){
+        //     textView.dismissSoftInput();
+        //     this.dismissKeyboardLatch = setTimeout(() => this.dismissKeyboardLatch = null, 100);
+        // }
     }
+
+    // private keyboardIsHidden: boolean = keyboard.isShowing() === "hidden";
 
     private setUpInputTextView(textView: TextView | TextField) {
         textView.on("textChange", (argstv) => {
