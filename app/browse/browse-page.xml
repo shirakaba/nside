@@ -40,7 +40,7 @@
                 text='{{ ownPropsValue }}'
                 class="input input-border"
                 backgroundColor="rgb(220,240,240)"
-                style="padding-left: 15px;"
+                
             />
         </ScrollView>
         <ScrollView height="5%" width="100%">
@@ -54,7 +54,7 @@
                 text='{{ inheritedPropsValue }}'
                 class="input input-border"
                 backgroundColor="rgb(220,220,240)"
-                style="padding-left: 15px;"
+                
             />
         </ScrollView>
         <ScrollView height="35%">
