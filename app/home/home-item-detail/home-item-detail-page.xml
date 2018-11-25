@@ -12,6 +12,6 @@ Feel free to customize layouts and components to change how the tab view looks.
         <Label class="action-bar-title" text="{{ name }}"></Label>
     </ActionBar>
     <GridLayout>
-        <Label class="m-10 h3" verticalAlignment="top" text="{{ description }}"></Label>
+        <TextView class="m-10 h3" verticalAlignment="top" text="{{ description }}" editable="false" style="font-family: Courier New;"></TextView>
     </GridLayout>
 </Page>
