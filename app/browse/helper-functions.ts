@@ -38,6 +38,7 @@ export function printView(view: View|ViewBase, tabDepth?: number) {
 }
 
 function UINode(child) {
+	this.child = child;
 	this.name = child.typeName;
 	this.children = [];
 
@@ -51,6 +52,8 @@ function UINode(child) {
 		const tab = new Array(tabDepth).fill("  ").join('');
 
 		let buffer = tab + "<" + this.name;
+		buffer += (this.child.id ? (' id="' + this.child.id + '"') : "");
+		
 		if(this.children.length === 0){
 			buffer += "/>\n"
 		} else {
