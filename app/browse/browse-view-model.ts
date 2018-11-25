@@ -240,6 +240,15 @@ export class BrowseViewModel extends Observable {
             inheritedPropsScroller.scrollToVerticalOffset(0, false);
             
             const value: string = (argstv as any).value as string;
+            ((textView as TextView).ios as UITextView).attributedText = NSAttributedString.alloc()
+            .initWithStringAttributes(
+                value,
+                //@ts-ignore
+                new NSDictionary(
+                    [UIColor.purpleColor],
+                    [NSForegroundColorAttributeName],
+                )
+            );
             const splitOnLines: string[] = value.split('\n');
             let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
             const splitOnWhitespace: string[] = value.split(' ');
