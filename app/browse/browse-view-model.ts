@@ -221,7 +221,6 @@ export class BrowseViewModel extends Observable {
         console.log("onFocus event for: " + textView.id);
     }
     
-    // TODO: remove 'nativescript-keyboardshowing' plugin.
     onInputBlur(args) {
         // blur event will be triggered when the user leaves the TextField
         const textView: TextView = <TextView>args.object;
