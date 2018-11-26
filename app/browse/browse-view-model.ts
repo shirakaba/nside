@@ -7,6 +7,7 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
+const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
 
 export class BrowseViewModel extends Observable {
     public static readonly evalContext: any = {};
@@ -17,6 +18,7 @@ export class BrowseViewModel extends Observable {
     private design: ContentView = new ContentView();
     private designButton?: Button;
     private designing: boolean = false;
+    private readonly syntaxHighlighter: any = new SyntaxHighlighter();
 
     private _inputValue: string = "";
     get inputValue(): string { return this._inputValue; }
@@ -239,15 +241,16 @@ export class BrowseViewModel extends Observable {
             inheritedPropsScroller.scrollToVerticalOffset(0, false);
             
             const value: string = (argstv as any).value as string;
-            ((textView as TextView).ios as UITextView).attributedText = NSAttributedString.alloc()
-            .initWithStringAttributes(
-                value,
-                //@ts-ignore
-                new NSDictionary(
-                    [UIColor.purpleColor],
-                    [NSForegroundColorAttributeName],
-                )
-            );
+            // ((textView as TextView).ios as UITextView).attributedText = NSAttributedString.alloc()
+            // .initWithStringAttributes(
+            //     value,
+            //     //@ts-ignore
+            //     new NSDictionary(
+            //         [UIColor.purpleColor],
+            //         [NSForegroundColorAttributeName],
+            //     )
+            // );
+
             const splitOnLines: string[] = value.split('\n');
             let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
             const splitOnWhitespace: string[] = value.split(' ');
@@ -335,6 +338,13 @@ export class BrowseViewModel extends Observable {
                 this.ownPropsValue = "";
                 this.inheritedPropsValue = "";
             }
+
+            const attributedText: NSAttributedString = this.syntaxHighlighter.highlightAsFastRender(value, "js", false) as NSAttributedString;
+            // console.log(attributedText.string);
+            // attributedText.string
+            // Consider: attributedText.attributedSubstringFromRange()
+            console.log(`[attributedText] length: ${attributedText.length}. Value ended in linebreak: ${value[value.length - 1] === "\n"}`);
+            ((textView as TextView).ios as UITextView).attributedText = attributedText;
         });
     }
 
