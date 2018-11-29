@@ -7,7 +7,8 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
-const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
+// const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
+import { SyntaxHighlighter } from "nativescript-syntax-highlighter";
 
 export class BrowseViewModel extends Observable {
     public static readonly evalContext: any = {};
