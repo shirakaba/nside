@@ -2,52 +2,53 @@ import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layo
 import { SyntaxHighlighter, CodeAttributedStringWrapper } from "nativescript-syntax-highlighter";
 import { SyntaxViewBase, languageProperty } from "./syntax-view.common";
 
-/* 
-https://docs.nativescript.org/plugins/ui-plugin-custom 
-https://moduscreate.com/blog/custom-components-in-nativescript/
-https://docs.nativescript.org/core-concepts/navigation
-https://docs.nativescript.org/ui/ns-ui-widgets/placeholder
-*/
-export function createView(args): UITextView {
-    const container: StackLayout = args.object;
-    console.log("container", container);
-    const uiView: UIView = container.ios.view;
-    console.log("uiView", uiView);
+// /* 
+// https://docs.nativescript.org/plugins/ui-plugin-custom 
+// https://moduscreate.com/blog/custom-components-in-nativescript/
+// https://docs.nativescript.org/core-concepts/navigation
+// https://docs.nativescript.org/ui/ns-ui-widgets/placeholder
+// */
+// export function createView(args): UITextView {
+//     const container: StackLayout = args.object;
+//     console.log("container", container);
+//     const uiView: UIView = container.ios.view;
+//     console.log("uiView", uiView);
 
-    const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
+//     const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
 
-    codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
+//     codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
 
-    const textStorage = codeAttributedStringWrapper._codeAttributedString;
-    textStorage.language = "javascript".toLowerCase();
-    const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
-    textStorage.addLayoutManager(layoutManager);
+//     const textStorage = codeAttributedStringWrapper._codeAttributedString;
+//     textStorage.language = "javascript".toLowerCase();
+//     const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
+//     textStorage.addLayoutManager(layoutManager);
 
-    const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
-    layoutManager.addTextContainer(textContainer);
+//     const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
+//     layoutManager.addTextContainer(textContainer);
 
-    const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);
+//     const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);
     
-    textView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-    textView.autocorrectionType = UITextAutocorrectionType.No;
-    textView.autocapitalizationType = UITextAutocapitalizationType.None;
-    textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
+//     textView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+//     textView.autocorrectionType = UITextAutocorrectionType.No;
+//     textView.autocapitalizationType = UITextAutocapitalizationType.None;
+//     textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
 
-    /* https://docs.nativescript.org/ui/ns-ui-widgets/placeholder */
-    // uiView.addSubview(textView);
-    // args.view = textView;
+//     /* https://docs.nativescript.org/ui/ns-ui-widgets/placeholder */
+//     // uiView.addSubview(textView);
+//     // args.view = textView;
 
-    return textView;
-}
+//     return textView;
+// }
 
 export class SyntaxView extends SyntaxViewBase {
-    // nativeView: 
-        /**
-     * Creates new native button.
-     */
+    nativeView: UITextView;
+    textStorage: CodeAttributedString;
+
     public createNativeView(): Object {
-        console.log(`createNativeView() called!`);
+        console.log(`createNativeView() called without any args`);
+
         const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
+
 
         codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
     
@@ -55,6 +56,7 @@ export class SyntaxView extends SyntaxViewBase {
         textStorage.language = "javascript".toLowerCase();
         const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
         textStorage.addLayoutManager(layoutManager);
+        this.textStorage = textStorage;
     
         // const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
         const textContainer = NSTextContainer.alloc().initWithSize(CGRectMake(0, 0, 300, 300).size);
@@ -68,6 +70,8 @@ export class SyntaxView extends SyntaxViewBase {
         textView.autocapitalizationType = UITextAutocapitalizationType.None;
         textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
 
+        this.nativeView = textView;
+
         return textView;
     }
 
@@ -78,7 +82,6 @@ export class SyntaxView extends SyntaxViewBase {
         // Attach the owner to nativeView.
         // When nativeView is tapped we get the owning JS object through this field.
         (<any>this.nativeView).owner = this;
-        
         super.initNativeView();
     }
 
@@ -98,9 +101,8 @@ export class SyntaxView extends SyntaxViewBase {
         super.disposeNativeView();
     }
 
-    // transfer JS text value to nativeView.
     [languageProperty.setNative](value: string) {
-        // this.nativeView.setText(value);
+        this.textStorage.language = value.toLowerCase();
     }
 
     // [myOpacityProperty.getDefault](): number {

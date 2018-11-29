@@ -13,8 +13,7 @@
         "baseUrl": ".",
         "paths": {
             "~/*": [
-                "app/*",
-                "app/components/*",
+                "app/*"
             ],
             "*": [
                 "./node_modules/tns-core-modules/*",
