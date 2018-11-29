@@ -210,6 +210,8 @@ export class BrowseViewModel extends Observable {
                 //     console.dir(argstv);
                 // });
                 break;
+            default:
+                console.log("Loaded unspecified view", view);
         }
     }
     
