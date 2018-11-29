@@ -2,7 +2,7 @@
     class="page"
     navigatingTo="onNavigatingTo"  
     xmlns="http://schemas.nativescript.org/tns.xsd"
-    xmlns:SyntaxView="../components/syntax-view/SyntaxView"
+    xmlns:ui="../components/syntax-view"
 >
 
     <!-- <ActionBar class="action-bar">
@@ -31,7 +31,7 @@
             blur="{{ onInputBlur }}" 
             class="input input-border"
         />
-        <SyntaxView:SyntaxView/>
+        <ui:SyntaxView/>
         <ScrollView height="5%" width="100%">
             <TextView
                 id="ownProps"
