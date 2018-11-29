@@ -2,7 +2,7 @@
     class="page"
     navigatingTo="onNavigatingTo"  
     xmlns="http://schemas.nativescript.org/tns.xsd"
-    xmlns:ui="../components/syntax-view"
+    xmlns:ui="../components/syntax-view/syntax-view"
 >
 
     <!-- <ActionBar class="action-bar">
