@@ -9,7 +9,8 @@ import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbo
 import * as Clipboard from "nativescript-clipboard";
 // const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
 import { SyntaxHighlighter } from "nativescript-syntax-highlighter";
-
+// import { creatingView as transpileSyntaxViewHack } from "../components/syntax-view/SyntaxView";
+// console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
 export class BrowseViewModel extends Observable {
     public static readonly evalContext: any = {};
     private input?: TextView;
