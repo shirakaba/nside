@@ -15,7 +15,7 @@ import { MyUITextViewDelegateImpl, MyTextView } from "~/MyUITextViewDelegateImpl
 
 export class BrowseViewModel extends Observable {
     public static readonly evalContext: any = {};
-    private input?: TextView;
+    // private input?: TextView;
     private ownProps?: TextField;
     private inheritedProps?: TextField;
     private output?: TextView;
@@ -24,13 +24,13 @@ export class BrowseViewModel extends Observable {
     private designing: boolean = false;
     private readonly syntaxHighlighter: any = new SyntaxHighlighter();
 
-    private _inputValue: string = "";
-    get inputValue(): string { return this._inputValue; }
-    set inputValue(value: string) {
-        if (this._inputValue === value) return;
-        this._inputValue = value;
-        this.notifyPropertyChange('inputValue', value);
-    }
+    // private _inputValue: string = "";
+    // get inputValue(): string { return this._inputValue; }
+    // set inputValue(value: string) {
+    //     if (this._inputValue === value) return;
+    //     this._inputValue = value;
+    //     this.notifyPropertyChange('inputValue', value);
+    // }
 
     private _ownPropsValue: string = "";
     get ownPropsValue(): string { return this._ownPropsValue; }
@@ -68,7 +68,7 @@ export class BrowseViewModel extends Observable {
     }
 
     clear() {
-        this.inputValue = "";
+        if(this.textView) this.textView.text = "";
         this.outputValue = "";
     }
 
@@ -117,9 +117,12 @@ export class BrowseViewModel extends Observable {
     }
 
     run(){
+        if(!this.textView) return;
+        const text = this.textView!.text;
         try {
             const value: any = BrowseViewModel.evalInContext(
-                this.inputValue
+                // this.inputValue
+                this.textView.text
                 .replace(new RegExp('\u201c|\u201d', "g"), '"')
                 .replace(new RegExp('\u2018|\u2019', "g"), "'")
             );
@@ -168,6 +171,8 @@ export class BrowseViewModel extends Observable {
         return BrowseViewModel.evalClosure.call(BrowseViewModel.evalContext, str);
     }
 
+    private myTextView?: MyTextView;
+    private textView?: UITextView;
     private _myUITextViewDelegate?: MyUITextViewDelegateImpl;
 
     insertSyntaxView(container: ContentView){
@@ -194,7 +199,8 @@ export class BrowseViewModel extends Observable {
         textView.autocapitalizationType = UITextAutocapitalizationType.None;
         textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
 
-        const myTextView: MyTextView = new MyTextView(textView);
+        this.textView = textView;
+        this.myTextView = new MyTextView(textView);
         // myTextView.createNativeView();
 
         
@@ -202,11 +208,11 @@ export class BrowseViewModel extends Observable {
         // this._myUITextViewDelegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(container));
         // container.ios.delegate = this._myUITextViewDelegate;
 
-        this._myUITextViewDelegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(myTextView));
+        this._myUITextViewDelegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(this.myTextView!));
         this._myUITextViewDelegate.onTextViewDidChange = (textView: UITextView) => {
-            const text = textView.text;
+            this.onInputTextChange(textView.text);
         }
-        myTextView.ios.delegate = this._myUITextViewDelegate;
+        this.myTextView!.ios.delegate = this._myUITextViewDelegate;
 
         // uiView.addSubview(textView);
         // container._addView(myTextView);
@@ -224,18 +230,18 @@ export class BrowseViewModel extends Observable {
         console.log("onComponentLoaded");
 
         switch(view.id){
+            /* This is too late in the lifecycle to set up SyntaxView's delegate (it seems). */
             // case "SyntaxView":
             //     console.log("Will insert SyntaxView...");
             //     this.insertSyntaxView(view as TextView);
-
             //     break;
-            case "input":
-                view.style.fontFamily = "Courier New";
-                view.style.fontSize = 16;
-                this.input = view as TextView;
-                this.setUpInputTextView(this.input);
-                console.log("this.input assigned!", this.input);
-                break;
+            // case "input":
+            //     view.style.fontFamily = "Courier New";
+            //     view.style.fontSize = 16;
+            //     this.input = view as TextView;
+            //     this.setUpInputTextView(this.input);
+            //     console.log("this.input assigned!", this.input);
+            //     break;
             case "ownProps":
                 view.style.fontFamily = "Courier New";
                 view.style.fontSize = 16;
@@ -295,25 +301,13 @@ export class BrowseViewModel extends Observable {
          */
     }
 
-    private setUpInputTextView(textView: TextView | TextField) {
-        textView.on("textChange", (argstv) => {
-            const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
-            const inheritedPropsScroller: ScrollView = this.inheritedProps.parent as ScrollView;
-            ownPropsScroller.scrollToVerticalOffset(0, false);
-            inheritedPropsScroller.scrollToVerticalOffset(0, false);
-            
-            const value: string = (argstv as any).value as string;
-            // ((textView as TextView).ios as UITextView).attributedText = NSAttributedString.alloc()
-            // .initWithStringAttributes(
-            //     value,
-            //     //@ts-ignore
-            //     new NSDictionary(
-            //         [UIColor.purpleColor],
-            //         [NSForegroundColorAttributeName],
-            //     )
-            // );
+    onInputTextChange(value: string): void {
+        const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
+        const inheritedPropsScroller: ScrollView = this.inheritedProps.parent as ScrollView;
+        ownPropsScroller.scrollToVerticalOffset(0, false);
+        inheritedPropsScroller.scrollToVerticalOffset(0, false);
 
-            const splitOnLines: string[] = value.split('\n');
+        const splitOnLines: string[] = value.split('\n');
             let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
             const splitOnWhitespace: string[] = value.split(' ');
             finalLine = splitOnWhitespace.length > 1 ? splitOnWhitespace.slice(-1)[0] : splitOnWhitespace[0];
@@ -401,13 +395,12 @@ export class BrowseViewModel extends Observable {
                 this.inheritedPropsValue = "";
             }
 
-            const attributedText: NSAttributedString = this.syntaxHighlighter.highlightAsFastRender(value, "js", false) as NSAttributedString;
-            // console.log(attributedText.string);
-            // attributedText.string
-            // Consider: attributedText.attributedSubstringFromRange()
-            console.log(`[attributedText] length: ${attributedText.length}. Value ended in linebreak: ${value[value.length - 1] === "\n"}`);
-            ((textView as TextView).ios as UITextView).attributedText = attributedText;
-        });
     }
+
+    // private setUpInputTextView(textView: TextView | TextField) {
+    //     textView.on("textChange", (argstv) => {
+    //         this.onInputTextChange((argstv as any).value as string);
+    //     });
+    // }
 
 }
