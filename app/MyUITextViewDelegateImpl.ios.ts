@@ -11,15 +11,27 @@ import {
 import { profile } from "tns-core-modules/profiling";
 import { TextView } from "tns-core-modules/ui/text-view";
 
+export class MyTextView extends TextView {
+    constructor(private textView: UITextView){
+        super();
+    }
+
+    createNativeView(){
+        console.log(`createNativeView() called! this.textView:`, this.textView);
+        console.log(`createNativeView() called! this.textView:`, this.textView);
+        return this.textView;
+    }
+}
+
 export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDelegate {
     public static ObjCProtocols = [UITextViewDelegate];
 
-    private _owner: WeakRef<UITextView>;
+    private _owner: WeakRef<TextView>;
     // https://github.com/NativeScript/NativeScript/issues/1404#issuecomment-182402358
     // private _originalDelegate: UITextViewDelegate;
 
     // public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
-    public static initWithOwner(owner: WeakRef<UITextView>): MyUITextViewDelegateImpl {
+    public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
         console.log('INITED');
         const impl = <MyUITextViewDelegateImpl>MyUITextViewDelegateImpl.new();
         impl._owner = owner;

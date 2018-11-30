@@ -9,13 +9,9 @@ import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbo
 import * as Clipboard from "nativescript-clipboard";
 // const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
 import { SyntaxHighlighter, CodeAttributedStringWrapper } from "nativescript-syntax-highlighter";
-import { MyUITextViewDelegateImpl } from "~/MyUITextViewDelegateImpl.ios";
+import { MyUITextViewDelegateImpl, MyTextView } from "~/MyUITextViewDelegateImpl.ios";
 // import { creatingView as transpileSyntaxViewHack } from "../components/syntax-view/SyntaxView";
 // console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
-
-declare module "tns-core-modules/ui/text-view" {
-
-}
 
 export class BrowseViewModel extends Observable {
     public static readonly evalContext: any = {};
@@ -196,11 +192,16 @@ export class BrowseViewModel extends Observable {
         textView.autocapitalizationType = UITextAutocapitalizationType.None;
         textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
 
-        const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(textView));
+        const myTextView: MyTextView = new MyTextView(textView);
+        // myTextView.createNativeView();
 
+        // const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(textView));
+        const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(myTextView));
         textView.delegate = delegate
 
-        uiView.addSubview(textView);
+        // uiView.addSubview(textView);
+        container._addView(myTextView);
+        // Can also consider TextView.setNativeView
     }
 
     onComponentLoaded(args){
