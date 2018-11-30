@@ -168,40 +168,50 @@ export class BrowseViewModel extends Observable {
         return BrowseViewModel.evalClosure.call(BrowseViewModel.evalContext, str);
     }
 
-    insertSyntaxView(container: ContentView){
-        const uiView: UIView = container.ios as UIView;
-        const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
+    private _myUITextViewDelegate?: MyUITextViewDelegateImpl;
+
+    insertSyntaxView(container: TextView){
+        const uiView: UITextView = container.ios as UITextView;
+        // const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
 
 
-        codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
+        // codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
     
-        const textStorage = codeAttributedStringWrapper._codeAttributedString;
-        textStorage.language = "javascript".toLowerCase();
-        const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
-        textStorage.addLayoutManager(layoutManager);
+        // const textStorage = codeAttributedStringWrapper._codeAttributedString;
+        // textStorage.language = "javascript".toLowerCase();
+        // const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
+        // textStorage.addLayoutManager(layoutManager);
     
-        const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
-        // const textContainer = NSTextContainer.alloc().initWithSize(CGRectMake(0, 0, 300, 300).size);
-        layoutManager.addTextContainer(textContainer);
+        // const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
+        // // const textContainer = NSTextContainer.alloc().initWithSize(CGRectMake(0, 0, 300, 300).size);
+        // layoutManager.addTextContainer(textContainer);
     
-        const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);
-        // const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(CGRectMake(0, 0, 300, 300), textContainer);
+        // const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);
+        // // const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(CGRectMake(0, 0, 300, 300), textContainer);
         
-        textView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-        textView.autocorrectionType = UITextAutocorrectionType.No;
-        textView.autocapitalizationType = UITextAutocapitalizationType.None;
-        textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
+        // textView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+        // textView.autocorrectionType = UITextAutocorrectionType.No;
+        // textView.autocapitalizationType = UITextAutocapitalizationType.None;
+        // textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
 
-        const myTextView: MyTextView = new MyTextView(textView);
+        // const myTextView: MyTextView = new MyTextView(textView);
         // myTextView.createNativeView();
 
-        // const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(textView));
-        const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(myTextView));
-        textView.delegate = delegate
+        
+
+        this._myUITextViewDelegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(container));
+        // const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(myTextView));
+        container.ios.delegate = this._myUITextViewDelegate;
 
         // uiView.addSubview(textView);
-        container._addView(myTextView);
+        // container._addView(myTextView);
         // Can also consider TextView.setNativeView
+    }
+
+    onPageLoaded(args){
+        console.log("ON PAGE LOADED");
+        const tv: TextView = (<Page>args.object).getViewById<TextView>("SyntaxView");
+        this.insertSyntaxView(tv);
     }
 
     onComponentLoaded(args){
@@ -209,11 +219,11 @@ export class BrowseViewModel extends Observable {
         console.log("onComponentLoaded");
 
         switch(view.id){
-            case "SyntaxView":
-                console.log("Will insert SyntaxView...");
-                this.insertSyntaxView(view as ContentView);
+            // case "SyntaxView":
+            //     console.log("Will insert SyntaxView...");
+            //     this.insertSyntaxView(view as TextView);
 
-                break;
+            //     break;
             case "input":
                 view.style.fontFamily = "Courier New";
                 view.style.fontSize = 16;

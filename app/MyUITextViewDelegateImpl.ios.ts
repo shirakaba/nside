@@ -30,87 +30,44 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
 
     private _owner: WeakRef<TextView>;
     // https://github.com/NativeScript/NativeScript/issues/1404#issuecomment-182402358
-    // private _originalDelegate: UITextViewDelegate;
+    private _originalDelegate: UITextViewDelegate;
 
     // public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
     public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
         console.log('INITED');
         const impl = <MyUITextViewDelegateImpl>MyUITextViewDelegateImpl.new();
         impl._owner = owner;
-        // impl._originalDelegate = <UITextViewDelegate>owner.get().delegate;
+        impl._originalDelegate = <UITextViewDelegate>(<UITextView>owner.get().ios).delegate;
         return impl;
     }
 
-    // public textViewShouldBeginEditing(textView: UITextView): boolean {
-    //     const owner = this._owner.get();
-    //     if (owner) {
-    //         owner.showText();
-    //     }
-
-    //     return true;
-    // }
-
-    public textViewDidBeginEditing(textView: UITextView): void {
-        console.log(`textViewDidBeginEditing!`);
-        // const owner = this._owner.get();
-        // if (owner) {
-        //     owner._isEditing = true;
-        //     owner.notify({ eventName: TextView.focusEvent, object: owner });
-        // }
+    public textViewShouldBeginEditing(textView: UITextView): boolean {
+        console.log(`textViewShouldBeginEditing`);
+        return this._originalDelegate.textViewShouldBeginEditing(textView);
     }
 
-    // public textViewDidEndEditing(textView: UITextView) {
-    //     const owner = this._owner.get();
-    //     if (owner) {
-    //         if (owner.updateTextTrigger === "focusLost") {
-    //             textProperty.nativeValueChange(owner, textView.text);
-    //         }
-
-    //         owner._isEditing = false;
-    //         owner.dismissSoftInput();
-    //         owner._refreshHintState(owner.hint, textView.text);
-    //     }
-    // }
-
-    public textViewDidChange(textView: UITextView){
-        console.log(`textViewDidChange!`);
-        // const owner = this._owner.get();
-        // if (owner) {
-        //     if (owner.updateTextTrigger === "textChanged") {
-        //         textProperty.nativeValueChange(owner, textView.text);
-        //     }
-        //     owner.requestLayout();
-        // }
+    public textViewDidBeginEditing(textView: UITextView) {
+        console.log(`textViewDidBeginEditing`);
+        this._originalDelegate.textViewDidBeginEditing(textView);
     }
 
-    // public textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, replacementString: string): boolean {
-    //     const owner = this._owner.get();
-    //     if (owner) {
-    //         const delta = replacementString.length - range.length;
-    //         if (delta > 0) {
-    //             if (textView.text.length + delta > owner.maxLength) {
-    //                 return false;
-    //             }
-    //         }
+    public textViewDidEndEditing(textView: UITextView) {
+        console.log(`textViewDidEndEditing`);
+        this._originalDelegate.textViewDidEndEditing(textView);
+    }
 
-    //         if (owner.formattedText) {
-    //             _updateCharactersInRangeReplacementString(owner.formattedText, range.location, range.length, replacementString);
-    //         }
-    //     }
+    public textViewDidChange(textView: UITextView) {
+        console.log(`textViewDidChange`);
+        this._originalDelegate.textViewDidChange(textView);
+    }
 
-    //     return true;
-    // }
-
-    // public scrollViewDidScroll(sv: UIScrollView): void {
-    //     const owner = this._owner.get();
-    //     if (owner) {
-    //         const contentOffset = owner.nativeViewProtected.contentOffset;
-    //         owner.notify(<ScrollEventData>{
-    //             object: owner,
-    //             eventName: "scroll",
-    //             scrollX: contentOffset.x,
-    //             scrollY: contentOffset.y
-    //         });
-    //     }
-    // }
+    public textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, text: string): boolean {
+        console.log(`MyUITextViewDelegateImpl.textViewShouldChangeTextInRangeReplacementText(${text})`);
+        if (text === "\n") {
+            console.log(`textView.resignFirstResponder();`);
+            textView.resignFirstResponder();
+            return false;
+        }
+        return true;
+    }
 }
