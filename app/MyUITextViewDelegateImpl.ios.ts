@@ -43,30 +43,34 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
         return impl;
     }
 
-    public textViewShouldBeginEditing(textView: UITextView): boolean {
+    textViewShouldBeginEditing(textView: UITextView): boolean {
         console.log(`textViewShouldBeginEditing`);
         if(this._originalDelegate) return this._originalDelegate.textViewShouldBeginEditing(textView);
         else return true;
     }
 
-    public textViewDidBeginEditing(textView: UITextView) {
+    textViewDidBeginEditing(textView: UITextView) {
         console.log(`textViewDidBeginEditing`);
         if(this._originalDelegate) this._originalDelegate.textViewDidBeginEditing(textView);
     }
 
-    public textViewDidEndEditing(textView: UITextView) {
+    textViewDidEndEditing(textView: UITextView) {
         console.log(`textViewDidEndEditing`);
         if(this._originalDelegate) this._originalDelegate.textViewDidEndEditing(textView);
     }
 
-    public textViewDidChange(textView: UITextView) {
-        console.log(`textViewDidChange`);
+    onTextViewDidChange?(textView: UITextView);
+
+    textViewDidChange(textView: UITextView) {
+        if(this.onTextViewDidChange) this.onTextViewDidChange(textView);
         if(this._originalDelegate) this._originalDelegate.textViewDidChange(textView);
     }
 
-    public textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, text: string): boolean {
+    returnDismissesKeyboard: boolean = false;
+
+    textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, text: string): boolean {
         console.log(`MyUITextViewDelegateImpl.textViewShouldChangeTextInRangeReplacementText(${text})`);
-        if (text === "\n") {
+        if (this.returnDismissesKeyboard && text === "\n") {
             console.log(`textView.resignFirstResponder();`);
             textView.resignFirstResponder();
             return false;

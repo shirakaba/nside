@@ -203,6 +203,9 @@ export class BrowseViewModel extends Observable {
         // container.ios.delegate = this._myUITextViewDelegate;
 
         this._myUITextViewDelegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(myTextView));
+        this._myUITextViewDelegate.onTextViewDidChange = (textView: UITextView) => {
+            const text = textView.text;
+        }
         myTextView.ios.delegate = this._myUITextViewDelegate;
 
         // uiView.addSubview(textView);
