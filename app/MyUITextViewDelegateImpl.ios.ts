@@ -37,28 +37,31 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
         console.log('INITED');
         const impl = <MyUITextViewDelegateImpl>MyUITextViewDelegateImpl.new();
         impl._owner = owner;
+        console.log("INITED OWNER");
         impl._originalDelegate = <UITextViewDelegate>(<UITextView>owner.get().ios).delegate;
+        console.log("INITED ORIGINAL DELEGATE");
         return impl;
     }
 
     public textViewShouldBeginEditing(textView: UITextView): boolean {
         console.log(`textViewShouldBeginEditing`);
-        return this._originalDelegate.textViewShouldBeginEditing(textView);
+        if(this._originalDelegate) return this._originalDelegate.textViewShouldBeginEditing(textView);
+        else return true;
     }
 
     public textViewDidBeginEditing(textView: UITextView) {
         console.log(`textViewDidBeginEditing`);
-        this._originalDelegate.textViewDidBeginEditing(textView);
+        if(this._originalDelegate) this._originalDelegate.textViewDidBeginEditing(textView);
     }
 
     public textViewDidEndEditing(textView: UITextView) {
         console.log(`textViewDidEndEditing`);
-        this._originalDelegate.textViewDidEndEditing(textView);
+        if(this._originalDelegate) this._originalDelegate.textViewDidEndEditing(textView);
     }
 
     public textViewDidChange(textView: UITextView) {
         console.log(`textViewDidChange`);
-        this._originalDelegate.textViewDidChange(textView);
+        if(this._originalDelegate) this._originalDelegate.textViewDidChange(textView);
     }
 
     public textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, text: string): boolean {
