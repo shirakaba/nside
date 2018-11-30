@@ -14,11 +14,13 @@ import { TextView } from "tns-core-modules/ui/text-view";
 export class MyTextView extends TextView {
     constructor(private textView: UITextView){
         super();
+        this.nativeView = this.textView;
     }
 
     createNativeView(){
         console.log(`createNativeView() called! this.textView:`, this.textView);
-        console.log(`createNativeView() called! this.textView:`, this.textView);
+        console.log(`createNativeView() called! this.nativeTextViewProtected:`, this.nativeTextViewProtected);
+        console.log(`createNativeView() called! this.nativeView:`, this.nativeView);
         return this.textView;
     }
 }
@@ -48,13 +50,14 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
     //     return true;
     // }
 
-    // public textViewDidBeginEditing(textView: UITextView): void {
-    //     const owner = this._owner.get();
-    //     if (owner) {
-    //         owner._isEditing = true;
-    //         owner.notify({ eventName: TextView.focusEvent, object: owner });
-    //     }
-    // }
+    public textViewDidBeginEditing(textView: UITextView): void {
+        console.log(`textViewDidBeginEditing!`);
+        // const owner = this._owner.get();
+        // if (owner) {
+        //     owner._isEditing = true;
+        //     owner.notify({ eventName: TextView.focusEvent, object: owner });
+        // }
+    }
 
     // public textViewDidEndEditing(textView: UITextView) {
     //     const owner = this._owner.get();
