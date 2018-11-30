@@ -201,6 +201,7 @@ export class BrowseViewModel extends Observable {
             case "SyntaxView":
                 console.log("Will insert SyntaxView...");
                 this.insertSyntaxView(view as ContentView);
+                
                 break;
             case "input":
                 view.style.fontFamily = "Courier New";
