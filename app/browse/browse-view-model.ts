@@ -8,7 +8,7 @@ import { TextView } from "tns-core-modules/ui/text-view";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
 // const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
-import { SyntaxHighlighter } from "nativescript-syntax-highlighter";
+import { SyntaxHighlighter, CodeAttributedStringWrapper } from "nativescript-syntax-highlighter";
 // import { creatingView as transpileSyntaxViewHack } from "../components/syntax-view/SyntaxView";
 // console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
 export class BrowseViewModel extends Observable {
@@ -166,11 +166,42 @@ export class BrowseViewModel extends Observable {
         return BrowseViewModel.evalClosure.call(BrowseViewModel.evalContext, str);
     }
 
+    insertSyntaxView(container: ContentView){
+        const uiView: UIView = container.ios as UIView;
+        const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
+
+
+        codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
+    
+        const textStorage = codeAttributedStringWrapper._codeAttributedString;
+        textStorage.language = "javascript".toLowerCase();
+        const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
+        textStorage.addLayoutManager(layoutManager);
+    
+        const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
+        // const textContainer = NSTextContainer.alloc().initWithSize(CGRectMake(0, 0, 300, 300).size);
+        layoutManager.addTextContainer(textContainer);
+    
+        const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);
+        // const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(CGRectMake(0, 0, 300, 300), textContainer);
+        
+        textView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+        textView.autocorrectionType = UITextAutocorrectionType.No;
+        textView.autocapitalizationType = UITextAutocapitalizationType.None;
+        textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
+
+        uiView.addSubview(textView);
+    }
+
     onComponentLoaded(args){
         const view: TextView|TextField|ContentView|Button = <TextView|TextField|ContentView|Button>args.object;
         console.log("onComponentLoaded");
 
         switch(view.id){
+            case "SyntaxView":
+                console.log("Will insert SyntaxView...");
+                this.insertSyntaxView(view as ContentView);
+                break;
             case "input":
                 view.style.fontFamily = "Courier New";
                 view.style.fontSize = 16;
