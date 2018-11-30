@@ -168,9 +168,8 @@ export class BrowseViewModel extends Observable {
         return BrowseViewModel.evalClosure.call(BrowseViewModel.evalContext, str);
     }
 
-    insertSyntaxView(container: TextView){
-        const uiView: UITextView = container.ios as UITextView;
-        console.log(`CONTAINER: `, uiView);
+    insertSyntaxView(container: ContentView){
+        const uiView: UIView = container.ios as UIView;
         const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
 
 
@@ -193,20 +192,16 @@ export class BrowseViewModel extends Observable {
         textView.autocapitalizationType = UITextAutocapitalizationType.None;
         textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
 
-        container.setNativeView(textView);
-        const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(container));
-        textView.delegate = delegate;
+        const myTextView: MyTextView = new MyTextView(textView);
+        // myTextView.createNativeView();
 
-        // const myTextView: MyTextView = new MyTextView(textView);
-        // // myTextView.createNativeView();
+        // const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(textView));
+        const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(myTextView));
+        textView.delegate = delegate
 
-        // // const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(textView));
-        // const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(myTextView));
-        // textView.delegate = delegate;
-
-        // // uiView.addSubview(textView);
-        // container._addView(myTextView);
-
+        // uiView.addSubview(textView);
+        container._addView(myTextView);
+        // Can also consider TextView.setNativeView
     }
 
     onComponentLoaded(args){
@@ -216,7 +211,7 @@ export class BrowseViewModel extends Observable {
         switch(view.id){
             case "SyntaxView":
                 console.log("Will insert SyntaxView...");
-                this.insertSyntaxView(view as TextView);
+                this.insertSyntaxView(view as ContentView);
 
                 break;
             case "input":
