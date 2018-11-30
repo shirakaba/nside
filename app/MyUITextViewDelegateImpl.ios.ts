@@ -14,15 +14,16 @@ import { TextView } from "tns-core-modules/ui/text-view";
 export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDelegate {
     public static ObjCProtocols = [UITextViewDelegate];
 
-    private _owner: WeakRef<TextView>;
+    private _owner: WeakRef<UITextView>;
     // https://github.com/NativeScript/NativeScript/issues/1404#issuecomment-182402358
-    private _originalDelegate: UITextViewDelegate;
+    // private _originalDelegate: UITextViewDelegate;
 
     // public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
-    public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
+    public static initWithOwner(owner: WeakRef<UITextView>): MyUITextViewDelegateImpl {
+        console.log('INITED');
         const impl = <MyUITextViewDelegateImpl>MyUITextViewDelegateImpl.new();
         impl._owner = owner;
-        impl._originalDelegate = <UITextViewDelegate>(<UITextView>owner.get().ios).delegate;
+        // impl._originalDelegate = <UITextViewDelegate>owner.get().delegate;
         return impl;
     }
 
@@ -56,15 +57,15 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
     //     }
     // }
 
-    public textViewDidChange = (textView: UITextView) => {
+    public textViewDidChange(textView: UITextView){
         console.log(`textViewDidChange!`);
-        const owner = this._owner.get();
-        if (owner) {
-            if (owner.updateTextTrigger === "textChanged") {
-                textProperty.nativeValueChange(owner, textView.text);
-            }
-            owner.requestLayout();
-        }
+        // const owner = this._owner.get();
+        // if (owner) {
+        //     if (owner.updateTextTrigger === "textChanged") {
+        //         textProperty.nativeValueChange(owner, textView.text);
+        //     }
+        //     owner.requestLayout();
+        // }
     }
 
     // public textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, replacementString: string): boolean {

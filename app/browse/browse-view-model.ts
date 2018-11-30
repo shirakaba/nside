@@ -196,7 +196,7 @@ export class BrowseViewModel extends Observable {
         textView.autocapitalizationType = UITextAutocapitalizationType.None;
         textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
 
-        const delegate = MyUITextViewDelegateImpl.initWithOwner(textView);
+        const delegate = MyUITextViewDelegateImpl.initWithOwner(new WeakRef(textView));
 
         textView.delegate = delegate
 
