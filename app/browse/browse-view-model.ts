@@ -13,7 +13,16 @@ import { MyUITextViewDelegateImpl, MyTextView } from "~/MyUITextViewDelegateImpl
 // import { creatingView as transpileSyntaxViewHack } from "../components/syntax-view/SyntaxView";
 // console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
 
+interface State {
+    lastText: string;
+    designing: boolean;
+}
+
 export class BrowseViewModel extends Observable {
+    private state: any = {
+        lastText: "",
+        designing: false
+    };
     public static readonly evalContext: any = {};
     // private input?: TextView;
     private ownProps?: TextField;
@@ -21,7 +30,6 @@ export class BrowseViewModel extends Observable {
     private output?: TextView;
     private design: ContentView = new ContentView();
     private designButton?: Button;
-    private designing: boolean = false;
     private readonly syntaxHighlighter: any = new SyntaxHighlighter();
 
     // private _inputValue: string = "";
@@ -91,7 +99,7 @@ export class BrowseViewModel extends Observable {
         console.log("toggleDesign!");
 
 
-        if(this.designing){
+        if(this.state.designing){
             // const flexboxLayout = this.design.parent;
             // flexboxLayout._removeView(this.design);
             // flexboxLayout._addView(this.output);
@@ -113,7 +121,7 @@ export class BrowseViewModel extends Observable {
             this.designButton.text = "Debug";
         }
 
-        this.designing = !this.designing;
+        this.state.designing = !this.state.designing;
     }
 
     run(){
@@ -211,6 +219,7 @@ export class BrowseViewModel extends Observable {
         // textView.backgroundColor = codeAttributedStringWrapper._codeAttributedString.highlightr.getThemeBackgroundColour();
 
         textView.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(25/255, 25/255, 25/255, 1.0);
+        textView.text = this.state.lastText;
 
 
         this.textView = textView;
@@ -270,20 +279,21 @@ export class BrowseViewModel extends Observable {
                 break;
             case "design":
                 this.design = view as ContentView;
-                this.design.style.visibility = "collapse";
+                this.design.style.visibility = this.state.designing ? "visible" : "collapse";
                 console.log("this.design assigned!", this.design);
                 (global as any).design = this.design;
                 // BrowseViewModel.evalContext.design = this.design;
                 break;
             case "designButton":
                 this.designButton = view as Button;
-                this.designButton.text = "Design";
+                this.designButton.text = this.state.designing ? "Debug" : "Design";
                 console.log("this.designButton assigned!", this.designButton);
                 break;
             case "output":
                 view.style.fontFamily = "Courier New";
                 view.style.fontSize = 16;
                 this.output = view as TextView;
+                this.output.parent.style.visibility = this.state.designing ? "collapse" : "visible";
                 console.log("this.output assigned!", this.output);
                 // textView.on("textChange", (argstv) => {
                 //     console.dir(argstv);
@@ -316,6 +326,7 @@ export class BrowseViewModel extends Observable {
     }
 
     onInputTextChange(value: string): void {
+        this.state.lastText = value;
         const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
         const inheritedPropsScroller: ScrollView = this.inheritedProps.parent as ScrollView;
         ownPropsScroller.scrollToVerticalOffset(0, false);

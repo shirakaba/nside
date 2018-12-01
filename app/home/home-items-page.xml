@@ -7,7 +7,7 @@ Feel free to customize layouts and components to change how the tab view looks.
     navigatingTo="onNavigatingTo"  
     xmlns="http://schemas.nativescript.org/tns.xsd">
 
-    <ActionBar class="action-bar">
+    <ActionBar class="action-bar" backgroundColor="black">
         <Label class="action-bar-title" text="Home"></Label>
     </ActionBar>
 
