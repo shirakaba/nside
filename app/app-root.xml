@@ -8,6 +8,7 @@ http://docs.nativescript.org/cookbook/ui/tab-view
 <Frame defaultPage="browse/browse-page"></Frame>
 
 <TabView androidTabsPosition="bottom">
+    <!-- Icons from: https://icons8.com/ios -->
     <TabViewItem title="Console" ios:iconSource="res://tabIcons/create_new" android:iconSource="res://browse">
         <Frame defaultPage="browse/browse-page"></Frame>
     </TabViewItem>
