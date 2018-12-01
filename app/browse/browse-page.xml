@@ -6,6 +6,7 @@
     backgroundSpanUnderStatusBar="true"
     backgroundColor="black"
 >
+    <!-- https://docs.nativescript.org/ui/change-status-bar-style-ios -->
 
     <!-- <ActionBar class="action-bar">
         <Label class="action-bar-title" text="Browse"></Label>
