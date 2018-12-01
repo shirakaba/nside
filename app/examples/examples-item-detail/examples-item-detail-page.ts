@@ -41,7 +41,11 @@ export function insertSyntaxView(container: ContentView){
     const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
     textStorage.addLayoutManager(layoutManager);
 
-    const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
+    /* text container clips displayed text to this specified size  */
+    // const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
+    const textContainer = NSTextContainer.alloc().initWithSize(CGRectZero.size);
+    // textContainer.maximumNumberOfLines = 0;
+    // textContainer.heightTracksTextView = false;
     layoutManager.addTextContainer(textContainer);
 
     textView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);

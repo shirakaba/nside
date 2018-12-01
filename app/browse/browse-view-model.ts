@@ -193,8 +193,8 @@ export class BrowseViewModel extends Observable {
         const layoutManager: NSLayoutManager = NSLayoutManager.alloc().init();
         textStorage.addLayoutManager(layoutManager);
     
-        const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
-        // const textContainer = NSTextContainer.alloc().initWithSize(CGRectMake(0, 0, 300, 300).size);
+        // const textContainer = NSTextContainer.alloc().initWithSize(uiView.frame.size);
+        const textContainer = NSTextContainer.alloc().initWithSize(CGRectZero.size);
         layoutManager.addTextContainer(textContainer);
     
         const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);
