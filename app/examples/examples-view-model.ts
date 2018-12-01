@@ -11,65 +11,57 @@ export class ExamplesViewModel extends Observable {
             {
                 name: "Get references to app components",
                 description:
-`/* The below examples work in global scope. */
+`/*
+The below examples work in global scope.
+*/
 
 
-/* A reference to the App object. */
-
+/*
+A reference to the App object.
+*/
 app
 
 
-/* A reference to the root view. */
-
+/*
+A reference to the root view.
+*/
 app.getRootView()
 
 
 /*
- * A plain UIView on the coding tab,
- * which overlaps the same area as the console.
- * You must click the 'Design' button to reveal
- * it, and the 'Debug' button to dismiss it.
- */
-
+A plain UIView on the coding tab, which overlaps the same area as the console. You must click the 'Design' button to reveal it, and the 'Debug' button to dismiss it.
+*/
 design
 `
             },
             {
                 name: "Print view hierarchy",
                 description:
-`/* UINode is a class I've injected
- * for this purpose. It builds a
- * tree of Views and ViewBases,
- * and stringifies as XML.
- * 
- * You can inspect the implementation
- * using: UINode.toString();
+`/*
+UINode is a class I've injected for this purpose. It builds a tree of Views and ViewBases, and stringifies as XML.
+    
+You can inspect the implementation using:
+    
+  UINode.toString();
  */
 
 /**
- * @param treetop <View|ViewBase>:
-the top of the node tree to be built.
- *
- * @returns: An object representing
-the hierarchy of Views/ViewBases.
- */
+@param treetop <View|ViewBase>: the top of the node tree to be built.
 
+@returns: An object representing the hierarchy of Views/ViewBases.
+ */
 new UINode(app.getRootView());
 
 
 /**
- * @param startingTabDepth <number?>:
- * Should be 0 (Is incremented during
- * recursion).
- * Defaults to 0.
- * 
- * @param includingId <boolean?>:
- * Display 'id' values.
- * Defaults to false.
- * 
- * @returns: An XML-formatted tag hierarchy.
- */
-
+@param startingTabDepth <number?>:
+       Should be 0 (Is incremented during recursion).
+       Defaults to 0.
+@param includingId <boolean?>:
+       Display 'id' values.
+       Defaults to false.
+@returns: An XML-formatted tag hierarchy.
+*/
 new UINode(app.getRootView()).toXML();
 new UINode(app.getRootView()).toXML(0, true);
 `
