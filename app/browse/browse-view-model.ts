@@ -195,12 +195,12 @@ export class BrowseViewModel extends Observable {
         textView.autocorrectionType = UITextAutocorrectionType.No;
         textView.autocapitalizationType = UITextAutocapitalizationType.None;
         textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
-        console.log("SANITY CHECK 1");
-        console.log("highlightr:", codeAttributedStringWrapper._codeAttributedString.highlightr);
+        // console.log("SANITY CHECK 1");
+        // console.log("highlightr:", codeAttributedStringWrapper._codeAttributedString.highlightr);
 
         /* This crashses it, too..! */
         // codeAttributedStringWrapper._codeAttributedString.highlightr.associatedTextView = textView;
-        console.log("SANITY CHECK 2");
+        // console.log("SANITY CHECK 2");
         codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
 
 

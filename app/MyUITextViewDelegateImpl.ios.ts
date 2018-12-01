@@ -18,9 +18,9 @@ export class MyTextView extends TextView {
     }
 
     createNativeView(){
-        console.log(`createNativeView() called! this.textView:`, this.textView);
-        console.log(`createNativeView() called! this.nativeTextViewProtected:`, this.nativeTextViewProtected);
-        console.log(`createNativeView() called! this.nativeView:`, this.nativeView);
+        // console.log(`createNativeView() called! this.textView:`, this.textView);
+        // console.log(`createNativeView() called! this.nativeTextViewProtected:`, this.nativeTextViewProtected);
+        // console.log(`createNativeView() called! this.nativeView:`, this.nativeView);
         return this.textView;
     }
 }
@@ -34,12 +34,12 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
 
     // public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
     public static initWithOwner(owner: WeakRef<TextView>): MyUITextViewDelegateImpl {
-        console.log('INITED');
+        // console.log('INITED');
         const impl = <MyUITextViewDelegateImpl>MyUITextViewDelegateImpl.new();
         impl._owner = owner;
-        console.log("INITED OWNER");
+        // console.log("INITED OWNER");
         impl._originalDelegate = <UITextViewDelegate>(<UITextView>owner.get().ios).delegate;
-        console.log("INITED ORIGINAL DELEGATE");
+        // console.log("INITED ORIGINAL DELEGATE");
         return impl;
     }
 
@@ -69,7 +69,7 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
     returnDismissesKeyboard: boolean = false;
 
     textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, text: string): boolean {
-        console.log(`MyUITextViewDelegateImpl.textViewShouldChangeTextInRangeReplacementText(${text})`);
+        // console.log(`MyUITextViewDelegateImpl.textViewShouldChangeTextInRangeReplacementText(${text})`);
         if (this.returnDismissesKeyboard && text === "\n") {
             console.log(`textView.resignFirstResponder();`);
             textView.resignFirstResponder();
