@@ -77,6 +77,7 @@ export class BrowseViewModel extends Observable {
 
     clear() {
         if(this.textView) this.textView.text = "";
+        this.state.lastText = "";
         this.outputValue = "";
     }
 
