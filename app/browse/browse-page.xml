@@ -3,6 +3,8 @@
     navigatingTo="onNavigatingTo"  
     loaded="{{ onPageLoaded }}"
     xmlns="http://schemas.nativescript.org/tns.xsd"
+    backgroundSpanUnderStatusBar="true"
+    backgroundColor="black"
 >
 
     <!-- <ActionBar class="action-bar">

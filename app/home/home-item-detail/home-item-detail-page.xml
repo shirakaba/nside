@@ -6,7 +6,10 @@ Feel free to customize layouts and components to change how the tab view looks.
     class="page"
     navigatingTo="onNavigatingTo"
     loaded="onPageLoaded"
-    xmlns="http://schemas.nativescript.org/tns.xsd">
+    xmlns="http://schemas.nativescript.org/tns.xsd"
+    backgroundSpanUnderStatusBar="true"
+    backgroundColor="black"
+>
 
     <ActionBar class="action-bar">
         <NavigationButton tap="onBackButtonTap" android.systemIcon="ic_menu_back"/>
