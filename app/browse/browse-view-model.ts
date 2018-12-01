@@ -178,9 +178,6 @@ export class BrowseViewModel extends Observable {
     insertSyntaxView(container: ContentView){
         const uiView: UIView = container.ios as UIView;
         const codeAttributedStringWrapper: CodeAttributedStringWrapper = new CodeAttributedStringWrapper();
-
-
-        codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
     
         const textStorage = codeAttributedStringWrapper._codeAttributedString;
         textStorage.language = "javascript".toLowerCase();
@@ -198,6 +195,23 @@ export class BrowseViewModel extends Observable {
         textView.autocorrectionType = UITextAutocorrectionType.No;
         textView.autocapitalizationType = UITextAutocapitalizationType.None;
         textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
+        console.log("SANITY CHECK 1");
+        console.log("highlightr:", codeAttributedStringWrapper._codeAttributedString.highlightr);
+
+        /* This crashses it, too..! */
+        // codeAttributedStringWrapper._codeAttributedString.highlightr.associatedTextView = textView;
+        console.log("SANITY CHECK 2");
+        codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
+
+
+        /* These two accessors aren't working, so maybe expose a property on Highlightr/CodeAttributedString to associate
+         * it with a TextView and get it to keep the theme colour up-to-date itself upon setThemeTo(). */
+        // console.log("theme:", codeAttributedStringWrapper._codeAttributedString.highlightr.theme);
+        // console.log("BG COLOR:", codeAttributedStringWrapper._codeAttributedString.highlightr.getThemeBackgroundColour());
+        // textView.backgroundColor = codeAttributedStringWrapper._codeAttributedString.highlightr.getThemeBackgroundColour();
+
+        textView.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(25/255, 25/255, 25/255, 1.0);
+
 
         this.textView = textView;
         this.myTextView = new MyTextView(textView);
