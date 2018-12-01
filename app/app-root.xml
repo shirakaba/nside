@@ -8,15 +8,15 @@ http://docs.nativescript.org/cookbook/ui/tab-view
 <Frame defaultPage="browse/browse-page"></Frame>
 
 <TabView androidTabsPosition="bottom">
-    <TabViewItem title="Console" ios:iconSource="res://tabIcons/home" android:iconSource="res://browse">
+    <TabViewItem title="Console" ios:iconSource="res://tabIcons/create_new" android:iconSource="res://browse">
         <Frame defaultPage="browse/browse-page"></Frame>
     </TabViewItem>
 
-    <TabViewItem title="UI" ios:iconSource="res://tabIcons/health_data" android:iconSource="res://search">
-        <Frame defaultPage="search/search-page"></Frame>
+    <TabViewItem title="Canvas" ios:iconSource="res://tabIcons/health_data" android:iconSource="res://search">
+        <Frame defaultPage="canvas/canvas-page"></Frame>
     </TabViewItem>
     
-    <TabViewItem title="Examples" ios:iconSource="res://tabIcons/help" android:iconSource="res://home">
+    <TabViewItem title="Examples" ios:iconSource="res://tabIcons/list" android:iconSource="res://home">
         <Frame defaultPage="examples/examples-items-page"></Frame>
     </TabViewItem>
 </TabView>

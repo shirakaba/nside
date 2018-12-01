@@ -2,7 +2,7 @@ import { Observable } from "tns-core-modules/data/observable";
 import { Page, NavigatedData } from "tns-core-modules/ui/page/page";
 import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 
-export class SearchViewModel extends Observable {
+export class CanvasViewModel extends Observable {
     constructor() {
         super();
     }
