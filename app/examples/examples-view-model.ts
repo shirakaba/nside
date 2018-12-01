@@ -1,7 +1,7 @@
 import { Observable } from "tns-core-modules/data/observable";
 import { Item } from "./shared/item";
 
-export class HomeViewModel extends Observable {
+export class ExamplesViewModel extends Observable {
     items: Array<Item>;
 
     constructor() {
