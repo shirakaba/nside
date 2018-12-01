@@ -4,7 +4,8 @@ Feel free to customize layouts and components to change how the tab view looks.
 -->
 <Page
     class="page"
-    navigatingTo="onNavigatingTo"  
+    navigatingTo="onNavigatingTo"
+    loaded="onPageLoaded"
     xmlns="http://schemas.nativescript.org/tns.xsd">
 
     <ActionBar class="action-bar">
@@ -13,7 +14,8 @@ Feel free to customize layouts and components to change how the tab view looks.
     </ActionBar>
     <GridLayout>
         <ScrollView height="100%" width="100%">
-            <TextView class="m-10 h3" verticalAlignment="top" text="{{ description }}" editable="false" style="font-family: Courier New;"></TextView>
+            <!-- <TextView class="m-10 h3" verticalAlignment="top" text="{{ description }}" editable="false" style="font-family: Courier New;"></TextView> -->
+            <ContentView height="100%" width="100%" id="SyntaxView" text="{{ description }}"></ContentView>
         </ScrollView>
     </GridLayout>
 </Page>
