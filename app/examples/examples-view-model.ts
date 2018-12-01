@@ -68,7 +68,72 @@ new UINode(app.getRootView()).toXML(0, true);
             },
             {
                 name: "Change UIView backgroundColor",
-                description: `design.ios.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(1,1,1,1);`
+                description:
+`/*
+Apply any of these UIColors to a native view, such as 'design', like so:
+*/
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
+design.nativeView.backgroundColor = colour;
+
+/* OPAQUE */
+
+// White
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,1,1,1);
+
+// Black
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,0,1);
+
+// Red
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1);
+
+// Yellow
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,1,0,1);
+
+// Green
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
+
+// Cyan
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,1);
+
+// Blue
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
+
+// Magenta
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,0,1,1);
+
+// Grey
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(128/255,128/255,128/255,1);
+
+
+/* TRANSPARENT */
+
+// White
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,1,1,0);
+
+// Black
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,0,0);
+
+// Red
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,0);
+
+// Yellow
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,1,0,0);
+
+// Green
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,0);
+
+// Cyan
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,0);
+
+// Blue
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,0);
+
+// Magenta
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(1,0,1,0);
+
+// Grey
+let colour = UIColor.alloc().initWithRedGreenBlueAlpha(128/255,128/255,128/255,0);
+`
             },
             {
                 name: "Item 4",
