@@ -14,6 +14,7 @@ export class CanvasViewModel extends Observable {
         console.log(`page.content:`, page.content);
         const gl: GridLayout = page.content as GridLayout;
 
-        (global as any).uiPage = page;
+        (global as any).canvasPage = page;
+        (global as any).canvas = gl;
     }
 }

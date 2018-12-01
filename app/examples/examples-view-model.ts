@@ -32,15 +32,27 @@ app.getRootView()
 A plain UIView on the coding tab, which overlaps the same area as the console. You must click the 'Design' button to reveal it, and the 'Debug' button to dismiss it.
 */
 design
+
+/*
+References to the 'canvas' tab. These variables will be undefined until you visit the canvas tab to allow them to initialise.
+*/
+// The whole NativeScript Page instance: includes the ActionBar.
+canvasPage
+
+// The 'content' property of the NativeScript Page instance (the GridLayout).
+canvas
+
+// The native UIView managed by that GridLayout.
+canvas.ios
 `
             },
             {
                 name: "Print view hierarchy",
                 description:
 `/*
-UINode is a class I've injected for this purpose. It builds a tree of Views and ViewBases, and stringifies as XML.
+UINode is a class I've injected for this purpose. It builds a tree of Views and ViewBases, and stringifies as XML. Note that the order of siblings is non-determinate (sorry) so don't rely on it too literally. I have a few complaints about NativeScript's view iterators...
     
-You can inspect the implementation using:
+You can inspect the implementation, and build a better version, using:
     
   UINode.toString();
  */
@@ -136,8 +148,31 @@ let colour = UIColor.alloc().initWithRedGreenBlueAlpha(128/255,128/255,128/255,0
 `
             },
             {
-                name: "Item 4",
-                description: "Description for Item 4"
+                name: "Remove subviews",
+                description: 
+`
+/* Removing children from NativeScript views */
+// 1st method (for convenience)
+canvas.removeChildren();
+
+// 2nd method (allows filtering)
+while(canvas.getChildrenCount() > 0){
+    canvas.removeChild(canvas._subViews[0]);
+}
+
+
+/* Removing children from native views */
+// 1st method (C-style iteration)
+while(canvas.ios.subviews.count > 0){
+    canvas.ios.subviews[0].removeFromSuperview();
+}
+
+// 2nd method ('subviews' has a 'firstObject' convenience accessor)
+let first;
+while(first = canvas.ios.subviews.firstObject){
+    first.removeFromSuperview();
+}
+`
             },
             {
                 name: "Item 5",
