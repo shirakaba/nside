@@ -358,16 +358,16 @@ export class BrowseViewModel extends Observable {
         return firstOwnProp || firstInheritedProp;
     }
 
-    onInputTextChange(value: string): void {
-        this.state.lastText = value;
+    onInputTextChange(text: string): void {
+        this.state.lastText = text;
         const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
         const inheritedPropsScroller: ScrollView = this.inheritedProps.parent as ScrollView;
         ownPropsScroller.scrollToVerticalOffset(0, false);
         inheritedPropsScroller.scrollToVerticalOffset(0, false);
 
-        const splitOnLines: string[] = value.split('\n');
+        const splitOnLines: string[] = text.split('\n');
             let finalLine: string = splitOnLines.length > 1 ? splitOnLines.slice(-1)[0] : splitOnLines[0];
-            const splitOnWhitespace: string[] = value.split(' ');
+            const splitOnWhitespace: string[] = text.split(' ');
             finalLine = splitOnWhitespace.length > 1 ? splitOnWhitespace.slice(-1)[0] : splitOnWhitespace[0];
             // console.log("splitOnLines: " + splitOnLines);
             // console.log("finalLine: " + finalLine);
@@ -432,20 +432,24 @@ export class BrowseViewModel extends Observable {
                             } else {
                                 this.state.ownProps = [];
                                 this.state.inheritedProps = [];
+                                this.state.suggestedText = text;
                             }
                         }
                     } catch (e) {
                         this.state.ownProps = [];
                         this.state.inheritedProps = [];
+                        this.state.suggestedText = text;
                     }
                 } else {
                     this.state.ownProps = [];
                     this.state.inheritedProps = [];
+                    this.state.suggestedText = text;
                 }
             } else {
                 console.log("NO MATCH");
                 this.state.ownProps = [];
                 this.state.inheritedProps = [];
+                this.state.suggestedText = text;
             }
             this.ownPropsValue = this.state.ownProps.join(', ');
             this.inheritedPropsValue = this.state.inheritedProps.join(', ');
