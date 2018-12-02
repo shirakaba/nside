@@ -203,6 +203,26 @@ design.ios.addSubview(uv);
 
 
 /*
+Fill the 'design' UIView with a UIStackView:
+*/
+const sv = UIStackView.alloc().initWithFrame(design.ios.bounds);
+sv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
+sv.translatesAutoresizingMaskIntoConstraints = true;
+sv.axis = UILayoutConstraintAxis.Vertical
+// sv.alignment = UIStackViewAlignment.Center // troublesome
+// sv.distribution = UIStackViewDistribution.EqualSpacing // troublesome
+sv.spacing = 8.0
+sv.layoutMargins = UIEdgeInsetsMake(8, 8, 8, 8);
+sv.isLayoutMarginsRelativeArrangement = true
+
+for(let i = 0, x = 0, y = 0, w = 50, h = 50; i < 4; i++){
+    const uv = UIView.alloc().initWithFrame(CGRectMake(x, y, w, h));
+    uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1/(i+1),0,1);
+    sv.addArrangedSubview(uv);
+}
+design.ios.addSubview(sv);
+
+/*
 Populate the 'design' UIView with four UIViews:
 */
 for(let i = 0, x = 10, y = 10, w = 50, h = 50; i < 4; i++){
