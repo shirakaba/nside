@@ -403,13 +403,10 @@ export class BrowseViewModel extends Observable {
                                 value = BrowseViewModel.evalInContext(
                                     [
                                         instantiateOwnInherited,
-                                        `let i = 0;`,
-                                        `for(let key in ${token}){`,
-                                            `if(++i === 10) break;`,
-                                            `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
+                                        `let __NSIDE_instance__ = ${token};`,
+                                        `for(let key in __NSIDE_instance__){`,
+                                            `__NSIDE_instance__.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
                                         `}`,
-                                        `own.push("${BrowseViewModel.SUGGESTIONS_TRUNCATED}")`,
-                                        `inherited.push("${BrowseViewModel.SUGGESTIONS_TRUNCATED}")`,
                                         returnAnswer
                                     ].join('\n')
                                 );
@@ -418,9 +415,10 @@ export class BrowseViewModel extends Observable {
                                 value = BrowseViewModel.evalInContext(
                                     [
                                         instantiateOwnInherited,
-                                        `for(let key in ${token}){`,
+                                        `let __NSIDE_instance__ = ${token};`,
+                                        `for(let key in __NSIDE_instance__){`,
                                             `if(key.indexOf('${incomplete}') !== 0) continue;`,
-                                            `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
+                                            `__NSIDE_instance__.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
                                         `}`,
                                         returnAnswer
                                     ].join('\n')
@@ -459,7 +457,8 @@ export class BrowseViewModel extends Observable {
                             value = BrowseViewModel.evalInContext(
                                 [
                                     instantiateOwnInherited,
-                                    `for(let key in ${parent}){`,
+                                    `let __NSIDE_instance__ = ${parent};`,
+                                    `for(let key in __NSIDE_instance__){`,
                                         `if(key.indexOf('${toSlice}') !== 0) continue;`,
                                         // both 'this' and 'global' work.
                                         `global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
