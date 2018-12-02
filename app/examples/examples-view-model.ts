@@ -177,26 +177,11 @@ while(first = canvas.ios.subviews.firstObject){
             {
                 name: "Add native views",
                 description:
-`
-/*
-Note the AutoresizingMask values:
-
-declare const enum UIViewAutoresizing {
-	None = 0,
-	FlexibleLeftMargin = 1,
-	FlexibleWidth = 2,
-	FlexibleRightMargin = 4,
-	FlexibleTopMargin = 8,
-	FlexibleHeight = 16,
-	FlexibleBottomMargin = 32
-}
-*/
-
-/*
+`/*
 Fill the 'design' UIView with one UIView:
 */
 const uv = UIView.alloc().initWithFrame(design.ios.bounds);
-uv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
+uv.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 uv.translatesAutoresizingMaskIntoConstraints = true;
 uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
 design.ios.addSubview(uv);
@@ -206,21 +191,38 @@ design.ios.addSubview(uv);
 Fill the 'design' UIView with a UIStackView:
 */
 const sv = UIStackView.alloc().initWithFrame(design.ios.bounds);
-sv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
+sv.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 sv.translatesAutoresizingMaskIntoConstraints = true;
 sv.axis = UILayoutConstraintAxis.Vertical
-// sv.alignment = UIStackViewAlignment.Center // troublesome
-// sv.distribution = UIStackViewDistribution.EqualSpacing // troublesome
+sv.alignment = UIStackViewAlignment.Fill // env says 0
+/* FillProportionally only seems to work after re-layout... */
+sv.distribution = UIStackViewDistribution.FillProportionally
+// sv.distribution = UIStackViewDistribution.Center
 sv.spacing = 8.0
 sv.layoutMargins = UIEdgeInsetsMake(8, 8, 8, 8);
 sv.isLayoutMarginsRelativeArrangement = true
 
 for(let i = 0, x = 0, y = 0, w = 50, h = 50; i < 4; i++){
-    const uv = UIView.alloc().initWithFrame(CGRectMake(x, y, w, h));
+    w += 10;
+    h += 10;
+    const frame = CGRectMake(x, y, w, h);
+    const uv = UIView.alloc().initWithFrame(frame);
+    uv.heightAnchor.constraintEqualToConstant(h).active = true
+    uv.widthAnchor.constraintEqualToConstant(w).active = true
+    // uv.invalidateIntrinsicContentSize();
     uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1/(i+1),0,1);
     sv.addArrangedSubview(uv);
 }
 design.ios.addSubview(sv);
+/* ideal. Only works after re-layout... */
+// sv.distribution = UIStackViewDistribution.FillProportionally
+// setTimeout(() => { sv.distribution = UIStackViewDistribution.FillProportionally; }, 50);
+// design.ios.subviews.firstObject.setNeedsLayout();
+
+const frame = CGRectMake(0,0,50,50);
+const uv = UIView.alloc().initWithFrame(frame);
+uv.intrinsicContentSize;
+
 
 /*
 Populate the 'design' UIView with four UIViews:
