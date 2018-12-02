@@ -21,7 +21,7 @@ interface State {
 }
 
 export class BrowseViewModel extends Observable {
-    private state: any = {
+    private state: State = {
         lastText: "",
         ownProps: [],
         inheritedProps: [],
@@ -241,13 +241,35 @@ export class BrowseViewModel extends Observable {
             this.onInputTextChange(textView.text);
         }
         this._myUITextViewDelegate.onTab = (textView: UITextView) => {
-            console.log();
+            const firstOwnProp = this.state.ownProps.length ? this.state.ownProps[0] : "";
+            const firstInheritedProp = this.state.inheritedProps.length ? this.state.inheritedProps[0] : "";
+            const suggestion = firstOwnProp || firstInheritedProp;
+            if(suggestion === "") return true;
+
+            const selectedRange: UITextRange|null = textView.selectedTextRange;
+            if(selectedRange === null) return true;
+            console.log(`selected range: start [${selectedRange.start}] empty: [${selectedRange.empty}]`)
+
+            let cursorPosition: number = textView.offsetFromPositionToPosition(textView.beginningOfDocument, selectedRange.start);
+            const charBeforePosition: string = textView.text[cursorPosition - 1];
+            // const lastIndex: number = textView.text.lastIndexOf(suggestion[0]);
+
+            console.log(`Suggestion was: [${suggestion}] for full text: [${textView.text}]; cursorPosition: [${cursorPosition}]; charBeforePosition: [${charBeforePosition}]`);
+            textView.text += suggestion;
+            this.state.lastText = textView.text;
+            return false;
         }
         this.myTextView!.ios.delegate = this._myUITextViewDelegate;
 
         // uiView.addSubview(textView);
         // container._addView(myTextView);
         container.ios.addSubview(textView);
+    }
+
+    bestSuggestion(): string {
+        const firstOwnProp = this.state.ownProps.length ? this.state.ownProps[0] : "";
+        const firstInheritedProp = this.state.inheritedProps.length ? this.state.inheritedProps[0] : "";
+        return firstOwnProp || firstInheritedProp;
     }
 
     onPageLoaded(args){
