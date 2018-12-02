@@ -193,35 +193,28 @@ Fill the 'design' UIView with a UIStackView:
 const sv = UIStackView.alloc().initWithFrame(design.ios.bounds);
 sv.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 sv.translatesAutoresizingMaskIntoConstraints = true;
-sv.axis = UILayoutConstraintAxis.Vertical
-sv.alignment = UIStackViewAlignment.Fill // env says 0
-/* FillProportionally only seems to work after re-layout... */
-sv.distribution = UIStackViewDistribution.FillProportionally
-// sv.distribution = UIStackViewDistribution.Center
-sv.spacing = 8.0
+sv.axis = UILayoutConstraintAxis.Vertical;
+sv.alignment = UIStackViewAlignment.Center;
+sv.distribution = UIStackViewDistribution.FillProportionally;
+sv.spacing = 8.0;
 sv.layoutMargins = UIEdgeInsetsMake(8, 8, 8, 8);
-sv.isLayoutMarginsRelativeArrangement = true
+sv.isLayoutMarginsRelativeArrangement = true;
 
 for(let i = 0, x = 0, y = 0, w = 50, h = 50; i < 4; i++){
     w += 10;
     h += 10;
+
     const frame = CGRectMake(x, y, w, h);
     const uv = UIView.alloc().initWithFrame(frame);
-    uv.heightAnchor.constraintEqualToConstant(h).active = true
-    uv.widthAnchor.constraintEqualToConstant(w).active = true
-    // uv.invalidateIntrinsicContentSize();
+
+    /* Here we set up the intrinsicContentSize to support UIStackViewDistribution.FillProportionally */
+    uv.heightAnchor.constraintEqualToConstant(h).active = true;
+    uv.widthAnchor.constraintEqualToConstant(w).active = true;
+
     uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1/(i+1),0,1);
     sv.addArrangedSubview(uv);
 }
 design.ios.addSubview(sv);
-/* ideal. Only works after re-layout... */
-// sv.distribution = UIStackViewDistribution.FillProportionally
-// setTimeout(() => { sv.distribution = UIStackViewDistribution.FillProportionally; }, 50);
-// design.ios.subviews.firstObject.setNeedsLayout();
-
-const frame = CGRectMake(0,0,50,50);
-const uv = UIView.alloc().initWithFrame(frame);
-uv.intrinsicContentSize;
 
 
 /*
