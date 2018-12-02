@@ -192,12 +192,22 @@ declare const enum UIViewAutoresizing {
 }
 */
 
-for(let i = 0, x = 0, y = 0, w = 50, h = 50; i < 4; i++){
-    x = (i * 60) + 10;
-    y = 10;
+/*
+Fill the 'design' UIView with one UIView:
+*/
+const uv = UIView.alloc().initWithFrame(design.ios.bounds);
+uv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
+uv.translatesAutoresizingMaskIntoConstraints = true;
+uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
+design.ios.addSubview(uv);
+
+
+/*
+Populate the 'design' UIView with four UIViews:
+*/
+for(let i = 0, x = 10, y = 10, w = 50, h = 50; i < 4; i++){
+    x += (i * 60);
     const uv = UIView.alloc().initWithFrame(CGRectMake(x, y, w, h));
-    // uv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
-    // uv.translatesAutoresizingMaskIntoConstraints = true;
     uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1/(i+1),0,1);
     design.ios.addSubview(uv);
 }
