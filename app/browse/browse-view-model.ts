@@ -1,10 +1,11 @@
 import { Observable } from "tns-core-modules/data/observable";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import { Page, View, Color, ContentView } from "tns-core-modules/ui/page";
+import { Page, View, Color, ContentView, PercentLength } from "tns-core-modules/ui/page";
 import { ScrollView } from "tns-core-modules/ui/scroll-view";
 import { Button } from "tns-core-modules/ui/button";
 import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
+import { device } from "tns-core-modules/platform/platform";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
 import * as Clipboard from "nativescript-clipboard";
 // const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
@@ -12,6 +13,8 @@ import { SyntaxHighlighter, CodeAttributedStringWrapper } from "nativescript-syn
 import { MyUITextViewDelegateImpl, MyTextView } from "~/MyUITextViewDelegateImpl.ios";
 // import { creatingView as transpileSyntaxViewHack } from "../components/syntax-view/SyntaxView";
 // console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
+
+const isTablet: boolean = device.deviceType === "Tablet";
 
 interface State {
     lastText: string,
@@ -301,7 +304,13 @@ export class BrowseViewModel extends Observable {
                 break;
             case "design":
                 this.design = view as ContentView;
-                this.design.style.visibility = this.state.designing ? "visible" : "collapse";
+                if(isTablet){
+                    view.height = { unit: "%", value: 0.175 };
+                    // view.width = { unit: "%", value: 50 };
+                    view.style.visibility = "visible";
+                } else {
+                    this.design.style.visibility = this.state.designing ? "visible" : "collapse";
+                }
                 (this.design.ios as UIView).clipsToBounds = true;
                 console.log("this.design assigned!", this.design);
                 (global as any).design = this.design;
@@ -309,14 +318,24 @@ export class BrowseViewModel extends Observable {
                 break;
             case "designButton":
                 this.designButton = view as Button;
-                this.designButton.text = this.state.designing ? "Debug" : "Design";
+                if(isTablet){
+                    this.designButton!.style.visibility = "collapse";
+                } else {
+                    this.designButton!.text = this.state.designing ? "Debug" : "Design";
+                }
                 console.log("this.designButton assigned!", this.designButton);
                 break;
             case "output":
                 view.style.fontFamily = "Courier New";
                 view.style.fontSize = 16;
                 this.output = view as TextView;
-                this.output.parent.style.visibility = this.state.designing ? "collapse" : "visible";
+                if(isTablet){
+                    (view.parent as ScrollView).height = { unit: "%", value: 0.175 };
+                    // view.width = { unit: "%", value: 50 };
+                    view.style.visibility = "visible";
+                } else {
+                    this.output.parent.style.visibility = this.state.designing ? "collapse" : "visible";
+                }
                 console.log("this.output assigned!", this.output);
                 // textView.on("textChange", (argstv) => {
                 //     console.dir(argstv);
