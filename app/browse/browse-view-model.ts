@@ -14,13 +14,17 @@ import { MyUITextViewDelegateImpl, MyTextView } from "~/MyUITextViewDelegateImpl
 // console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
 
 interface State {
-    lastText: string;
-    designing: boolean;
+    lastText: string,
+    ownProps: string[],
+    inheritedProps: string[],
+    designing: boolean,
 }
 
 export class BrowseViewModel extends Observable {
     private state: any = {
         lastText: "",
+        ownProps: [],
+        inheritedProps: [],
         designing: false
     };
     public static readonly evalContext: any = {};
@@ -236,6 +240,9 @@ export class BrowseViewModel extends Observable {
         this._myUITextViewDelegate.onTextViewDidChange = (textView: UITextView) => {
             this.onInputTextChange(textView.text);
         }
+        this._myUITextViewDelegate.onTab = (textView: UITextView) => {
+            console.log();
+        }
         this.myTextView!.ios.delegate = this._myUITextViewDelegate;
 
         // uiView.addSubview(textView);
@@ -382,8 +389,10 @@ export class BrowseViewModel extends Observable {
                                     ].join('\n')
                                 );
                             }
-                            this.ownPropsValue = value.own.join(', ');
-                            this.inheritedPropsValue = value.inherited.join(', ');
+                            this.state.ownProps = value.own;
+                            this.ownPropsValue = this.state.ownProps.join(', ');
+                            this.state.inheritedProps = value.inherited;
+                            this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                         }
                         else {
                             if(lastIndex === -1){
@@ -398,28 +407,38 @@ export class BrowseViewModel extends Observable {
                                     ].join('\n')
                                 );
 
-                                this.ownPropsValue = value.own.join(', ');
-                                this.inheritedPropsValue = value.inherited.join(', ');
+                                this.state.ownProps = value.own;
+                                this.ownPropsValue = this.state.ownProps.join(', ');
+                                this.state.inheritedProps = value.inherited;
+                                this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                             } else {
-                                this.ownPropsValue = "";
-                                this.inheritedPropsValue = "";
+                                this.state.ownProps = [];
+                                this.ownPropsValue = this.state.ownProps.join(', ');
+                                this.state.inheritedProps = [];
+                                this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                             }
                         }
                     }
                     catch (e) {
-                        this.ownPropsValue = "";
-                        this.inheritedPropsValue = "";
+                        this.state.ownProps = [];
+                        this.ownPropsValue = this.state.ownProps.join(', ');
+                        this.state.inheritedProps = [];
+                        this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                     }
                 }
                 else {
-                    this.ownPropsValue = "";
-                    this.inheritedPropsValue = "";
+                    this.state.ownProps = [];
+                    this.ownPropsValue = this.state.ownProps.join(', ');
+                    this.state.inheritedProps = [];
+                    this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                 }
             }
             else {
                 console.log("NO MATCH");
-                this.ownPropsValue = "";
-                this.inheritedPropsValue = "";
+                this.state.ownProps = [];
+                this.ownPropsValue = this.state.ownProps.join(', ');
+                this.state.inheritedProps = [];
+                this.inheritedPropsValue = this.state.inheritedProps.join(', ');
             }
 
     }

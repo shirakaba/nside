@@ -68,9 +68,13 @@ export class MyUITextViewDelegateImpl extends NSObject implements UITextViewDele
 
     returnDismissesKeyboard: boolean = false;
 
+    onTab?(textView: UITextView);
+
     textViewShouldChangeTextInRangeReplacementText(textView: UITextView, range: NSRange, text: string): boolean {
         // console.log(`MyUITextViewDelegateImpl.textViewShouldChangeTextInRangeReplacementText(${text})`);
-        if (this.returnDismissesKeyboard && text === "\n") {
+        // if(text.length > 0) // FIXME: force re-layout. Otherwise copy-paste doesn't wrap.
+        if(this.onTab && text === "\t") this.onTab(textView);
+        if(this.returnDismissesKeyboard && text === "\n"){
             console.log(`textView.resignFirstResponder();`);
             textView.resignFirstResponder();
             return false;

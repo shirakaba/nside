@@ -27,7 +27,7 @@ import * as app from "tns-core-modules/application";
 		} else {
 			buffer += ">\n";
 			buffer += this.children.map((child) => child.toString(tabDepth + 1)).join("");
-			buffer += tab + "</" + this.name + ">\n"
+			buffer += tab + "</" + this.name + ">\n";
 		}
 		return buffer;
 	}
