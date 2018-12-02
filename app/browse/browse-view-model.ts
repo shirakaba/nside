@@ -30,6 +30,7 @@ export class BrowseViewModel extends Observable {
         designing: false
     };
     public static readonly evalContext: any = {};
+    public static readonly SUGGESTIONS_TRUNCATED: string = "[limited to 10 entries]";
     // private input?: TextView;
     private ownProps?: TextField;
     private inheritedProps?: TextField;
@@ -349,8 +350,18 @@ export class BrowseViewModel extends Observable {
     }
 
     bestSuggestion(): string {
-        const firstOwnProp = this.state.ownProps.length ? this.state.ownProps[0] : "";
-        const firstInheritedProp = this.state.inheritedProps.length ? this.state.inheritedProps[0] : "";
+        const firstOwnProp = this.state.ownProps.length ? 
+            (
+                this.state.ownProps[0] === BrowseViewModel.SUGGESTIONS_TRUNCATED ? 
+                (this.state.ownProps.length > 1 ? this.state.ownProps[1] : "") : this.state.ownProps[0]
+            ) :
+            "";
+        const firstInheritedProp = this.state.inheritedProps.length ? 
+            (
+                this.state.inheritedProps[0] === BrowseViewModel.SUGGESTIONS_TRUNCATED ? 
+                (this.state.inheritedProps.length > 1 ? this.state.inheritedProps[1] : "") : this.state.inheritedProps[0]
+            ) :
+            "";
         return firstOwnProp || firstInheritedProp;
     }
 
@@ -387,12 +398,18 @@ export class BrowseViewModel extends Observable {
                         if (keyed) {
                             // console.log("KEYED");
                             if (incomplete === "") {
+                                // Takes a long time
+                                // console.log("WAIT AHEAD");
                                 value = BrowseViewModel.evalInContext(
                                     [
                                         instantiateOwnInherited,
+                                        `let i = 0;`,
                                         `for(let key in ${token}){`,
+                                            `if(++i === 10) break;`,
                                             `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
                                         `}`,
+                                        `own.push("${BrowseViewModel.SUGGESTIONS_TRUNCATED}")`,
+                                        `inherited.push("${BrowseViewModel.SUGGESTIONS_TRUNCATED}")`,
                                         returnAnswer
                                     ].join('\n')
                                 );
@@ -409,6 +426,8 @@ export class BrowseViewModel extends Observable {
                                     ].join('\n')
                                 );
                             }
+                            // value.own.length ? 
+                            //     (value.own[0] === BrowseViewModel.SUGGESTIONS_TRUNCATED ? )
                             this.state.ownProps = value.own.sort();
                             this.state.inheritedProps = value.inherited.sort();
                             const bestSuggestion: string = this.bestSuggestion();
