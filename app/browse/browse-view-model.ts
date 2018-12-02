@@ -385,6 +385,7 @@ export class BrowseViewModel extends Observable {
                         const returnAnswer: string = `let answer = { own: own, inherited: inherited }; answer`;
 
                         if (keyed) {
+                            // console.log("KEYED");
                             if (incomplete === "") {
                                 value = BrowseViewModel.evalInContext(
                                     [
@@ -414,6 +415,7 @@ export class BrowseViewModel extends Observable {
                             const diff: string = bestSuggestion.slice(incomplete.length);
                             this.state.suggestedText = text + diff;
                         } else {
+                            // console.log("UNKEYED");
                             if(lastIndex === -1){
                                 value = BrowseViewModel.evalInContext(
                                     [
@@ -425,17 +427,35 @@ export class BrowseViewModel extends Observable {
                                         returnAnswer
                                     ].join('\n')
                                 );
-
-                                this.state.ownProps = value.own;
-                                this.state.inheritedProps = value.inherited;
-                                const bestSuggestion: string = this.bestSuggestion();
-                                const diff: string = bestSuggestion.slice(token.length);
-                                this.state.suggestedText = text + diff;
                             } else {
-                                this.state.ownProps = [];
-                                this.state.inheritedProps = [];
-                                this.state.suggestedText = text;
+/*
+let own = []; let inherited = [];
+
+for(let key in UITextView){
+    if(key.indexOf(‘all’) !== 0) continue;
+    // both 'this' and 'global' work.
+	global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);
+}
+
+let answer = { own: own, inherited: inherited }; answer;
+*/
+                                value = BrowseViewModel.evalInContext(
+                                    [
+                                        instantiateOwnInherited,
+                                        `for(let key in ${token}){`,
+                                            `if(key.indexOf('${incomplete}') !== 0) continue;`,
+                                            // both 'this' and 'global' work.
+                                            `this.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
+                                        `}`,
+                                        returnAnswer
+                                    ].join('\n')
+                                );
                             }
+                            this.state.ownProps = value.own;
+                            this.state.inheritedProps = value.inherited;
+                            const bestSuggestion: string = this.bestSuggestion();
+                            const diff: string = bestSuggestion.slice(token.length);
+                            this.state.suggestedText = text + diff;
                         }
                     } catch (e) {
                         this.state.ownProps = [];
