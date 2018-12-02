@@ -15,6 +15,7 @@ import { MyUITextViewDelegateImpl, MyTextView } from "~/MyUITextViewDelegateImpl
 
 interface State {
     lastText: string,
+    suggestedText: string,
     ownProps: string[],
     inheritedProps: string[],
     designing: boolean,
@@ -23,6 +24,7 @@ interface State {
 export class BrowseViewModel extends Observable {
     private state: State = {
         lastText: "",
+        suggestedText: "",
         ownProps: [],
         inheritedProps: [],
         designing: false
@@ -266,12 +268,6 @@ export class BrowseViewModel extends Observable {
         container.ios.addSubview(textView);
     }
 
-    bestSuggestion(): string {
-        const firstOwnProp = this.state.ownProps.length ? this.state.ownProps[0] : "";
-        const firstInheritedProp = this.state.inheritedProps.length ? this.state.inheritedProps[0] : "";
-        return firstOwnProp || firstInheritedProp;
-    }
-
     onPageLoaded(args){
         console.log("ON PAGE LOADED");
         const cv: ContentView = (<Page>args.object).getViewById<ContentView>("SyntaxView");
@@ -356,6 +352,12 @@ export class BrowseViewModel extends Observable {
          */
     }
 
+    bestSuggestion(): string {
+        const firstOwnProp = this.state.ownProps.length ? this.state.ownProps[0] : "";
+        const firstInheritedProp = this.state.inheritedProps.length ? this.state.inheritedProps[0] : "";
+        return firstOwnProp || firstInheritedProp;
+    }
+
     onInputTextChange(value: string): void {
         this.state.lastText = value;
         const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
@@ -430,36 +432,32 @@ export class BrowseViewModel extends Observable {
                                 );
 
                                 this.state.ownProps = value.own;
-                                this.ownPropsValue = this.state.ownProps.join(', ');
                                 this.state.inheritedProps = value.inherited;
-                                this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                             } else {
                                 this.state.ownProps = [];
-                                this.ownPropsValue = this.state.ownProps.join(', ');
                                 this.state.inheritedProps = [];
-                                this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                             }
+                            this.ownPropsValue = this.state.ownProps.join(', ');
+                            this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                         }
-                    }
-                    catch (e) {
+                    } catch (e) {
                         this.state.ownProps = [];
-                        this.ownPropsValue = this.state.ownProps.join(', ');
                         this.state.inheritedProps = [];
+                        this.ownPropsValue = this.state.ownProps.join(', ');
                         this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                     }
-                }
-                else {
+                } else {
                     this.state.ownProps = [];
-                    this.ownPropsValue = this.state.ownProps.join(', ');
                     this.state.inheritedProps = [];
+                    this.ownPropsValue = this.state.ownProps.join(', ');
                     this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                 }
             }
             else {
                 console.log("NO MATCH");
                 this.state.ownProps = [];
-                this.ownPropsValue = this.state.ownProps.join(', ');
                 this.state.inheritedProps = [];
+                this.ownPropsValue = this.state.ownProps.join(', ');
                 this.inheritedPropsValue = this.state.inheritedProps.join(', ');
             }
 
