@@ -402,7 +402,7 @@ export class BrowseViewModel extends Observable {
                                     [
                                         instantiateOwnInherited,
                                         `for(let key in ${token}){`,
-                                        `if(key.indexOf('${incomplete}') !== 0) continue;`,
+                                            `if(key.indexOf('${incomplete}') !== 0) continue;`,
                                             `${token}.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
                                         `}`,
                                         returnAnswer
@@ -413,48 +413,47 @@ export class BrowseViewModel extends Observable {
                             this.state.inheritedProps = value.inherited.sort();
                             const bestSuggestion: string = this.bestSuggestion();
                             const diff: string = bestSuggestion.slice(incomplete.length);
+                            console.log(`bestSuggestion 1: ${bestSuggestion}; diff: ${diff}`);
                             this.state.suggestedText = text + diff;
                         } else {
+                            let parent: string;
+                            let toSlice: string;
                             // console.log("UNKEYED");
                             if(lastIndex === -1){
-                                value = BrowseViewModel.evalInContext(
-                                    [
-                                        instantiateOwnInherited,
-                                        `for(let key in global){`,
-                                            `if(key.indexOf('${token}') !== 0) continue;`,
-                                            `global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
-                                        `}`,
-                                        returnAnswer
-                                    ].join('\n')
-                                );
+                                parent = "global";
+                                toSlice = token;
                             } else {
-/*
-let own = []; let inherited = [];
-
-for(let key in UITextView){
-    if(key.indexOf(‘all’) !== 0) continue;
-    // both 'this' and 'global' work.
-	global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);
-}
-
-let answer = { own: own, inherited: inherited }; answer;
-*/
-                                value = BrowseViewModel.evalInContext(
-                                    [
-                                        instantiateOwnInherited,
-                                        `for(let key in ${token}){`,
-                                            `if(key.indexOf('${incomplete}') !== 0) continue;`,
-                                            // both 'this' and 'global' work.
-                                            `this.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
-                                        `}`,
-                                        returnAnswer
-                                    ].join('\n')
-                                );
+                                parent = token;
+                                toSlice = incomplete;
                             }
+                            /*
+                                let own = []; let inherited = [];
+
+                                for(let key in UITextView){
+                                    if(key.indexOf(‘all’) !== 0) continue;
+                                    // both 'this' and 'global' work.
+                                    global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);
+                                }
+
+                                let answer = { own: own, inherited: inherited }; answer;
+                            */
+                            value = BrowseViewModel.evalInContext(
+                                [
+                                    instantiateOwnInherited,
+                                    `for(let key in ${parent}){`,
+                                        `if(key.indexOf('${toSlice}') !== 0) continue;`,
+                                        // both 'this' and 'global' work.
+                                        `global.hasOwnProperty(key) ? own.push(key) : inherited.push(key);`,
+                                    `}`,
+                                    returnAnswer
+                                ].join('\n')
+                            );
+
                             this.state.ownProps = value.own.sort();
                             this.state.inheritedProps = value.inherited.sort();
                             const bestSuggestion: string = this.bestSuggestion();
-                            const diff: string = bestSuggestion.slice(token.length);
+                            const diff: string = bestSuggestion.slice(toSlice.length);
+                            console.log(`bestSuggestion 2: ${bestSuggestion}; diff: ${diff}`);
                             this.state.suggestedText = text + diff;
                         }
                     } catch (e) {
