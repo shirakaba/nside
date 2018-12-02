@@ -177,11 +177,30 @@ while(first = canvas.ios.subviews.firstObject){
             {
                 name: "Add native views",
                 description:
-`const uv = UIView.alloc().initWithFrame(CGRectMake(0, 0, 300, 300));
-uv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
-uv.translatesAutoresizingMaskIntoConstraints = true;
-uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(128/255,128/255,128/255,1);
-design.ios.addSubview(uv);
+`
+/*
+Note the AutoresizingMask values:
+
+declare const enum UIViewAutoresizing {
+	None = 0,
+	FlexibleLeftMargin = 1,
+	FlexibleWidth = 2,
+	FlexibleRightMargin = 4,
+	FlexibleTopMargin = 8,
+	FlexibleHeight = 16,
+	FlexibleBottomMargin = 32
+}
+*/
+
+for(let i = 0, x = 0, y = 0, w = 50, h = 50; i < 4; i++){
+    x = (i * 60) + 10;
+    y = 10;
+    const uv = UIView.alloc().initWithFrame(CGRectMake(x, y, w, h));
+    // uv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
+    // uv.translatesAutoresizingMaskIntoConstraints = true;
+    uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1/(i+1),0,1);
+    design.ios.addSubview(uv);
+}
 `
             },
             {
