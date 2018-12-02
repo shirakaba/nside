@@ -409,8 +409,8 @@ export class BrowseViewModel extends Observable {
                                     ].join('\n')
                                 );
                             }
-                            this.state.ownProps = value.own;
-                            this.state.inheritedProps = value.inherited;
+                            this.state.ownProps = value.own.sort();
+                            this.state.inheritedProps = value.inherited.sort();
                             const bestSuggestion: string = this.bestSuggestion();
                             const diff: string = bestSuggestion.slice(incomplete.length);
                             this.state.suggestedText = text + diff;
@@ -451,8 +451,8 @@ let answer = { own: own, inherited: inherited }; answer;
                                     ].join('\n')
                                 );
                             }
-                            this.state.ownProps = value.own;
-                            this.state.inheritedProps = value.inherited;
+                            this.state.ownProps = value.own.sort();
+                            this.state.inheritedProps = value.inherited.sort();
                             const bestSuggestion: string = this.bestSuggestion();
                             const diff: string = bestSuggestion.slice(token.length);
                             this.state.suggestedText = text + diff;
