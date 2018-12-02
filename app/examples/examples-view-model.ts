@@ -175,8 +175,14 @@ while(first = canvas.ios.subviews.firstObject){
 `
             },
             {
-                name: "Item 5",
-                description: "Description for Item 5"
+                name: "Add native views",
+                description:
+`const uv = UIView.alloc().initWithFrame(CGRectMake(0, 0, 300, 300));
+uv.autoresizingMask = 2 /* FlexibleWidth */ | 16 /* FlexibleHeight */;
+uv.translatesAutoresizingMaskIntoConstraints = true;
+uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(128/255,128/255,128/255,1);
+design.ios.addSubview(uv);
+`
             },
             {
                 name: "Item 6",
