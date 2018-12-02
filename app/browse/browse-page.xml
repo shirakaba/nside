@@ -85,11 +85,11 @@
             backgroundColor="rgb(240,240,200)"
         >
         </ContentView>
-        <FlexboxLayout height="10%" flexDirection="row" alignItems="center" justifyContent="space-around">
+        <FlexboxLayout height="10%" width="100%" flexDirection="row" alignItems="center" justifyContent="space-around" backgroundColor="rgb(25,25,25)">
             <!-- <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> -->
-            <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active"/>
-            <Button text="Clear" tap="{{ clear }}" class="btn btn-primary btn-active"/>
-            <Button id="designButton" loaded="{{ onComponentLoaded }}" text="Design" tap="{{ toggleDesign }}" class="btn btn-primary btn-active"/>
+            <Button text="Run code" tap="{{ run }}" class="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" style="color: rgb(255, 255, 255)"/>
+            <Button text="Clear" tap="{{ clear }}" class="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" style="color: rgb(255, 255, 255)"/>
+            <Button id="designButton" loaded="{{ onComponentLoaded }}" text="Design" tap="{{ toggleDesign }}" class="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" style="color: rgb(255, 255, 255)"/>
         </FlexboxLayout>
     </FlexboxLayout>
 </Page>

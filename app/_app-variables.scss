@@ -13,6 +13,11 @@ $blue-50: rgba($blue-dark, 0.5) !default;
 $blue-20: rgba($blue-dark, 0.2) !default;
 $blue-10: rgba($blue-dark, 0.1) !default;
 
+$pjoaque-number: rgb(68, 131, 98) !default;
+$pjoaque-keyword: rgb(177, 72, 38) !default;
+$pjoaque-function-name: rgb(171, 130, 1) !default;
+$pjoaque-plain: rgb(206, 195, 135) !default;
+
 $accent-dark: #3A53FF !default;
 $accent-light: #4781FE !default;
 
@@ -45,7 +50,8 @@ $background: #fff;
 $primary: lighten(#000, 13%);
 $secondary: lighten(#000, 46%);
 $disabled: lighten(#000, 62%);
-$accent: $accent-dark;
+// $accent: $accent-dark;
+$accent: $pjoaque-keyword;
 $error: $error-light;
 
 // SideDrawer
