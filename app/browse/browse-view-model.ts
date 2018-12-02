@@ -399,8 +399,7 @@ export class BrowseViewModel extends Observable {
                                         returnAnswer
                                     ].join('\n')
                                 );
-                            }
-                            else {
+                            } else {
                                 // TODO: check on global, and auto-complete constructor names
                                 value = BrowseViewModel.evalInContext(
                                     [
@@ -414,11 +413,8 @@ export class BrowseViewModel extends Observable {
                                 );
                             }
                             this.state.ownProps = value.own;
-                            this.ownPropsValue = this.state.ownProps.join(', ');
                             this.state.inheritedProps = value.inherited;
-                            this.inheritedPropsValue = this.state.inheritedProps.join(', ');
-                        }
-                        else {
+                        } else {
                             if(lastIndex === -1){
                                 value = BrowseViewModel.evalInContext(
                                     [
@@ -437,30 +433,22 @@ export class BrowseViewModel extends Observable {
                                 this.state.ownProps = [];
                                 this.state.inheritedProps = [];
                             }
-                            this.ownPropsValue = this.state.ownProps.join(', ');
-                            this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                         }
                     } catch (e) {
                         this.state.ownProps = [];
                         this.state.inheritedProps = [];
-                        this.ownPropsValue = this.state.ownProps.join(', ');
-                        this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                     }
                 } else {
                     this.state.ownProps = [];
                     this.state.inheritedProps = [];
-                    this.ownPropsValue = this.state.ownProps.join(', ');
-                    this.inheritedPropsValue = this.state.inheritedProps.join(', ');
                 }
-            }
-            else {
+            } else {
                 console.log("NO MATCH");
                 this.state.ownProps = [];
                 this.state.inheritedProps = [];
-                this.ownPropsValue = this.state.ownProps.join(', ');
-                this.inheritedPropsValue = this.state.inheritedProps.join(', ');
             }
-
+            this.ownPropsValue = this.state.ownProps.join(', ');
+            this.inheritedPropsValue = this.state.inheritedProps.join(', ');
     }
 
     // private setUpInputTextView(textView: TextView | TextField) {
