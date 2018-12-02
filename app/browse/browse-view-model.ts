@@ -281,6 +281,7 @@ export class BrowseViewModel extends Observable {
             case "design":
                 this.design = view as ContentView;
                 this.design.style.visibility = this.state.designing ? "visible" : "collapse";
+                (this.design.ios as UIView).clipsToBounds = true;
                 console.log("this.design assigned!", this.design);
                 (global as any).design = this.design;
                 // BrowseViewModel.evalContext.design = this.design;
