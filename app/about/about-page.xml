@@ -1,0 +1,18 @@
+<!--
+This is the page that is presented in the 'Search' tab.
+Feel free to customize layouts and components to change how the tab view looks.
+-->
+<Page
+    class="page"
+    navigatingTo="onNavigatingTo"  
+    xmlns="http://schemas.nativescript.org/tns.xsd">
+
+    <ActionBar class="action-bar" backgroundColor="black">
+        <Label class="action-bar-title" text="Canvas"></Label>
+    </ActionBar>
+    <GridLayout class="page-content">
+        <ScrollView height="100%" width="100%">
+            <TextView id="tv" height="100%" width="100%"></TextView>
+        </ScrollView>
+    </GridLayout>
+</Page>

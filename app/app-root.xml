@@ -9,15 +9,19 @@ http://docs.nativescript.org/cookbook/ui/tab-view
 
 <TabView androidTabsPosition="bottom">
     <!-- Icons from: https://icons8.com/ios -->
-    <TabViewItem title="Console" ios:iconSource="res://tabIcons/create_new" android:iconSource="res://browse">
+    <TabViewItem title="Console" ios:iconSource="res://tabIcons/create_new" android:iconSource="res://create_new">
         <Frame defaultPage="browse/browse-page"></Frame>
     </TabViewItem>
 
-    <TabViewItem title="Canvas" ios:iconSource="res://tabIcons/health_data" android:iconSource="res://search">
+    <TabViewItem title="Canvas" ios:iconSource="res://tabIcons/health_data" android:iconSource="res://health_data">
         <Frame defaultPage="canvas/canvas-page"></Frame>
     </TabViewItem>
     
-    <TabViewItem title="Examples" ios:iconSource="res://tabIcons/list" android:iconSource="res://home">
+    <TabViewItem title="Examples" ios:iconSource="res://tabIcons/list" android:iconSource="res://list">
         <Frame defaultPage="examples/examples-items-page"></Frame>
+    </TabViewItem>
+
+    <TabViewItem title="About" ios:iconSource="res://tabIcons/help" android:iconSource="res://help">
+        <Frame defaultPage="about/about-page"></Frame>
     </TabViewItem>
 </TabView>
