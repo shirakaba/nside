@@ -207,6 +207,7 @@ export class BrowseViewModel extends Observable {
         layoutManager.addTextContainer(textContainer);
     
         const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(uiView.bounds, textContainer);
+        
         // const textView: UITextView = UITextView.alloc().initWithFrameTextContainer(CGRectMake(0, 0, 300, 300), textContainer);
         
         textView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;

@@ -226,52 +226,53 @@ for(let i = 0, x = 10, y = 10, w = 50, h = 50; i < 4; i++){
     uv.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1/(i+1),0,1);
     design.ios.addSubview(uv);
 }
+
 `
             },
-            {
-                name: "Item 6",
-                description: "Description for Item 6"
-            },
-            {
-                name: "Item 7",
-                description: "Description for Item 7"
-            },
-            {
-                name: "Item 8",
-                description: "Description for Item 8"
-            },
-            {
-                name: "Item 9",
-                description: "Description for Item 9"
-            },
-            {
-                name: "Item 10",
-                description: "Description for Item 10"
-            },
-            {
-                name: "Item 11",
-                description: "Description for Item 11"
-            },
-            {
-                name: "Item 12",
-                description: "Description for Item 12"
-            },
-            {
-                name: "Item 13",
-                description: "Description for Item 13"
-            },
-            {
-                name: "Item 14",
-                description: "Description for Item 14"
-            },
-            {
-                name: "Item 15",
-                description: "Description for Item 15"
-            },
-            {
-                name: "Item 16",
-                description: "Description for Item 16"
-            }
+            // {
+            //     name: "Item 6",
+            //     description: "Description for Item 6"
+            // },
+            // {
+            //     name: "Item 7",
+            //     description: "Description for Item 7"
+            // },
+            // {
+            //     name: "Item 8",
+            //     description: "Description for Item 8"
+            // },
+            // {
+            //     name: "Item 9",
+            //     description: "Description for Item 9"
+            // },
+            // {
+            //     name: "Item 10",
+            //     description: "Description for Item 10"
+            // },
+            // {
+            //     name: "Item 11",
+            //     description: "Description for Item 11"
+            // },
+            // {
+            //     name: "Item 12",
+            //     description: "Description for Item 12"
+            // },
+            // {
+            //     name: "Item 13",
+            //     description: "Description for Item 13"
+            // },
+            // {
+            //     name: "Item 14",
+            //     description: "Description for Item 14"
+            // },
+            // {
+            //     name: "Item 15",
+            //     description: "Description for Item 15"
+            // },
+            // {
+            //     name: "Item 16",
+            //     description: "Description for Item 16"
+            // }
         );
     }
 }
