@@ -8,11 +8,11 @@ Feel free to customize layouts and components to change how the tab view looks.
     xmlns="http://schemas.nativescript.org/tns.xsd">
 
     <ActionBar class="action-bar" backgroundColor="black">
-        <Label class="action-bar-title" text="Canvas"></Label>
+        <Label class="action-bar-title" text="About"></Label>
     </ActionBar>
     <GridLayout class="page-content">
         <ScrollView height="100%" width="100%">
-            <TextView id="tv" height="100%" width="100%"></TextView>
+            <TextView id="tv" height="100%" width="100%" loaded="{{ onComponentLoaded }}" editable="false"></TextView>
         </ScrollView>
     </GridLayout>
 </Page>
