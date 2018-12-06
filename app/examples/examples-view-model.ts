@@ -229,10 +229,36 @@ for(let i = 0, x = 10, y = 10, w = 50, h = 50; i < 4; i++){
 
 `
             },
-            // {
-            //     name: "Item 6",
-            //     description: "Description for Item 6"
-            // },
+            {
+                name: "Scope/context",
+                description: 
+`/*
+Regrettably, NS:IDE doesn't work exactly like familiar web browser consoles. Every command that you run is passed into eval() and the scope is not re-usable (despite my best efforts). This means that the following: 
+*/
+let x = 5;
+
+/* ... Will only be available within the snippet of code that you run. */
+
+/* If you DO want variables to persist between code runs, you'll have to assign them to global, unfortunately! */
+global.x = 5;
+`
+            },
+            {
+                name: "Auto-completion",
+                description:
+`/*
+My auto-completion implementation is very makeshift (incomplete and buggy, but better than nothing). It works by actually evaluating the script while you are writing it, then presenting the keys on that object to you. This means that you may be instantiating a native object and throwing it away whilst writing... So be careful of memory leaks.
+
+Incidentally, if you have a keyboard connected, you can press tab to fill in the first auto-complete suggestion.
+
+KNOWN BUGS
+- that memory leak thing
+- it operates even during comments
+- it only works on the last line that you've typed
+- it may not work if you have comments above the line that you're typing.
+*/
+`
+            },
             // {
             //     name: "Item 7",
             //     description: "Description for Item 7"
