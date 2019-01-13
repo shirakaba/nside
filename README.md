@@ -2,7 +2,9 @@
 
 NS:IDE is the NativeScript IDE that lets you get 'inside' your device. Access any native functionality at run-time by calling a Javascript API that binds to the Obj-C or Java run-time (for iOS or Android respectively). I haven't yet implemented Android support because I lack the expertise to produce a syntax highlighter component for it, but it's perfectly possible in future.
 
-<img src="/app/App_Resources/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png" height="400" />
+<div style="display: flex; justify-content: center;">
+  <img src="/app/App_Resources/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png" height="400" />
+</div>
 
 ## Features
 
