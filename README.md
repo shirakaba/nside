@@ -23,6 +23,14 @@
 
 See my [teaser tweet](https://twitter.com/LinguaBrowse/status/1069531994336436224) for a video demo.
 
+### Example screenshots
+
+<div style="display: flex; width: 100%;">
+    <img alt="auto-complete" src="/example-images/auto-complete.png" width="300px" </img>
+    <div style="position: relative; width: 8px;"></div>
+    <img alt="native manipulation" src="/example-images/native-manipulation.png" width="300px"</img>
+</div>
+
 ## Setup
 
 This project assumes the following folder hierarchy:
