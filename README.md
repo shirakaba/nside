@@ -6,9 +6,8 @@
     NS:IDE
 </h1>
 
-<p align=center>
-NS:IDE is the NativeScript IDE that lets you get 'inside' your device. Access any native functionality at run-time by calling a Javascript API that binds to the Obj-C (iOS) or Java (Android) run-time.
-</p>
+<p align=center>NS:IDE is the NativeScript IDE that lets you get 'inside' your device.</p>
+<p align=center>Access any native functionality at run-time by calling a Javascript API that binds to the Obj-C (iOS) or Java (Android) run-time.</p>
 
 ## Features
 
@@ -59,6 +58,7 @@ And then maybe make yourself one of these: ☕️
 To run for iOS (Android is not supported yet):
 
 ```sh
+# This is shorthand for "prepare, build and deploy".
 tns run ios
 ```
 
