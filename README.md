@@ -27,7 +27,6 @@ See my [teaser tweet](https://twitter.com/LinguaBrowse/status/106953199433643622
 
 <div style="display: flex; width: 100%;">
     <img alt="auto-complete" src="/example-images/auto-complete.png" width="300px" </img>
-    <div style="position: relative; width: 8px;"></div>
     <img alt="native manipulation" src="/example-images/native-manipulation.png" width="300px"</img>
 </div>
 
