@@ -12,6 +12,7 @@ NS:IDE is the NativeScript IDE that lets you get 'inside' your device. Access an
 
 ## Features
 
+* Made in NativeScript
 * Syntax highlighting
 * Very dangerous auto-complete functionality based on `eval()`
 * Access to the whole native run-time, fully documented on [nativescript.org](https://www.nativescript.org) for both iOS and Android (see note below)
@@ -25,7 +26,49 @@ See my [teaser tweet](https://twitter.com/LinguaBrowse/status/106953199433643622
 
 ## Setup
 
-Details to come. As a quick note: probably just the standard `npm install` and NativeScript's usual command for running ios apps. I ran it with hot reloading.
+This project assumes the following folder hierarchy:
+
+```
+.
+├── nside
+└── nativescript-syntax-highlighter
+```
+
+Where `nside` is this git repository, and `nativescript-syntax-highlighter` is the git repository of my NativeScript Syntax Highlighter plugin. That is to say, they are expected to be siblings.
+
+### Get my NativeScript Syntax Highlighter plugin
+
+I haven't published it to npm, so you'll have to clone it from [here](https://github.com/shirakaba/nativescript-syntax-highlighter):
+
+```sh
+git clone git@github.com:shirakaba/nativescript-syntax-highlighter.git
+```
+
+### Install NS:IDE dependencies
+
+In the root directory for this project (`nside`), run this command:
+
+```sh
+npm install
+```
+
+And then maybe make yourself one of these: ☕️
+
+### Run 
+
+To run for iOS (Android is not supported yet):
+
+```sh
+tns run ios
+```
+
+And now maybe make yourself one of these: 🍵
+
+Full documentation for `tns run ios` [here](https://docs.nativescript.org/tooling/docs-cli/project/testing/run-ios). Useful flags to pass:
+
+* `--hmr`: activates hot module reloading (I highly recommend it).
+* `--clean`: forces a complete rebuild. Useful if you run into caching problems.
+* `--emulator`: instructs NativeScript to run the app in the iOS Simulator even if you have your device connected.
 
 ## Licence
 
