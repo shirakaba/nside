@@ -80,3 +80,15 @@ Full documentation for `tns run ios` [here](https://docs.nativescript.org/toolin
 ## Licence
 
 The NativeScript libraries are Apache-licensed (`NativeScript-Licence.txt`), whereas this project itself use a GPL 3 licence `LICENCE.txt`.
+
+## More of my stuff
+
+<div style="display: flex;">
+    <img src="/readme_img/LinguaBrowse.PNG" width="64px"</img>
+    <img src="/readme_img/TheBox.PNG" width="64px"</img>
+</div>
+
+* [LinguaBrowse](https://itunes.apple.com/us/app/linguabrowse/id1281350165?ls=1&mt=8) (iOS) on the App Store – made in Swift
+* [LinguaBrowse](https://itunes.apple.com/gb/app/linguabrowse/id1422884180?mt=12) (macOS) on the App Store – made in React Native + TypeScript + Swift
+* [Plucky Box](https://itunes.apple.com/us/app/plucky-box/id1375337845?ls=1&mt=8) (iOS) on the App Store, [GitHub](https://github.com/shirakaba/react-native-typescript-2d-game), [expo.io](https://expo.io/@bottledlogic/the-box) as Android/iOS – made in React Native + TypeScript
+* [@LinguaBrowse](https://twitter.com/LinguaBrowse) – my Twitter account. I talk about NativeScript, React Native, TypeScript, Chinese, Japanese, and my apps on there.
