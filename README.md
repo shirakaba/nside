@@ -40,6 +40,20 @@ See my [teaser tweet](https://twitter.com/LinguaBrowse/status/106953199433643622
     <img alt="native manipulation" src="/example-images/native-manipulation.png" width="300px"</img>
 </div>
 
+### Example usage
+
+See the 'Examples' tab in-app (or [view them in this repo](https://github.com/shirakaba/nside/blob/master/app/examples/examples-view-model.ts)).
+
+## API Documentation
+
+The built-in auto-complete gets you the method and property names, but doesn't tell you what params to enter into functions. For this, you need to either make a good guess of what the JS-syntax equivalent is from how the native method is invoked (which is easy if the params are all primitives like numbers), or refer to the API documentation.
+
+I myself use my custom NativeScript Playground (see below), but I still need to publish a dependency.
+
+* For now, see https://docs.nativescript.org.
+* ~Start a [NativeScript Playground](https://play.nativescript.org) from the TypeScript template and install `tns-platform-declarations` and add a reference such as `/// <reference path="../tns-platform-declarations/ios.d.ts" />`~ ... Nope, this crashes the page.
+* In future: use my NativeScript Playground https://shirakaba.github.io/NSIDE/. It loads `tns-platform-declarations` and a few other libs from `http://localhost:8888/shirakaba.github.io/NSIDE`; it looks like I still need to publish this project, however.
+
 ## Setup
 
 This project assumes the following folder hierarchy:
