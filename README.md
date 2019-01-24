@@ -52,7 +52,7 @@ I myself use my custom NativeScript Playground (see below), but I still need to 
 
 * For now, see https://docs.nativescript.org.
 * ~Start a [NativeScript Playground](https://play.nativescript.org) from the TypeScript template and install `tns-platform-declarations` and add a reference such as `/// <reference path="../tns-platform-declarations/ios.d.ts" />`~ ... Nope, this crashes the page.
-* In future: use my NativeScript Playground https://shirakaba.github.io/NSIDE/. It loads `tns-platform-declarations` and a few other libs from `http://localhost:8888/shirakaba.github.io/NSIDE`; it looks like I still need to publish this project, however.
+* In future: use my NativeScript Playground https://shirakaba.github.io/NSIDE/. It loads `tns-platform-declarations` and a few other libs from `http://localhost:8888/shirakaba.github.io/NSIDE`; it looks like I still need to publish my project for serving these libs, however.
 
 ## Setup
 
