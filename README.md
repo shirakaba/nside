@@ -103,7 +103,21 @@ Full documentation for `tns run ios` [here](https://docs.nativescript.org/toolin
 
 ## Licence
 
+### Libraries
+
 The NativeScript libraries are Apache-licensed (`NativeScript-Licence.txt`), whereas this project itself use a GPL 3 licence `LICENCE.txt`.
+
+[NativeScript Syntax Highlighter](https://github.com/shirakaba/nativescript-syntax-highlighter) is Apache 2.0 licensed, and makes use of the MIT-licensed [Highlightr](https://github.com/raspu/Highlightr) iOS native library.
+
+### Art
+
+The NS:IDE logo itself is made from images from the [Firefox OS emojis](https://github.com/mozilla/fxemoji) under the Creative Commons Attribution 4.0 International (CC BY 4.0) licence. Modifications are as follows, and the Photoshop file can be consulted here ([appicon.psd](https://github.com/shirakaba/nside/blob/master/psd/appicon.psd)).
+
+* `u1F50D-leftmagnifyingglass` – colours adjusted, and glass portion made transparent
+* `u1F4AC-speechbubble` – colours adjusted, and masked off to show only the speech lines
+* `u1F4F1-cellphone` – colours adjusted
+* `u1F52C-microscope` – (unused in the end, but present in the Photoshop file)
+* `u1F5AE-wiredkeyboard` – (unused in the end, but present in the Photoshop file)
 
 ## More of my stuff
 
