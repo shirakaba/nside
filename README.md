@@ -44,6 +44,8 @@ See my [teaser tweet](https://twitter.com/LinguaBrowse/status/106953199433643622
 
 See the 'Examples' tab in-app (or [view them in this repo](https://github.com/shirakaba/nside/blob/master/app/examples/examples-view-model.ts)).
 
+See also my [gist](https://gist.github.com/shirakaba/64e9bc5afea1a6deb8a00d78ce346cd4) detailing many fun things to invoke.
+
 ## API Documentation
 
 The built-in auto-complete gets you the method and property names, but doesn't tell you what params to enter into functions. For this, you need to either make a good guess of what the JS-syntax equivalent is from how the native method is invoked (which is easy if the params are all primitives like numbers), or refer to the API documentation.
