@@ -1,5 +1,5 @@
 import { NavigatedData, Page } from "tns-core-modules/ui/page";
-import { BrowseViewModel } from "./browse-view-model";
+import { ConsoleViewModel } from "./console-view-model";
 import { ActionBar } from "tns-core-modules/ui/action-bar/action-bar";
 import { Label } from "tns-core-modules/ui/label";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout";
@@ -7,7 +7,7 @@ import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbo
 
 export function onNavigatingTo(args: NavigatedData) {
     const page = <Page>args.object;
-    page.bindingContext = new BrowseViewModel();
+    page.bindingContext = new ConsoleViewModel();
     page.bindingContext.navigatingTo(args);
 }
 
@@ -26,7 +26,7 @@ export function onNavigatingTo(args: NavigatedData) {
 
 //     const actionBarLabel = new Label();
 //     actionBarLabel.className = "action-bar-title";
-//     actionBarLabel.text = "Browse";
+//     actionBarLabel.text = "Console";
 
 //     actionBar.titleView = actionBarLabel;
 

@@ -9,12 +9,12 @@
     <!-- https://docs.nativescript.org/ui/change-status-bar-style-ios -->
 
     <!-- <ActionBar class="action-bar">
-        <Label class="action-bar-title" text="Browse"></Label>
+        <Label class="action-bar-title" text="Console"></Label>
     </ActionBar> -->
 
     <FlexboxLayout flexDirection="column" alignItems="center">
         <!-- <Label class="page-icon fa" text="&#xf1ea;"></Label> -->
-        <!-- <Label class="page-placeholder" text="Browse page content goes here"></Label> -->
+        <!-- <Label class="page-placeholder" text="Console page content goes here"></Label> -->
         <!-- https://docs.nativescript.org/ui/styling#application-wide-css these can't flex for some reason -->
         <!-- <TextView
             id="input"

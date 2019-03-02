@@ -2,7 +2,7 @@ import { EventData, View } from "tns-core-modules/ui/core/view";
 import { NavigatedData, Page, ContentView } from "tns-core-modules/ui/page";
 import { Item } from "../shared/item";
 import { CodeAttributedStringWrapper } from "nativescript-syntax-highlighter";
-import { MyTextView, MyUITextViewDelegateImpl } from "~/MyUITextViewDelegateImpl.ios";
+import { MyTextView, MyUITextViewDelegateImpl } from "../../MyUITextViewDelegateImpl.ios";
 
 export function onNavigatingTo(args: NavigatedData) {
     const page = args.object as Page;

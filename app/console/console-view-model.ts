@@ -10,7 +10,7 @@ import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbo
 import * as Clipboard from "nativescript-clipboard";
 // const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
 import { SyntaxHighlighter, CodeAttributedStringWrapper } from "nativescript-syntax-highlighter";
-import { MyUITextViewDelegateImpl, MyTextView } from "~/MyUITextViewDelegateImpl.ios";
+import { MyUITextViewDelegateImpl, MyTextView } from "../MyUITextViewDelegateImpl.ios";
 // import { creatingView as transpileSyntaxViewHack } from "../components/syntax-view/SyntaxView";
 // console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
 
@@ -24,7 +24,7 @@ interface State {
     designing: boolean,
 }
 
-export class BrowseViewModel extends Observable {
+export class ConsoleViewModel extends Observable {
     private state: State = {
         lastText: "",
         suggestedText: "",
@@ -138,7 +138,7 @@ export class BrowseViewModel extends Observable {
         if(!this.textView) return;
         const text = this.textView!.text;
         try {
-            const value: any = BrowseViewModel.evalInContext(
+            const value: any = ConsoleViewModel.evalInContext(
                 // this.inputValue
                 this.textView.text
                 .replace(new RegExp('\u201c|\u201d', "g"), '"')
@@ -151,8 +151,8 @@ export class BrowseViewModel extends Observable {
                 this.outputValue = value.toString();
             } else if(typeof value === "object"){
                 // this.outputValue = value.toString() === "[object Object]" ? JSON.stringify(value, null, 2) : value;
-                this.outputValue = BrowseViewModel.customStringify(value);
-                // this.outputValue = BrowseViewModel.customStringify2(value);
+                this.outputValue = ConsoleViewModel.customStringify(value);
+                // this.outputValue = ConsoleViewModel.customStringify2(value);
             } else if(value === ""){
                 this.outputValue = '""';
             } else {
@@ -186,7 +186,7 @@ export class BrowseViewModel extends Observable {
     }
 
     private static evalInContext(str: string): any {
-        return BrowseViewModel.evalClosure.call(BrowseViewModel.evalContext, str);
+        return ConsoleViewModel.evalClosure.call(ConsoleViewModel.evalContext, str);
     }
 
     private myTextView?: MyTextView;
@@ -315,7 +315,7 @@ export class BrowseViewModel extends Observable {
                 (this.design.ios as UIView).clipsToBounds = true;
                 console.log("this.design assigned!", this.design);
                 (global as any).design = this.design;
-                // BrowseViewModel.evalContext.design = this.design;
+                // ConsoleViewModel.evalContext.design = this.design;
                 break;
             case "designButton":
                 this.designButton = view as Button;
@@ -397,7 +397,7 @@ export class BrowseViewModel extends Observable {
                 // for(let key in global){ console.log(key); }
                 if (token !== "") {
                     try {
-                        const keyed: boolean = BrowseViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
+                        const keyed: boolean = ConsoleViewModel.evalInContext(`typeof ${token} === "object" && ${token} !== null;`);
                         let value: {
                             own: string[];
                             inherited: string[];
@@ -410,7 +410,7 @@ export class BrowseViewModel extends Observable {
                             if (incomplete === "") {
                                 // Takes a long time
                                 // console.log("WAIT AHEAD");
-                                value = BrowseViewModel.evalInContext(
+                                value = ConsoleViewModel.evalInContext(
                                     [
                                         instantiateOwnInherited,
                                         `let __NSIDE_instance__ = ${token};`,
@@ -422,7 +422,7 @@ export class BrowseViewModel extends Observable {
                                 );
                             } else {
                                 // TODO: check on global, and auto-complete constructor names
-                                value = BrowseViewModel.evalInContext(
+                                value = ConsoleViewModel.evalInContext(
                                     [
                                         instantiateOwnInherited,
                                         `let __NSIDE_instance__ = ${token};`,
@@ -462,7 +462,7 @@ export class BrowseViewModel extends Observable {
 
                                 let answer = { own: own, inherited: inherited }; answer;
                             */
-                            value = BrowseViewModel.evalInContext(
+                            value = ConsoleViewModel.evalInContext(
                                 [
                                     instantiateOwnInherited,
                                     `let __NSIDE_instance__ = ${parent};`,
