@@ -86,12 +86,17 @@ npm install
 
 And then maybe make yourself one of these: ☕️
 
-### Run 
+### (Build and) run 
 
 To run for iOS (Android is not supported yet):
 
 ```sh
-# This is shorthand for "prepare, build and deploy".
+# Compile the TypeScript sources to JS.
+# (Do this in a separate terminal, as it's an interactive command)
+./node_modules/.bin/tsc --watch
+
+# Build-and-run on a simulator or real phone.
+# (This is shorthand for "prepare, build and deploy".)
 tns run ios
 ```
 
@@ -100,6 +105,7 @@ And now maybe make yourself one of these: 🍵
 Full documentation for `tns run ios` [here](https://docs.nativescript.org/tooling/docs-cli/project/testing/run-ios). Useful flags to pass:
 
 * `--hmr`: activates hot module reloading (I highly recommend it).
+* `--bundle`: I fall back to this when webpack starts misbehaving under `--hmr`.
 * `--clean`: forces a complete rebuild. Useful if you run into caching problems.
 * `--emulator`: instructs NativeScript to run the app in the iOS Simulator even if you have your device connected.
 
