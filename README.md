@@ -19,6 +19,10 @@
 <p align=center>NS:IDE is the NativeScript IDE that lets you get 'inside' your device.</p>
 <p align=center>Access any native functionality at run-time by calling a Javascript API that binds to the Obj-C (iOS) or Java (Android) run-time.</p>
 
+<div style="text-align: center;">
+    <a href="https://itunes.apple.com/us/app/nside/id1446068686?ls=1&mt=8"><img src="https://birchlabs.co.uk/linguabrowse/img/Download_on_the_App_Store_Badge_US-UK_135x40.svg"></a>
+</div>
+
 ## Features
 
 * Made in NativeScript
