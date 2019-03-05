@@ -8,20 +8,33 @@
 
 <!-- [![Version](https://badge.fury.io/js/badge-list.svg)](http://badge.fury.io/js/badge-list) -->
 <!-- [![GitHub version](https://badge.fury.io/gh/shirakaba%2Fnside.svg)](http://badge.fury.io/gh/shirakaba%2Fnside) -->
-[![star this repo](http://githubbadges.com/star.svg?user=shirakaba&repo=nside&style=flat)](https://github.com/shirakaba/nside)
-[![fork this repo](http://githubbadges.com/fork.svg?user=shirakaba&repo=nside&style=flat)](https://github.com/shirakaba/nside/fork)
-[![Open Source Love](https://badges.frapsoft.com/os/gpl/gpl.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
-[![Follow on Twitter](https://img.shields.io/twitter/follow/LinguaBrowse.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=LinguaBrowse)
 <!-- [![Open Issues](http://githubbadges.herokuapp.com/shirakaba/nside/issues.svg?style=flat)](https://github.com/shirakaba/nside/issues) -->
 <!-- [![Pending Pull-requests](http://githubbadges.herokuapp.com/shirakaba/nside/pulls.svg?style=flat)](https://github.com/boennemann/badges/pulls) -->
+
+<p align="center">
+    <a href="https://github.com/shirakaba/nside">
+        <img src="http://githubbadges.com/star.svg?user=shirakaba&repo=nside&style=flat">
+    </a>
+    <a href="https://github.com/shirakaba/nside/fork">
+        <img src="http://githubbadges.com/fork.svg?user=shirakaba&repo=nside&style=flat">
+    </a>
+    <a href="https://github.com/ellerbrock/open-source-badge/">
+        <img src="https://badges.frapsoft.com/os/gpl/gpl.svg?v=102">
+    </a>
+    <a href="http://makeapullrequest.com">
+        <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat">
+    </a>
+    <a href="https://twitter.com/intent/follow?screen_name=LinguaBrowse">
+        <img src="https://img.shields.io/twitter/follow/LinguaBrowse.svg?style=social&logo=twitter">
+    </a>
+</p>
 
 <p align=center>NS:IDE is the NativeScript IDE that lets you get 'inside' your device.</p>
 <p align=center>Access any native functionality at run-time by calling a Javascript API that binds to the Obj-C (iOS) or Java (Android) run-time.</p>
 
-<div style="text-align: center;">
+<p align="center">
     <a href="https://itunes.apple.com/us/app/nside/id1446068686?ls=1&mt=8"><img src="https://birchlabs.co.uk/linguabrowse/img/Download_on_the_App_Store_Badge_US-UK_135x40.svg"></a>
-</div>
+</p>
 
 ## Features
 
