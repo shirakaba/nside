@@ -26,11 +26,11 @@ const BattlefieldScene = SKScene.extend(
 
             this.hero = SKSpriteNode.alloc().initWithColorSize(
                 UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1),
-                CGSizeMake(50, 50)
+                CGSizeMake(25, 25)
             );
             this.villain = SKSpriteNode.alloc().initWithColorSize(
                 UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1),
-                CGSizeMake(75, 75)
+                CGSizeMake(50, 50)
             );
             this.hero.position = CGPointMake(
                 CGRectGetMidX(this.frame),
@@ -40,6 +40,8 @@ const BattlefieldScene = SKScene.extend(
                 CGRectGetMidX(this.frame),
                 CGRectGetMidY(this.frame) / 2,
             );
+            this.heroBaseSpeed = 5;
+            this.villainBaseSpeed = 3;
 
             this.addChild(this.hero);
             this.addChild(this.villain);
@@ -54,38 +56,34 @@ const BattlefieldScene = SKScene.extend(
             const idealDeltaTime = 60;
             const idealFPS = 0.0166666;
 
-            const heroBaseSpeed = 5;
-            const heroSpeed = heroBaseSpeed / (1000 / idealDeltaTime);
-            const maxHeroAdvance = heroSpeed * idealDeltaTime;
-
-            const villainBaseSpeed = 3;
-            const villainSpeed = villainBaseSpeed / (1000 / idealDeltaTime);
-            const maxVillainAdvance = villainSpeed * idealDeltaTime;
-
-            const vPos = this.villain.position;
-            const hPos = this.hero.position;
             /* Close the gap with the hero within one second */
+            // const vPos = this.villain.position;
+            // const hPos = this.hero.position;
             // this.villain.position = CGPointMake(
             //     vPos.x - ((vPos.x - hPos.x) * idealFPS),
             //     vPos.y - ((vPos.y - hPos.y) * idealFPS)
             // );
 
-            this.villain.position = CGPointMake(
-                Math.max(
-                    0,
-                    Math.min(
-                        vPos.x - ((vPos.x - hPos.x) * maxVillainAdvance),
-                        hPos.x
-                    )
-                ),
-                Math.max(
-                    0,
-                    Math.min(
-                        vPos.y - ((vPos.y - hPos.y) * maxVillainAdvance),
-                        hPos.y
-                    )
-                )
-            );
+            const diffFn = function diff(baseSpeed, currentPos, targetPos, deltaTime){
+                const xDiff = targetPos.x - currentPos.x;
+                const yDiff = targetPos.y - currentPos.y;
+
+                const angle = Math.atan2(yDiff, xDiff);
+                const speed = baseSpeed / (1000 / deltaTime);
+                const maxAdvanceX = Math.cos(angle) * (speed * deltaTime);
+                const maxAdvanceY = Math.sin(angle) * (speed * deltaTime);
+    
+                const x = xDiff >= 0 ?
+                    Math.min(currentPos.x + maxAdvanceX, targetPos.x) :
+                    Math.max(currentPos.x + maxAdvanceX, targetPos.x);
+                const y = yDiff >= 0 ?
+                    Math.min(currentPos.y + maxAdvanceY, targetPos.y) :
+                    Math.max(currentPos.y + maxAdvanceY, targetPos.y);
+
+                return CGPointMake(x, y);
+            }
+
+            this.villain.position = diffFn(this.villainBaseSpeed, this.villain.position, this.hero.position, idealDeltaTime);
         },
 
         // touchesEndedWithEvent(touches: NSSet<UITouch>, event: _UIEvent): void;
@@ -99,6 +97,7 @@ const BattlefieldScene = SKScene.extend(
                     this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
                 }
 
+                /* Close gap with target in one second */
                 this.hero.runActionCompletion(
                     SKAction.moveToDuration(CGPointMake(location.x, location.y), 1),
                     () => {
