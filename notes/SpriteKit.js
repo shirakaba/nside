@@ -84,6 +84,9 @@ const BattlefieldScene = SKScene.extend(
                 /***********/
 
                 /* rotation */
+                // Sprites rotate around midpoint by default: https://stackoverflow.com/questions/40076814/how-to-rotate-sknode-in-swift
+                // Example maths: https://stackoverflow.com/questions/19390064/how-to-rotate-a-sprite-node-in-sprite-kit
+                // Docs: https://developer.apple.com/documentation/spritekit/sknode/1483089-zrotation?language=objc
                 const degToRad = Math.PI / 180;
                 const radToDeg = 180 / Math.PI;
                 // We'll convert to degrees and calculate as such
@@ -102,7 +105,6 @@ const BattlefieldScene = SKScene.extend(
                 // zRotation is in radians
                 /***********/
 
-
                 return {
                     point: CGPointMake(x, y),
                     rotation: newRotationInDegrees * degToRad
@@ -112,11 +114,18 @@ const BattlefieldScene = SKScene.extend(
             const forVillain = diffFn(this.villainBaseSpeed, this.villain.position, this.hero.position, idealDeltaTime, this.villain.zRotation);
             const forHero = diffFn(this.heroBaseSpeed, this.hero.position, this.heroTargetPos, idealDeltaTime, this.hero.zRotation);
 
-            this.villain.position = forVillain.point;
             this.villain.zRotation = forVillain.rotation;
+            /* Villain should only rotate if it's moving... but can't be bothered to solve precision issues */
+            // if(this.villain.position.x !== forVillain.point.x || this.villain.position.y !== forVillain.point.y){
+                this.villain.position = forVillain.point;
+            // }
 
             this.hero.position = forHero.point;
-            this.hero.zRotation = forVillain.rotation;
+            
+            /* Hero should only rotate if it's moving... but can't be bothered to solve precision issues */
+            // if(this.hero.position.x !== forHero.point.x || this.hero.position.y !== forHero.point.y){
+                this.hero.zRotation = forVillain.rotation;
+            // }
         },
 
         // touchesEndedWithEvent(touches: NSSet<UITouch>, event: _UIEvent): void;
