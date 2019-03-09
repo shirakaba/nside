@@ -7,7 +7,7 @@ function getUIViewController(uiresponder){
 
 // SKScene is SpriteKit; SCN is SceneKit
 // https://stackoverflow.com/questions/26225236/swift-spritekit-adding-button-programmatically
-const ButtonTestScene = SKScene.extend(
+const BattlefieldScene = SKScene.extend(
     {
         didMoveToView: function (view){
             this.button = SKSpriteNode.alloc().initWithColorSize(
@@ -39,12 +39,11 @@ const ButtonTestScene = SKScene.extend(
         }
     },
     {
-        name: "ButtonTestScene",
+        name: "BattlefieldScene",
         protocols: []
     }
 );
-
-// ButtonTestScene.alloc().initWithSize(design.ios.bounds.size);
+// BattlefieldScene.alloc().initWithSize(design.ios.bounds.size);
 
 // https://stackoverflow.com/questions/53104428/spritekit-example-without-storyboard
 const GameViewController = UIViewController.extend(
@@ -54,7 +53,7 @@ const GameViewController = UIViewController.extend(
 
             this.view = SKView.alloc().initWithFrame(this.view.bounds);
             if(this.view instanceof SKView){
-                const scene = ButtonTestScene.alloc().initWithSize(
+                const scene = BattlefieldScene.alloc().initWithSize(
                     this.view.bounds.size
                 );
                 // scene.view.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
@@ -80,7 +79,7 @@ const gamevc = GameViewController.alloc().init();
 // design.ios.view = gamevc.view;
 // design.ios.addSubview(gamevc.view);
 
-const vc = getUIViewController(design.ios);
+const vc = getUIViewController(app.ios);
 if(vc !== null){
     vc.presentViewControllerAnimatedCompletion(
         gamevc,
