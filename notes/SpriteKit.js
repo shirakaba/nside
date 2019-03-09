@@ -12,17 +12,22 @@ function getUIViewController(uiresponder){
 // https://stackoverflow.com/questions/26225236/swift-spritekit-adding-button-programmatically
 const BattlefieldScene = SKScene.extend(
     {
-        // private button!: SKSpriteNode;
+        // private indicator!: SKSpriteNode;
         // private hero!: SKSpriteNode;
         // private villain!: SKSpriteNode;
 
         didMoveToView: function (view){
-            this.button = SKSpriteNode.alloc().initWithColorSize(
+            const indicatorHeight = 22;
+            this.indicator = SKSpriteNode.alloc().initWithColorSize(
                 UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1),
-                CGSizeMake(100, 44)
+                CGSizeMake(this.frame.size.width, indicatorHeight)
             );
-            this.button.position = CGPointMake(0, 0);
-            this.addChild(this.button);
+            this.indicator.position = CGPointMake(
+                // The origin of the SKSpriteNode is at the midpoint rather than corner
+                this.frame.size.width / 2,
+                this.frame.size.height - (indicatorHeight / 2)
+            );
+            this.addChild(this.indicator);
 
             const heroSize = CGSizeMake(25, 25);
             this.hero = SKSpriteNode.alloc().initWithColorSize(
@@ -181,7 +186,7 @@ const BattlefieldScene = SKScene.extend(
                 // this.hero.runActionCompletion(
                 //     SKAction.moveToDuration(CGPointMake(location.x, location.y), 1),
                 //     () => {
-                //         this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,1);
+                //         this.indicator.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,1);
                 //     }
                 // );
 
@@ -195,7 +200,7 @@ const BattlefieldScene = SKScene.extend(
                 contact.bodyA.categoryBitMask === this.villainHitCategory || 
                 contact.bodyB.categoryBitMask === this.villainHitCategory
             ){
-                this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1);
+                this.indicator.color = UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1);
             }
         },
         /* SKPhysicsContactDelegate */
@@ -204,7 +209,7 @@ const BattlefieldScene = SKScene.extend(
                 contact.bodyA.categoryBitMask === this.villainHitCategory || 
                 contact.bodyB.categoryBitMask === this.villainHitCategory
             ){
-                this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
+                this.indicator.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
             }
         }
     },
