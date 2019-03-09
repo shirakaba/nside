@@ -33,7 +33,7 @@ const ButtonTestScene = SKScene.extend(
     }
 );
 
-ButtonTestScene.alloc().initWithSize(CGSizeMake(25, 25));
+ButtonTestScene.alloc().initWithSize(design.ios.bounds.size);
 
 // https://stackoverflow.com/questions/53104428/spritekit-example-without-storyboard
 const GameViewController = UIViewController.extend(
@@ -44,16 +44,16 @@ const GameViewController = UIViewController.extend(
             this.view = SKView.alloc().initWithFrame(this.view.bounds);
             if(this.view instanceof SKView){
                 const scene = ButtonTestScene.alloc().initWithSize(
-                    self.view.bounds.size
+                    this.view.bounds.size
                 );
 
                 scene.scaleMode = SKSceneScaleMode.AspectFill;
 
-                self.view.presentScene(scene);
-                self.view.showsPhysics = false;
-                self.view.ignoresSiblingOrder = true;
-                self.view.showsFPS = true;
-                self.view.showsNodeCount = true;
+                this.view.presentScene(scene);
+                this.view.showsPhysics = false;
+                this.view.ignoresSiblingOrder = true;
+                this.view.showsFPS = true;
+                this.view.showsNodeCount = true;
             }
         }
     },
