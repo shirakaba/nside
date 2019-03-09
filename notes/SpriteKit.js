@@ -55,11 +55,11 @@ const BattlefieldScene = SKScene.extend(
             const idealFPS = 0.0166666;
 
             const heroBaseSpeed = 5;
-            const heroSpeed = heroBaseSpeed * (1000 / idealDeltaTime);
+            const heroSpeed = heroBaseSpeed / (1000 / idealDeltaTime);
             const maxHeroAdvance = heroSpeed * idealDeltaTime;
 
             const villainBaseSpeed = 3;
-            const villainSpeed = villainBaseSpeed * (1000 / idealDeltaTime);
+            const villainSpeed = villainBaseSpeed / (1000 / idealDeltaTime);
             const maxVillainAdvance = villainSpeed * idealDeltaTime;
 
             const vPos = this.villain.position;
