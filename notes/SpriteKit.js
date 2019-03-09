@@ -15,6 +15,29 @@ const BattlefieldScene = SKScene.extend(
         // private indicator!: SKSpriteNode;
         // private hero!: SKSpriteNode;
         // private villain!: SKSpriteNode;
+        downloadFileFromURL: function(url){
+            NSURLSession.sharedSession.downloadTaskWithURLCompletionHandler(
+                url,
+                (urlB, response, error) => {
+                    this.playAudioFromDownloadedFile(urlB);
+                }
+            ).resume();
+        },
+
+        playAudioFromDownloadedFile: function(url){
+            let player;
+            try {
+                player = AVAudioPlayer.alloc().initWithContentsOfURLFileTypeHintError(url, AVFileTypeMPEGLayer3);
+            } catch(error){
+                // The error is a JS error, not an NSError.
+                global.label.text = error.toString();
+                return;
+            }
+            player.prepareToPlay();
+            player.numberOfLoops = -1; // loop forever
+            player.volume = 1.0;
+            player.play();
+        },
 
         didMoveToView: function (view){
             const indicatorHeight = 22;
@@ -28,6 +51,18 @@ const BattlefieldScene = SKScene.extend(
                 this.frame.size.height - (indicatorHeight / 2)
             );
             this.addChild(this.indicator);
+
+            this.downloadFileFromURL(
+                NSURL.alloc().initWithString("https://birchlabs.co.uk/blog/alex/juicysfplugin/synth/cpp/2019/01/05/TheBox_compressed_less.mp3")
+            );
+
+            // const ost = SKAudioNode.alloc().initWithURL(
+            //     "https://birchlabs.co.uk/blog/alex/juicysfplugin/synth/cpp/2019/01/05/TheBox_compressed_less.mp3"
+            // );
+            // ost.autoplayLooped = true;
+            // ost.positional = false;
+            // ost.runAction(SKAction.play());
+            // this.addChild(ost);
 
             const heroSize = CGSizeMake(25, 25);
             this.hero = SKSpriteNode.alloc().initWithColorSize(
@@ -90,6 +125,52 @@ const BattlefieldScene = SKScene.extend(
             this.physicsWorld.contactDelegate = this;
         },
 
+        diffFn: function(baseSpeed, currentPos, targetPos, deltaTime, currentRotationInRadians){
+            /* origin */
+            const xDiff = targetPos.x - currentPos.x;
+            const yDiff = targetPos.y - currentPos.y;
+
+            const angleInRadians = Math.atan2(yDiff, xDiff);
+            const speed = baseSpeed / (1000 / deltaTime);
+            const maxAdvanceX = Math.cos(angleInRadians) * (speed * deltaTime);
+            const maxAdvanceY = Math.sin(angleInRadians) * (speed * deltaTime);
+
+            const x = xDiff >= 0 ?
+                Math.min(currentPos.x + maxAdvanceX, targetPos.x) :
+                Math.max(currentPos.x + maxAdvanceX, targetPos.x);
+            const y = yDiff >= 0 ?
+                Math.min(currentPos.y + maxAdvanceY, targetPos.y) :
+                Math.max(currentPos.y + maxAdvanceY, targetPos.y);
+            /***********/
+
+            /* rotation */
+            // Sprites rotate around midpoint by default: https://stackoverflow.com/questions/40076814/how-to-rotate-sknode-in-swift
+            // Example maths: https://stackoverflow.com/questions/19390064/how-to-rotate-a-sprite-node-in-sprite-kit
+            // Docs: https://developer.apple.com/documentation/spritekit/sknode/1483089-zrotation?language=objc
+            const degToRad = Math.PI / 180;
+            const radToDeg = 180 / Math.PI;
+            // We'll convert to degrees and calculate as such
+            const extraRotation = (angleInRadians * radToDeg) - (currentRotationInRadians * radToDeg);
+            const easing = 4;
+
+            const optimalRotation = extraRotation < -180 ?
+                360 + extraRotation :
+                (
+                    extraRotation > 180 ?
+                        extraRotation - 360 :
+                        extraRotation
+                );
+            const optimalEasedRotation = optimalRotation / easing;
+            const newRotationInDegrees = (currentRotationInRadians + optimalEasedRotation) % 360;
+            // zRotation is in radians
+            /***********/
+
+            return {
+                point: CGPointMake(x, y),
+                rotation: newRotationInDegrees * degToRad
+            }
+        },
+
         update: function(currentTime){
             /* Somehow not working: https://stackoverflow.com/questions/33818362/is-there-a-way-to-read-get-fps-in-spritekit-swift */
             // const deltaTime = currentTime - (this.lastUpdateTime ? this.lastUpdateTime : currentTime - 0.06);
@@ -107,54 +188,8 @@ const BattlefieldScene = SKScene.extend(
             //     vPos.y - ((vPos.y - hPos.y) * idealFPS)
             // );
 
-            const diffFn = function diff(baseSpeed, currentPos, targetPos, deltaTime, currentRotationInRadians){
-                /* origin */
-                const xDiff = targetPos.x - currentPos.x;
-                const yDiff = targetPos.y - currentPos.y;
-
-                const angleInRadians = Math.atan2(yDiff, xDiff);
-                const speed = baseSpeed / (1000 / deltaTime);
-                const maxAdvanceX = Math.cos(angleInRadians) * (speed * deltaTime);
-                const maxAdvanceY = Math.sin(angleInRadians) * (speed * deltaTime);
-    
-                const x = xDiff >= 0 ?
-                    Math.min(currentPos.x + maxAdvanceX, targetPos.x) :
-                    Math.max(currentPos.x + maxAdvanceX, targetPos.x);
-                const y = yDiff >= 0 ?
-                    Math.min(currentPos.y + maxAdvanceY, targetPos.y) :
-                    Math.max(currentPos.y + maxAdvanceY, targetPos.y);
-                /***********/
-
-                /* rotation */
-                // Sprites rotate around midpoint by default: https://stackoverflow.com/questions/40076814/how-to-rotate-sknode-in-swift
-                // Example maths: https://stackoverflow.com/questions/19390064/how-to-rotate-a-sprite-node-in-sprite-kit
-                // Docs: https://developer.apple.com/documentation/spritekit/sknode/1483089-zrotation?language=objc
-                const degToRad = Math.PI / 180;
-                const radToDeg = 180 / Math.PI;
-                // We'll convert to degrees and calculate as such
-                const extraRotation = (angleInRadians * radToDeg) - (currentRotationInRadians * radToDeg);
-                const easing = 4;
-
-                const optimalRotation = extraRotation < -180 ?
-                    360 + extraRotation :
-                    (
-                        extraRotation > 180 ?
-                            extraRotation - 360 :
-                            extraRotation
-                    );
-                const optimalEasedRotation = optimalRotation / easing;
-                const newRotationInDegrees = (currentRotationInRadians + optimalEasedRotation) % 360;
-                // zRotation is in radians
-                /***********/
-
-                return {
-                    point: CGPointMake(x, y),
-                    rotation: newRotationInDegrees * degToRad
-                }
-            }
-
-            const forVillain = diffFn(this.villainBaseSpeed, this.villain.position, this.hero.position, idealDeltaTime, this.villain.zRotation);
-            const forHero = diffFn(this.heroBaseSpeed, this.hero.position, this.heroTargetPos, idealDeltaTime, this.hero.zRotation);
+            const forVillain = this.diffFn(this.villainBaseSpeed, this.villain.position, this.hero.position, idealDeltaTime, this.villain.zRotation);
+            const forHero = this.diffFn(this.heroBaseSpeed, this.hero.position, this.heroTargetPos, idealDeltaTime, this.hero.zRotation);
 
             this.villain.zRotation = forVillain.rotation;
             /* Villain should only rotate if it's moving... but can't be bothered to solve precision issues */
