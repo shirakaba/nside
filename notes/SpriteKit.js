@@ -43,8 +43,17 @@ const BattlefieldScene = SKScene.extend(
         },
 
         update: function(currentTime){
-            // this.hero.position = 
+            // const deltaTime = currentTime - (this.lastUpdateTime || ( currentTime - 60));
+            // const currentFPS = 1 / deltaTime;
+            // this.lastUpdateTime = currentTime;
 
+            const vPos = this.villain.position;
+            const hPos = this.hero.position;
+            // Close the gap with the hero within one second
+            this.villain.position = CGPointMake(
+                vPos.x - ((vPos.x - hPos.x) * 0.01666),
+                vPos.y - ((vPos.y - hPos.y) * 0.01666)
+            );
         },
 
         // touchesEndedWithEvent(touches: NSSet<UITouch>, event: _UIEvent): void;
@@ -63,7 +72,7 @@ const BattlefieldScene = SKScene.extend(
                     () => {
                         this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,1);
                     }
-                )
+                );
             });
         }
     },
