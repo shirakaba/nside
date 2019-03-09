@@ -36,6 +36,7 @@ const BattlefieldScene = SKScene.extend(
                 CGRectGetMidX(this.frame),
                 3 * (CGRectGetMidY(this.frame) / 2),
             );
+            this.heroTargetPos = this.hero.position;
             this.villain.position = CGPointMake(
                 CGRectGetMidX(this.frame),
                 CGRectGetMidY(this.frame) / 2,
@@ -84,6 +85,7 @@ const BattlefieldScene = SKScene.extend(
             }
 
             this.villain.position = diffFn(this.villainBaseSpeed, this.villain.position, this.hero.position, idealDeltaTime);
+            this.hero.position = diffFn(this.heroBaseSpeed, this.hero.position, this.heroTargetPos, idealDeltaTime);
         },
 
         // touchesEndedWithEvent(touches: NSSet<UITouch>, event: _UIEvent): void;
@@ -98,12 +100,14 @@ const BattlefieldScene = SKScene.extend(
                 }
 
                 /* Close gap with target in one second */
-                this.hero.runActionCompletion(
-                    SKAction.moveToDuration(CGPointMake(location.x, location.y), 1),
-                    () => {
-                        this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,1);
-                    }
-                );
+                // this.hero.runActionCompletion(
+                //     SKAction.moveToDuration(CGPointMake(location.x, location.y), 1),
+                //     () => {
+                //         this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,1);
+                //     }
+                // );
+
+                this.heroTargetPos = location;
             });
         }
     },
