@@ -2,15 +2,6 @@
 // https://stackoverflow.com/questions/26225236/swift-spritekit-adding-button-programmatically
 const ButtonTestScene = SKScene.extend(
     {
-        initWithFrame(frame){
-            SKScene.prototype.init.apply(this, []);
-            // this.frame = frame; /* readonly */
-            // this.frame.size = frame.size;
-            // this.frame.size.x = frame.size.x;
-            // this.frame.size.y = frame.size.y;
-            this.frame.origin = frame.origin;
-            return this;
-        },
         didMoveToView: function (view){
             this.button = SKSpriteNode.alloc().initWithColorSize(
                 UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1),
@@ -38,19 +29,13 @@ const ButtonTestScene = SKScene.extend(
     },
     {
         name: "ButtonTestScene",
-        protocols: [],
-        exposedMethods: {
-            "initWithFrame": {
-                params: [CGRect],
-                returns: SKScene
-            }
-        }
+        protocols: []
     }
 );
 
-ButtonTestScene.alloc().initWithFrame(CGRectMake(2, 2, 25, 25));
+ButtonTestScene.alloc().initWithSize(CGSizeMake(25, 25));
 
-
+// https://stackoverflow.com/questions/53104428/spritekit-example-without-storyboard
 const GameViewController = UIViewController.extend(
     {
         viewDidLoad: function(){
@@ -58,7 +43,17 @@ const GameViewController = UIViewController.extend(
 
             this.view = SKView.alloc().initWithFrame(this.view.bounds);
             if(this.view instanceof SKView){
-                const scene = 
+                const scene = ButtonTestScene.alloc().initWithSize(
+                    self.view.bounds.size
+                );
+
+                scene.scaleMode = SKSceneScaleMode.AspectFill;
+
+                self.view.presentScene(scene);
+                self.view.showsPhysics = false;
+                self.view.ignoresSiblingOrder = true;
+                self.view.showsFPS = true;
+                self.view.showsNodeCount = true;
             }
         }
     },
@@ -68,35 +63,24 @@ const GameViewController = UIViewController.extend(
     }
 );
 
-new GameViewController();
+const gamevc = GameViewController.alloc().init();
 
-
-// https://stackoverflow.com/questions/53104428/spritekit-example-without-storyboard
-/*
-class GameViewController: UIViewController {
-
-    // MARK: View Controller overrides
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view = SKView(frame: view.bounds)
-
-        if let view = self.view as! SKView? {
-            // Initialise the scene
-            let scene = GameScene(size: view.bounds.size) // <-- IMPORTANT: Initialise your first scene (as you have no .sks)
-
-            // Set the scale mode to scale to fit the window
-            scene.scaleMode = .aspectFill
-
-            // Present the scene
-            view.presentScene(scene)
-
-            // Scene properties
-            view.showsPhysics = false
-            view.ignoresSiblingOrder = true
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
+function getUIViewController(uiresponder){
+    for(let responder = uiresponder; responder !== null; responder = responder.nextResponder){
+        if(responder instanceof UIViewController) return responder;
     }
-
+    return null;
 }
+
+const vc = getUIViewController(design.ios);
+if(vc !== null){
+    vc.presentViewControllerAnimatedCompletion(
+        gamevc,
+        true,
+        () => {
+            // On completion
+        }
+    );
+}
+
+// presentViewControllerAnimatedCompletion(viewControllerToPresent: UIViewController, flag: boolean, completion: () => void): void;
