@@ -18,7 +18,7 @@ const BattlefieldScene = SKScene.extend(
 
         didMoveToView: function (view){
             this.button = SKSpriteNode.alloc().initWithColorSize(
-                UIColor.alloc().initWithRedGreenBlueAlpha(1,1,1,1),
+                UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1),
                 CGSizeMake(100, 44)
             );
             this.button.position = CGPointMake(0, 0);
@@ -29,7 +29,14 @@ const BattlefieldScene = SKScene.extend(
                 UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1),
                 heroSize
             );
-            this.hero.physicsBody = SKPhysicsBody.bodyWithRectangleOfSize(heroSize);
+
+            const heroPhysicsBody = SKPhysicsBody.bodyWithRectangleOfSize(heroSize);
+            // heroPhysicsBody.affectedByGravity = true;
+            heroPhysicsBody.allowsRotation = true;
+            heroPhysicsBody.allowsRotation = true;
+            heroPhysicsBody.usesPreciseCollisionDetection = false;
+
+            this.hero.physicsBody = heroPhysicsBody;
             this.heroHitCategory = 1;
             this.villainHitCategory = 2;
             this.hero.physicsBody.categoryBitMask = this.heroHitCategory;
@@ -41,7 +48,14 @@ const BattlefieldScene = SKScene.extend(
                 UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1),
                 villainSize
             );
-            this.villain.physicsBody = SKPhysicsBody.bodyWithRectangleOfSize(villainSize);
+
+            const villainPhysicsBody = SKPhysicsBody.bodyWithRectangleOfSize(villainSize);
+            // villainPhysicsBody.affectedByGravity = true;
+            villainPhysicsBody.allowsRotation = true;
+            villainPhysicsBody.allowsRotation = true;
+            villainPhysicsBody.usesPreciseCollisionDetection = false;
+
+            this.villain.physicsBody = villainPhysicsBody;
             this.villain.physicsBody.categoryBitMask = this.villainHitCategory;
             this.villain.physicsBody.contactTestBitMask = this.heroHitCategory;
             this.villain.physicsBody.collisionBitMask = this.heroHitCategory;
@@ -63,6 +77,10 @@ const BattlefieldScene = SKScene.extend(
             this.addChild(this.hero);
             this.addChild(this.villain);
 
+            this.physicsWorld.gravity = {
+                dx: 0,
+                dy: 0,
+            };
             /* SKPhysicsContactDelegate */
             this.physicsWorld.contactDelegate = this;
         },
