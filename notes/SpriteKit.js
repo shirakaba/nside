@@ -65,14 +65,15 @@ const BattlefieldScene = SKScene.extend(
             //     vPos.y - ((vPos.y - hPos.y) * idealFPS)
             // );
 
-            const diffFn = function diff(baseSpeed, currentPos, targetPos, deltaTime){
+            const diffFn = function diff(baseSpeed, currentPos, targetPos, deltaTime, currentRotationInRadians){
+                /* origin */
                 const xDiff = targetPos.x - currentPos.x;
                 const yDiff = targetPos.y - currentPos.y;
 
-                const angle = Math.atan2(yDiff, xDiff);
+                const angleInRadians = Math.atan2(yDiff, xDiff);
                 const speed = baseSpeed / (1000 / deltaTime);
-                const maxAdvanceX = Math.cos(angle) * (speed * deltaTime);
-                const maxAdvanceY = Math.sin(angle) * (speed * deltaTime);
+                const maxAdvanceX = Math.cos(angleInRadians) * (speed * deltaTime);
+                const maxAdvanceY = Math.sin(angleInRadians) * (speed * deltaTime);
     
                 const x = xDiff >= 0 ?
                     Math.min(currentPos.x + maxAdvanceX, targetPos.x) :
@@ -80,12 +81,42 @@ const BattlefieldScene = SKScene.extend(
                 const y = yDiff >= 0 ?
                     Math.min(currentPos.y + maxAdvanceY, targetPos.y) :
                     Math.max(currentPos.y + maxAdvanceY, targetPos.y);
+                /***********/
 
-                return CGPointMake(x, y);
+                /* rotation */
+                const degToRad = Math.PI / 180;
+                const radToDeg = 180 / Math.PI;
+                // We'll convert to degrees and calculate as such
+                const extraRotation = (angleInRadians * radToDeg) - (currentRotationInRadians * radToDeg);
+                const easing = 4;
+
+                const optimalRotation = extraRotation < -180 ?
+                    360 + extraRotation :
+                    (
+                        extraRotation > 180 ?
+                            extraRotation - 360 :
+                            extraRotation
+                    );
+                const optimalEasedRotation = optimalRotation / easing;
+                const newRotationInDegrees = (currentRotationInRadians + optimalEasedRotation) % 360;
+                // zRotation is in radians
+                /***********/
+
+
+                return {
+                    point: CGPointMake(x, y),
+                    rotation: newRotationInDegrees * degToRad
+                }
             }
 
-            this.villain.position = diffFn(this.villainBaseSpeed, this.villain.position, this.hero.position, idealDeltaTime);
-            this.hero.position = diffFn(this.heroBaseSpeed, this.hero.position, this.heroTargetPos, idealDeltaTime);
+            const forVillain = diffFn(this.villainBaseSpeed, this.villain.position, this.hero.position, idealDeltaTime, this.villain.zRotation);
+            const forHero = diffFn(this.heroBaseSpeed, this.hero.position, this.heroTargetPos, idealDeltaTime, this.hero.zRotation);
+
+            this.villain.position = forVillain.point;
+            this.villain.zRotation = forVillain.rotation;
+
+            this.hero.position = forHero.point;
+            this.hero.zRotation = forVillain.rotation;
         },
 
         // touchesEndedWithEvent(touches: NSSet<UITouch>, event: _UIEvent): void;
