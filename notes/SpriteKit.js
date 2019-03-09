@@ -1,3 +1,10 @@
+function getUIViewController(uiresponder){
+    for(let responder = uiresponder; responder !== null; responder = responder.nextResponder){
+        if(responder instanceof UIViewController) return responder;
+    }
+    return null;
+}
+
 // SKScene is SpriteKit; SCN is SceneKit
 // https://stackoverflow.com/questions/26225236/swift-spritekit-adding-button-programmatically
 const ButtonTestScene = SKScene.extend(
@@ -21,8 +28,12 @@ const ButtonTestScene = SKScene.extend(
             // Synchronous
             touches.enumerateObjectsUsingBlock((touch, i) => {
                 const location = touch.locationInNode(this);
-                if(button.containsPoint(location)){
+                if(this.button.containsPoint(location)){
                     // Respond to tap somehow.
+                    this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
+                    // getUIViewController(this.view).view.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
+                } else {
+                    this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
                 }
             });
         }
@@ -33,7 +44,7 @@ const ButtonTestScene = SKScene.extend(
     }
 );
 
-ButtonTestScene.alloc().initWithSize(design.ios.bounds.size);
+// ButtonTestScene.alloc().initWithSize(design.ios.bounds.size);
 
 // https://stackoverflow.com/questions/53104428/spritekit-example-without-storyboard
 const GameViewController = UIViewController.extend(
@@ -46,6 +57,7 @@ const GameViewController = UIViewController.extend(
                 const scene = ButtonTestScene.alloc().initWithSize(
                     this.view.bounds.size
                 );
+                // scene.view.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
 
                 scene.scaleMode = SKSceneScaleMode.AspectFill;
 
@@ -65,12 +77,8 @@ const GameViewController = UIViewController.extend(
 
 const gamevc = GameViewController.alloc().init();
 
-function getUIViewController(uiresponder){
-    for(let responder = uiresponder; responder !== null; responder = responder.nextResponder){
-        if(responder instanceof UIViewController) return responder;
-    }
-    return null;
-}
+// design.ios.view = gamevc.view;
+// design.ios.addSubview(gamevc.view);
 
 const vc = getUIViewController(design.ios);
 if(vc !== null){
@@ -81,6 +89,9 @@ if(vc !== null){
             // On completion
         }
     );
-}
 
-// presentViewControllerAnimatedCompletion(viewControllerToPresent: UIViewController, flag: boolean, completion: () => void): void;
+    // vc.presentModalViewControllerAnimated(
+    //     gamevc,
+    //     true
+    // );
+}
