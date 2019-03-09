@@ -1,5 +1,5 @@
 function getUIViewController(uiresponder){
-    for(let responder = uiresponder; responder !== null; responder = responder.nextResponder){
+    for(let responder = uiresponder; responder !== null && typeof responder !== "undefined"; responder = responder.nextResponder){
         if(responder instanceof UIViewController) return responder;
     }
     return null;
@@ -9,18 +9,42 @@ function getUIViewController(uiresponder){
 // https://stackoverflow.com/questions/26225236/swift-spritekit-adding-button-programmatically
 const BattlefieldScene = SKScene.extend(
     {
+        // private button!: SKSpriteNode;
+        // private hero!: SKSpriteNode;
+        // private villain!: SKSpriteNode;
+
         didMoveToView: function (view){
             this.button = SKSpriteNode.alloc().initWithColorSize(
-                UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1),
+                UIColor.alloc().initWithRedGreenBlueAlpha(1,1,0,1),
                 CGSizeMake(100, 44)
             );
+            this.button.position = CGPointMake(0, 0);
+            this.addChild(this.button);
 
-            this.button.position = CGPointMake(
+            this.hero = SKSpriteNode.alloc().initWithColorSize(
+                UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1),
+                CGSizeMake(50, 50)
+            );
+            this.villain = SKSpriteNode.alloc().initWithColorSize(
+                UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1),
+                CGSizeMake(75, 75)
+            );
+            this.hero.position = CGPointMake(
                 CGRectGetMidX(this.frame),
-                CGRectGetMidY(this.frame),
+                3 * (CGRectGetMidY(this.frame) / 2),
+            );
+            this.villain.position = CGPointMake(
+                CGRectGetMidX(this.frame),
+                CGRectGetMidY(this.frame) / 2,
             );
 
-            this.addChild(this.button);
+            this.addChild(this.hero);
+            this.addChild(this.villain);
+        },
+
+        update: function(currentTime){
+            // this.hero.position = 
+
         },
 
         // touchesEndedWithEvent(touches: NSSet<UITouch>, event: _UIEvent): void;
@@ -29,12 +53,17 @@ const BattlefieldScene = SKScene.extend(
             touches.enumerateObjectsUsingBlock((touch, i) => {
                 const location = touch.locationInNode(this);
                 if(this.button.containsPoint(location)){
-                    // Respond to tap somehow.
                     this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
-                    // getUIViewController(this.view).view.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
                 } else {
                     this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
                 }
+
+                this.hero.runActionCompletion(
+                    SKAction.moveToDuration(CGPointMake(location.x, location.y), 1),
+                    () => {
+                        this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,1,1);
+                    }
+                )
             });
         }
     },
@@ -79,7 +108,7 @@ const gamevc = GameViewController.alloc().init();
 // design.ios.view = gamevc.view;
 // design.ios.addSubview(gamevc.view);
 
-const vc = getUIViewController(app.ios);
+const vc = getUIViewController(design.ios);
 if(vc !== null){
     vc.presentViewControllerAnimatedCompletion(
         gamevc,
