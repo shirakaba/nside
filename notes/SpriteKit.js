@@ -18,34 +18,53 @@ const BattlefieldScene = SKScene.extend(
 
         didMoveToView: function (view){
             this.button = SKSpriteNode.alloc().initWithColorSize(
-                UIColor.alloc().initWithRedGreenBlueAlpha(1,1,0,1),
+                UIColor.alloc().initWithRedGreenBlueAlpha(1,1,1,1),
                 CGSizeMake(100, 44)
             );
             this.button.position = CGPointMake(0, 0);
             this.addChild(this.button);
 
+            const heroSize = CGSizeMake(25, 25);
             this.hero = SKSpriteNode.alloc().initWithColorSize(
                 UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1),
-                CGSizeMake(25, 25)
+                heroSize
             );
+            this.hero.physicsBody = SKPhysicsBody.bodyWithRectangleOfSize(heroSize);
+            this.heroHitCategory = 1;
+            this.villainHitCategory = 2;
+            this.hero.physicsBody.categoryBitMask = this.heroHitCategory;
+            this.hero.physicsBody.contactTestBitMask = this.villainHitCategory;
+            this.hero.physicsBody.collisionBitMask = this.villainHitCategory;
+
+            const villainSize = CGSizeMake(50, 50);
             this.villain = SKSpriteNode.alloc().initWithColorSize(
                 UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1),
-                CGSizeMake(50, 50)
+                villainSize
             );
+            this.villain.physicsBody = SKPhysicsBody.bodyWithRectangleOfSize(villainSize);
+            this.villain.physicsBody.categoryBitMask = this.villainHitCategory;
+            this.villain.physicsBody.contactTestBitMask = this.heroHitCategory;
+            this.villain.physicsBody.collisionBitMask = this.heroHitCategory;
+
             this.hero.position = CGPointMake(
                 CGRectGetMidX(this.frame),
                 3 * (CGRectGetMidY(this.frame) / 2),
             );
-            this.heroTargetPos = this.hero.position;
+
             this.villain.position = CGPointMake(
                 CGRectGetMidX(this.frame),
                 CGRectGetMidY(this.frame) / 2,
             );
+            
+            this.heroTargetPos = this.hero.position;
             this.heroBaseSpeed = 5;
             this.villainBaseSpeed = 3;
 
             this.addChild(this.hero);
             this.addChild(this.villain);
+
+            /* SKPhysicsContactDelegate */
+            this.physicsWorld.contactDelegate = this;
         },
 
         update: function(currentTime){
@@ -128,16 +147,17 @@ const BattlefieldScene = SKScene.extend(
             // }
         },
 
+
         // touchesEndedWithEvent(touches: NSSet<UITouch>, event: _UIEvent): void;
         touchesEndedWithEvent: function (touches, event){
             // Synchronous
             touches.enumerateObjectsUsingBlock((touch, i) => {
                 const location = touch.locationInNode(this);
-                if(this.button.containsPoint(location)){
-                    this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
-                } else {
-                    this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
-                }
+                // if(this.button.containsPoint(location)){
+                //     this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,0,1,1);
+                // } else {
+                //     this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
+                // }
 
                 /* Close gap with target in one second */
                 // this.hero.runActionCompletion(
@@ -149,11 +169,30 @@ const BattlefieldScene = SKScene.extend(
 
                 this.heroTargetPos = location;
             });
+        },
+
+        /* SKPhysicsContactDelegate */
+        didBeginContact: function(contact){
+            if(
+                contact.bodyA.categoryBitMask === this.villainHitCategory || 
+                contact.bodyB.categoryBitMask === this.villainHitCategory
+            ){
+                this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(1,0,0,1);
+            }
+        },
+        /* SKPhysicsContactDelegate */
+        didEndContact: function(contact){
+            if(
+                contact.bodyA.categoryBitMask === this.villainHitCategory || 
+                contact.bodyB.categoryBitMask === this.villainHitCategory
+            ){
+                this.button.color = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
+            }
         }
     },
     {
         name: "BattlefieldScene",
-        protocols: []
+        protocols: [SKPhysicsContactDelegate]
     }
 );
 // BattlefieldScene.alloc().initWithSize(design.ios.bounds.size);
