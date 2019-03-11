@@ -1,44 +1,5 @@
-// Ray Wenderlich: https://www.raywenderlich.com/906-scenekit-tutorial-with-swift-part-2-nodes
-// For 3D experiments, see: https://www.weheartswift.com/introduction-scenekit-part-1/
-
-function getUIViewController(uiresponder){
-    for(let responder = uiresponder; responder !== null && typeof responder !== "undefined"; responder = responder.nextResponder){
-        if(responder instanceof UIViewController) return responder;
-    }
-    return null;
-}
-
-// SKScene is SpriteKit; SCN is SceneKit
-// https://stackoverflow.com/questions/26225236/swift-spritekit-adding-button-programmatically
 const BattlefieldScene = SKScene.extend(
     {
-        // private indicator!: SKSpriteNode;
-        // private hero!: SKSpriteNode;
-        // private villain!: SKSpriteNode;
-        downloadFileFromURL: function(url){
-            NSURLSession.sharedSession.downloadTaskWithURLCompletionHandler(
-                url,
-                (urlB, response, error) => {
-                    this.playAudioFromDownloadedFile(urlB);
-                }
-            ).resume();
-        },
-
-        playAudioFromDownloadedFile: function(url){
-            let player;
-            try {
-                player = AVAudioPlayer.alloc().initWithContentsOfURLFileTypeHintError(url, AVFileTypeMPEGLayer3);
-            } catch(error){
-                // The error is a JS error, not an NSError.
-                global.label.text = error.toString();
-                return;
-            }
-            player.prepareToPlay();
-            player.numberOfLoops = -1; // loop forever
-            player.volume = 1.0;
-            player.play();
-        },
-
         didMoveToView: function (view){
             const indicatorHeight = 22;
             this.indicator = SKSpriteNode.alloc().initWithColorSize(
@@ -48,21 +9,10 @@ const BattlefieldScene = SKScene.extend(
             this.indicator.position = CGPointMake(
                 // The origin of the SKSpriteNode is at the midpoint rather than corner
                 this.frame.size.width / 2,
-                this.frame.size.height - (indicatorHeight / 2)
+                // this.frame.size.height - (indicatorHeight / 2)
+                0 + (indicatorHeight / 2)
             );
             this.addChild(this.indicator);
-
-            this.downloadFileFromURL(
-                NSURL.alloc().initWithString("https://birchlabs.co.uk/blog/alex/juicysfplugin/synth/cpp/2019/01/05/TheBox_compressed_less.mp3")
-            );
-
-            // const ost = SKAudioNode.alloc().initWithURL(
-            //     "https://birchlabs.co.uk/blog/alex/juicysfplugin/synth/cpp/2019/01/05/TheBox_compressed_less.mp3"
-            // );
-            // ost.autoplayLooped = true;
-            // ost.positional = false;
-            // ost.runAction(SKAction.play());
-            // this.addChild(ost);
 
             const heroSize = CGSizeMake(25, 25);
             this.hero = SKSpriteNode.alloc().initWithColorSize(
@@ -111,8 +61,8 @@ const BattlefieldScene = SKScene.extend(
             );
             
             this.heroTargetPos = this.hero.position;
-            this.heroBaseSpeed = 5;
-            this.villainBaseSpeed = 3;
+            this.heroBaseSpeed = 5 / 1.5;
+            this.villainBaseSpeed = 3 / 1.5;
 
             this.addChild(this.hero);
             this.addChild(this.villain);
@@ -284,10 +234,39 @@ const GameViewController = UIViewController.extend(
     }
 );
 
-const gamevc = GameViewController.alloc().init();
+function getUIViewController(uiresponder){
+    for(let responder = uiresponder; responder !== null && typeof responder !== "undefined"; responder = responder.nextResponder){
+        if(responder instanceof UIViewController) return responder;
+    }
+    return null;
+}
 
-// design.ios.view = gamevc.view;
-// design.ios.addSubview(gamevc.view);
+function downloadFileFromURL(url){
+    NSURLSession.sharedSession.downloadTaskWithURLCompletionHandler(
+        url,
+        (urlB, response, error) => {
+            global.player = playAudioFromDownloadedFile(urlB);
+        }
+    ).resume();
+}
+
+function playAudioFromDownloadedFile(url){
+    let player;
+    try {
+        player = AVAudioPlayer.alloc().initWithContentsOfURLFileTypeHintError(url, AVFileTypeMPEGLayer3);
+    } catch(error){
+        // The error is a JS error, not an NSError.
+        global.label.text = error.toString();
+        return null;
+    }
+    player.prepareToPlay();
+    player.numberOfLoops = -1; // loop forever
+    player.volume = 1.0;
+    player.play();
+    return player;
+}
+
+const gamevc = GameViewController.alloc().init();
 
 const vc = getUIViewController(design.ios);
 if(vc !== null){
@@ -295,12 +274,9 @@ if(vc !== null){
         gamevc,
         true,
         () => {
-            // On completion
+            downloadFileFromURL(
+                NSURL.alloc().initWithString("https://birchlabs.co.uk/blog/alex/juicysfplugin/synth/cpp/2019/01/05/TheBox_compressed_less.mp3")
+            );
         }
     );
-
-    // vc.presentModalViewControllerAnimated(
-    //     gamevc,
-    //     true
-    // );
 }
