@@ -285,23 +285,34 @@ export class ConsoleViewModel extends Observable {
         ws.startWithPortBonjourName(port, null);
     }
 
+    private tsserver: WKWebView = WKWebView.alloc().initWithFrameConfiguration(CGRectMake(0,0,0,0), WKWebViewConfiguration.alloc().init());
     launchTsServer(port: number){
-        function makeWebView(bounds){
-            const webView = WKWebView.alloc().initWithFrameConfiguration(bounds, WKWebViewConfiguration.alloc().init());
-            webView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
-            webView.translatesAutoresizingMaskIntoConstraints = true;
-            webView.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
-
-            return webView;
-        }
-        // const webView = makeWebView(design.ios.bounds);
-        // design.ios.addSubview(webView);
-        const webView = makeWebView(CGRectMake(0,0,0,0));
-        webView.loadRequest(
+        this.tsserver.loadRequest(
             NSURLRequest.alloc().initWithURL(
                 NSURL.alloc().initWithString(`http://localhost:${port}/index.html`)
             )
         );
+    }
+    askTsServer(text: string){
+        this.tsserver.evaluateJavaScriptCompletionHandler(
+            // We use an IIFE, as otherwise 'const source' is initialised straight onto the window context.
+`
+(() => {
+    const source = "${text}";
+
+    const result = window.ts.transpileModule(source, {
+    compilerOptions: { module: window.ts.ModuleKind.CommonJS }
+    });
+    
+    return JSON.stringify(result);
+})();
+`
+            ,
+            (value: any, error: NSError|null) => {
+                if(error !== null) return console.log("[tsserver] ERROR: " + error.localizedDescription);
+                console.log("[tsserver] ANSWER: " + value);
+            }
+        )
     }
 
     onPageLoaded(args){
@@ -415,6 +426,7 @@ export class ConsoleViewModel extends Observable {
     }
 
     textChangeHandler(text: string, incompleteOrToSlice: string, incomplete: boolean, own: string[], inherited: string[]){
+        this.askTsServer(text);
         this.state.ownProps = own.sort();
         this.state.inheritedProps = inherited.sort();
         const bestSuggestion: string = this.bestSuggestion();
