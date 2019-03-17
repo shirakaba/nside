@@ -414,6 +414,15 @@ export class ConsoleViewModel extends Observable {
         return firstOwnProp || firstInheritedProp;
     }
 
+    textChangeHandler(text: string, incompleteOrToSlice: string, incomplete: boolean, own: string[], inherited: string[]){
+        this.state.ownProps = own.sort();
+        this.state.inheritedProps = inherited.sort();
+        const bestSuggestion: string = this.bestSuggestion();
+        const diff: string = bestSuggestion.slice(incompleteOrToSlice.length);
+        console.log(`bestSuggestion ${incomplete ? 1 : 2}: ${bestSuggestion}; diff: ${diff}`);
+        this.state.suggestedText = text + diff;
+    }
+
     onInputTextChange(text: string): void {
         this.state.lastText = text;
         const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
@@ -474,12 +483,7 @@ export class ConsoleViewModel extends Observable {
                                     ].join('\n')
                                 );
                             }
-                            this.state.ownProps = value.own.sort();
-                            this.state.inheritedProps = value.inherited.sort();
-                            const bestSuggestion: string = this.bestSuggestion();
-                            const diff: string = bestSuggestion.slice(incomplete.length);
-                            console.log(`bestSuggestion 1: ${bestSuggestion}; diff: ${diff}`);
-                            this.state.suggestedText = text + diff;
+                            this.textChangeHandler(text, incomplete, true, value.own, value.inherited);
                         } else {
                             let parent: string;
                             let toSlice: string;
@@ -514,13 +518,7 @@ export class ConsoleViewModel extends Observable {
                                     returnAnswer
                                 ].join('\n')
                             );
-
-                            this.state.ownProps = value.own.sort();
-                            this.state.inheritedProps = value.inherited.sort();
-                            const bestSuggestion: string = this.bestSuggestion();
-                            const diff: string = bestSuggestion.slice(toSlice.length);
-                            console.log(`bestSuggestion 2: ${bestSuggestion}; diff: ${diff}`);
-                            this.state.suggestedText = text + diff;
+                            this.textChangeHandler(text, toSlice, false, value.own, value.inherited);
                         }
                     } catch (e) {
                         this.state.ownProps = [];
