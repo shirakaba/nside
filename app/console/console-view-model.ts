@@ -268,10 +268,50 @@ export class ConsoleViewModel extends Observable {
         container.ios.addSubview(textView);
     }
 
+    launchHttpServer(port: number){
+        /** iOS-only for now. */
+        const ws = (global as any).GCDWebServer.alloc().init();
+        ws.addGETHandlerForBasePathDirectoryPathIndexFilenameCacheAgeAllowRangeRequests(
+            "/",
+            NSURL.alloc().initWithString(
+                NSBundle.mainBundle.pathForResourceOfTypeInDirectory(
+                    "index", "html", "tsserver"
+                )
+            ).URLByDeletingLastPathComponent.absoluteString,
+            null,
+            3600,
+            true
+        );
+        ws.startWithPortBonjourName(port, null);
+    }
+
+    launchTsServer(port: number){
+        function makeWebView(bounds){
+            const webView = WKWebView.alloc().initWithFrameConfiguration(bounds, WKWebViewConfiguration.alloc().init());
+            webView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+            webView.translatesAutoresizingMaskIntoConstraints = true;
+            webView.backgroundColor = UIColor.alloc().initWithRedGreenBlueAlpha(0,1,0,1);
+
+            return webView;
+        }
+        // const webView = makeWebView(design.ios.bounds);
+        // design.ios.addSubview(webView);
+        const webView = makeWebView(CGRectMake(0,0,0,0));
+        webView.loadRequest(
+            NSURLRequest.alloc().initWithURL(
+                NSURL.alloc().initWithString(`http://localhost:${port}/index.html`)
+            )
+        );
+    }
+
     onPageLoaded(args){
         console.log("ON PAGE LOADED");
         const cv: ContentView = (<Page>args.object).getViewById<ContentView>("SyntaxView");
         this.insertSyntaxView(cv);
+
+        const port: number = 8080;
+        this.launchHttpServer(8080);
+        this.launchTsServer(8080);
     }
 
     onComponentLoaded(args){
