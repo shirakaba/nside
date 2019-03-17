@@ -23,6 +23,8 @@
     },
     "exclude": [
         "node_modules",
-        "platforms"
+        "platforms",
+        "app/App_Resources/iOS/tsserver",
+        "app/App_Resources/android/tsserver",
     ]
 }

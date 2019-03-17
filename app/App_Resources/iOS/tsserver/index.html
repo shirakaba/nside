@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>TypeScript playground</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /> -->
+
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> -->
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" href="style.css">
+	<link rel="shortcut icon" href="favicon.ico">
+</head>
+
+<body style="min-height: 100%; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%;">
+	<script src="env.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/url-search-params/0.10.0/url-search-params.js"></script>
+	<script src="https://unpkg.com/clipboard-polyfill@2.4.7/build/clipboard-polyfill.js"></script>
+	<script src="https://unpkg.com/monaco-editor@0.12.0/min/vs/loader.js"></script>
+	<script>
+		const params = new URLSearchParams(location.search);
+		const tnsLibs = [
+			/* DOM,ES6,DOM.Iterable,ScriptHost */
+			// 'lib.dom.d.ts',
+			// 'lib.dom.iterable.d.ts',
+			// 'lib.es2015.d.ts',
+			// 'lib.es2015.core.d.ts',
+			// 'lib.es2015.collection.d.ts',
+			// 'lib.es2015.generator.d.ts',
+			// 'lib.es2015.proxy.d.ts',
+			// 'lib.es2015.reflect.d.ts',
+			// 'lib.es2015.symbol.d.ts',
+			// 'lib.es2015.symbol.wellknown.d.ts',
+			// 'lib.es2015.iterable.d.ts',
+			// 'lib.scripthost.d.ts',
+
+			/* Seems to start up faster using the mysterious monaco.languages.typescript.ScriptTarget.ES2015 though. */
+			'tns-core-modules/tns-core-modules.d.ts',
+			'tns-core-modules/references.d.ts'
+		];
+		// const tnsLibs = [];
+
+		window.CONFIG = {
+			availableTSVersions: Object.assign({}, window.localTSVersion || {}, {
+				// https://unpkg.com/monaco-editor/
+				// '3.0.1': { monaco: '0.14.3' },
+				// '2.8.1': { monaco: '0.13.1' },
+				'2.7.2': { monaco: '0.11.1' },
+				// '2.4.1': { monaco: '0.10.0' },
+			}, {}),
+
+			extraLibs: params.has('lib') ? 
+				[...params.get('lib').split(','), ...tnsLibs] : 
+				[...tnsLibs],
+
+			baseUrl: location.protocol + '//' + location.host + location.pathname,
+
+			getLatestVersion() {
+				return Object.keys(this.availableTSVersions).sort().pop();
+			},
+
+			useTSVersion(version) {
+				if (this.availableTSVersions[version]) {
+					this.TSVersion = version;
+				} else {
+					alert(`Version '${version}' is not available, using ${this.TSVersion}`);
+				}
+			},
+
+			getMonacoVersion() {
+				return this.availableTSVersions[this.TSVersion].monaco;
+			},
+
+			getAdditionalPaths() {
+				const lib = this.availableTSVersions[this.TSVersion].lib;
+
+				return lib ?
+					{
+						'vs/language/typescript': `${this.baseUrl}${lib}`
+					} : {};
+			}
+		}
+
+		window.CONFIG.TSVersion = window.CONFIG.getLatestVersion();
+		console.log('window.CONFIG', window.CONFIG);
+
+		if (params.has('ts')) {
+			window.CONFIG.useTSVersion(params.get('ts'));
+		}
+
+		require.config({
+			paths: Object.assign({
+				vs: `https://unpkg.com/monaco-editor@${window.CONFIG.getMonacoVersion()}/min/vs`,
+			}, window.CONFIG.getAdditionalPaths()),
+			ignoreDuplicateModules: ["vs/editor/editor.main"],
+		});
+	</script>
+	<div id="app">
+		<div class="flash flash--hidden">
+			<span class="flash__message"></span>
+		</div>
+		<main id="playground" style="padding-top: 20px;">
+			<section id="input" style="-webkit-user-select: text; user-select: text;"></section>
+			<section id="output" style="display: none;"></section>
+		</main>
+	</div>
+
+	<script src="https://unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
+	<script src="main.js"></script>
+	<script>
+		require(["vs/editor/editor.main"], main);
+	</script>
+</body>
+
+</html>
+

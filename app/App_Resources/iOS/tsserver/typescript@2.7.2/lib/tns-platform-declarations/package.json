@@ -1,0 +1,63 @@
+{
+  "_from": "tns-platform-declarations",
+  "_id": "tns-platform-declarations@4.2.1",
+  "_inBundle": false,
+  "_integrity": "sha512-v8HRkYQ24R/MoVPPb5swcGytICKgl8rdoC805yBAWZ7CoROUSFo9M+sfZXix9mvrrHXBFzJDy8kdGjaQ40gBoA==",
+  "_location": "/tns-platform-declarations",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "tns-platform-declarations",
+    "name": "tns-platform-declarations",
+    "escapedName": "tns-platform-declarations",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/tns-platform-declarations/-/tns-platform-declarations-4.2.1.tgz",
+  "_shasum": "3a884fae77f02c70b59a7d052983d094efb7d485",
+  "_spec": "tns-platform-declarations",
+  "_where": "/Volumes/Transcend/LinguaOCR",
+  "author": {
+    "name": "Telerik",
+    "email": "support@telerik.com",
+    "url": "http://www.telerik.com"
+  },
+  "bugs": {
+    "url": "https://github.com/NativeScript/NativeScript/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Platform-specific TypeScript declarations for NativeScript for accessing native objects",
+  "devDependencies": {
+    "typescript": "^2.6.1"
+  },
+  "homepage": "https://github.com/NativeScript/NativeScript#readme",
+  "keywords": [
+    "NativeScript",
+    "TypeScript",
+    "declarations",
+    "native",
+    "platform-specific",
+    "tns",
+    "ts",
+    "ns"
+  ],
+  "license": "Apache-2.0",
+  "main": "",
+  "name": "tns-platform-declarations",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/NativeScript/NativeScript.git"
+  },
+  "scripts": {
+    "package-tag": "npm version $npm_package_version-$PACKAGE_VERSION --no-git-tag-version",
+    "test": "tsc"
+  },
+  "version": "4.2.1"
+}
