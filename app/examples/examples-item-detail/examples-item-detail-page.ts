@@ -54,6 +54,9 @@ export function insertSyntaxView(container: ContentView){
     textView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
     textView.autocorrectionType = UITextAutocorrectionType.No;
     textView.autocapitalizationType = UITextAutocapitalizationType.None;
+    textView.smartQuotesType = UITextSmartQuotesType.No;
+    textView.smartDashesType = UITextSmartDashesType.No;
+    textView.smartInsertDeleteType = UITextSmartInsertDeleteType.No;
     textView.textColor = UIColor.alloc().initWithWhiteAlpha(0.8, 1.0);
     
     codeAttributedStringWrapper.setThemeTo("Pojoaque"); // Will get shifted to lowercase on native side anyway.
