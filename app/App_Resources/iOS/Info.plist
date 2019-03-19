@@ -52,5 +52,9 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>I want to record you live</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>I want to write down everything you say</string>
 </dict>
 </plist>
