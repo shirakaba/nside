@@ -298,7 +298,7 @@ export class ConsoleViewModel extends Observable {
             // We use an IIFE, as otherwise 'const source' is initialised straight onto the window context.
 `
 (() => {
-    const source = "${text.replace('"', '\\"')}";
+    const source = "${text.replace('"', '\\"').replace('\n', '\\n')}";
 
     const result = window.ts.transpileModule(source, {
     compilerOptions: { module: window.ts.ModuleKind.CommonJS }
@@ -310,7 +310,7 @@ export class ConsoleViewModel extends Observable {
             ,
             (value: any, error: NSError|null) => {
                 if(error !== null) return console.log("[tsserver] ERROR: " + error.localizedDescription);
-                console.log("[tsserver] ANSWER: " + value);
+                console.log("[tsserver] ANSWER: ", value);
             }
         )
     }
