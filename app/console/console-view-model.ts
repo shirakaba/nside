@@ -298,7 +298,7 @@ export class ConsoleViewModel extends Observable {
             // We use an IIFE, as otherwise 'const source' is initialised straight onto the window context.
 `
 (() => {
-    const source = "${text}";
+    const source = "${text.replace('"', '\\"')}";
 
     const result = window.ts.transpileModule(source, {
     compilerOptions: { module: window.ts.ModuleKind.CommonJS }
