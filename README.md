@@ -61,17 +61,23 @@ See my [teaser tweet](https://twitter.com/LinguaBrowse/status/106953199433643622
 
 See the 'Examples' tab in-app (or [view them in this repo](https://github.com/shirakaba/nside/blob/master/app/examples/examples-view-model.ts)).
 
-See also my [gist](https://gist.github.com/shirakaba/64e9bc5afea1a6deb8a00d78ce346cd4) detailing many fun things to invoke.
+See also my [grimoire](https://github.com/shirakaba/nativescript-grimoire/blob/master/README.md) detailing many fun things to invoke.
 
 ## API Documentation
 
 The built-in auto-complete gets you the method and property names, but doesn't tell you what params to enter into functions. For this, you need to either make a good guess of what the JS-syntax equivalent is from how the native method is invoked (which is easy if the params are all primitives like numbers), or refer to the API documentation.
 
-I myself use my custom NativeScript Playground (see below), but I still need to publish a dependency.
+I myself use my custom TypeScript Playground loaded with the appropriate `tns-platform-declarations` for each platform, as the official [NativeScript Playground](https://play.nativescript.org) crashes if you add `/// <reference path="../tns-platform-declarations/ios.d.ts" />`.
 
-* For now, see https://docs.nativescript.org.
-* ~Start a [NativeScript Playground](https://play.nativescript.org) from the TypeScript template and install `tns-platform-declarations` and add a reference such as `/// <reference path="../tns-platform-declarations/ios.d.ts" />`~ ... Nope, this crashes the page.
-* In future: use my NativeScript Playground https://shirakaba.github.io/NSIDE/. It loads `tns-platform-declarations` and a few other libs from `http://localhost:8888/shirakaba.github.io/NSIDE`; it looks like I still need to publish my project for serving these libs, however.
+My NativeScript Playground is available:
+
+* [for iOS](https://shirakaba.github.io/NSIDE/ios/index.html)
+* [for Android](https://shirakaba.github.io/NSIDE/android/index.html)
+
+You can consult the official documentation at: https://docs.nativescript.org
+
+It's also immensely helpful to view the platform declarations directly: https://github.com/NativeScript/NativeScript/tree/master/tns-platform-declarations
+
 
 ## Setup
 
