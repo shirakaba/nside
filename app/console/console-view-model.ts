@@ -294,15 +294,36 @@ export class ConsoleViewModel extends Observable {
         );
     }
     askTsServer(text: string){
+        const safeString: string = unescape(encodeURIComponent(text));
+        console.log("safeString:", safeString);
+        // const base64: string = NSString.alloc().initWithUTF8String(safeString).dataUsingEncoding(NSUnicodeStringEncoding)
+        const base64: string = NSString.alloc().initWithUTF8String(safeString).dataUsingEncoding(NSUTF8StringEncoding)
+        .base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength);
+        console.log("base64:", base64);
+        // console.log("base64 sliced:", base64.slice("//".length));
+
+        // return;
+
         this.tsserver.evaluateJavaScriptCompletionHandler(
             // We use an IIFE, as otherwise 'const source' is initialised straight onto the window context.
+            // We escape the speech marks as we're using those to enclose the string.
+            // We escape the line breaks because otherwise they're interpreted literally.
+            // We trim so as to avoid "unexpected EOF".
+
+            // const base64 = "${(global as any).Buffer.from(unescape(encodeURIComponent(text))).toString('base64')}";
+            // 
 `
 (() => {
-    const source = "${text.replace('"', '\\"').replace('\n', '\\n')}";
+    const base64 = "${base64}";
 
-    const result = window.ts.transpileModule(source, {
-    compilerOptions: { module: window.ts.ModuleKind.CommonJS }
-    });
+    const result = window.ts.transpileModule(
+        window.atou(base64),
+        {
+            compilerOptions: {
+                module: window.ts.ModuleKind.CommonJS
+            }
+        }
+    );
     
     return JSON.stringify(result);
 })();
@@ -322,6 +343,16 @@ export class ConsoleViewModel extends Observable {
 
         const port: number = 8080;
         this.launchHttpServer(8080);
+        this.tsserver.evaluateJavaScriptCompletionHandler(
+            [
+                "function utoa(str){return window.btoa(unescape(encodeURIComponent(str)));}",
+                "function atou(str){return decodeURIComponent(escape(window.atob(str)));}",
+            ].join('\n'),
+            (value: any, error: NSError|null) => {
+                if(error !== null) return console.log("[tsserver] ERROR: " + error.localizedDescription);
+                console.log("[tsserver] ANSWER: ", value);
+            }
+        )
         this.launchTsServer(8080);
     }
 
@@ -426,7 +457,6 @@ export class ConsoleViewModel extends Observable {
     }
 
     textChangeHandler(text: string, incompleteOrToSlice: string, incomplete: boolean, own: string[], inherited: string[]){
-        this.askTsServer(text);
         this.state.ownProps = own.sort();
         this.state.inheritedProps = inherited.sort();
         const bestSuggestion: string = this.bestSuggestion();
@@ -436,6 +466,7 @@ export class ConsoleViewModel extends Observable {
     }
 
     onInputTextChange(text: string): void {
+        this.askTsServer(text);
         this.state.lastText = text;
         const ownPropsScroller: ScrollView = this.output.parent as ScrollView;
         const inheritedPropsScroller: ScrollView = this.inheritedProps.parent as ScrollView;
