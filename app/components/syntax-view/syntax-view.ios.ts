@@ -1,5 +1,5 @@
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout/stack-layout";
-import { SyntaxHighlighter, CodeAttributedStringWrapper } from "nativescript-syntax-highlighter";
+import { CodeAttributedStringWrapper } from "nativescript-syntax-highlighter/code-attributed-string-wrapper.ios";
 import { SyntaxViewBase, languageProperty } from "./syntax-view.common";
 
 // /* 

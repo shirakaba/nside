@@ -7,12 +7,8 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import { TextView } from "tns-core-modules/ui/text-view";
 import { device } from "tns-core-modules/platform/platform";
 import { FlexboxLayout } from "tns-core-modules/ui/layouts/flexbox-layout/flexbox-layout";
-import * as Clipboard from "nativescript-clipboard";
-// const SyntaxHighlighter = require("nativescript-syntax-highlighter").SyntaxHighlighter;
-import { SyntaxHighlighter, CodeAttributedStringWrapper } from "nativescript-syntax-highlighter";
+import { CodeAttributedStringWrapper } from "nativescript-syntax-highlighter/code-attributed-string-wrapper.ios";
 import { MyUITextViewDelegateImpl, MyTextView } from "../MyUITextViewDelegateImpl.ios";
-// import { creatingView as transpileSyntaxViewHack } from "../components/syntax-view/SyntaxView";
-// console.log("transpileSyntaxViewHack:", typeof transpileSyntaxViewHack);
 
 const isTablet: boolean = device.deviceType === "Tablet";
 
@@ -39,7 +35,6 @@ export class ConsoleViewModel extends Observable {
     private output?: TextView;
     private design: ContentView = new ContentView();
     private designButton?: Button;
-    private readonly syntaxHighlighter: any = new SyntaxHighlighter();
 
     // private _inputValue: string = "";
     // get inputValue(): string { return this._inputValue; }

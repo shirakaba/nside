@@ -1,14 +1,3 @@
-
-import { ScrollEventData } from "tns-core-modules/ui/scroll-view";
-import { TextView as TextViewDefinition } from "tns-core-modules/ui/text-view";
-import {
-    EditableTextBase, editableProperty, hintProperty, textProperty, colorProperty, placeholderColorProperty,
-    borderTopWidthProperty, borderRightWidthProperty, borderBottomWidthProperty, borderLeftWidthProperty,
-    paddingTopProperty, paddingRightProperty, paddingBottomProperty, paddingLeftProperty,
-    Length, Color, layout, CSSType, // _updateCharactersInRangeReplacementString
-} from "tns-core-modules/ui/editable-text-base";
-
-import { profile } from "tns-core-modules/profiling";
 import { TextView } from "tns-core-modules/ui/text-view";
 
 export class MyTextView extends TextView {
