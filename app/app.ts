@@ -5,7 +5,7 @@ import * as app from "@nativescript/core/application/application";
 /* Controls react-nativescript log verbosity. true: all logs; false: only error logs. */
 Object.defineProperty(global, '__DEV__', { value: false });
 import * as ReactNativeScript from "react-nativescript";
-import { AppContainer } from "./AppContainer";
+import AppContainer from "./AppContainer";
 
 (global as any).app = app;
 (global as any).UINode = function UINode(child) {

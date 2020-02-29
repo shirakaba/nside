@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from "react";
 import { $Frame, $TabView, $TabViewItem, $Page } from "react-nativescript";
 import { isIOS, TabView } from "@nativescript/core";
@@ -62,3 +63,6 @@ export class AppContainer extends React.Component<Props, State> {
         );
     }
 }
+
+// export default AppContainer;
+export default hot(AppContainer); // Replace this line with the above line if you want to remove hot loading.

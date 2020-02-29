@@ -3,6 +3,9 @@ import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $S
 import { Page } from "@nativescript/core";
 import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { Color } from "tns-core-modules/color/color";
+import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
+import { EventData, TextView, ScrollView } from "@nativescript/core";
+import { onSyntaxViewTextChange } from "./onConsoleTextChange";
 
 interface Props {
     forwardedRef: React.RefObject<Page>,
@@ -12,9 +15,26 @@ interface State {
     ownPropsText: string,
     inheritedPropsText: string,
     outputText: string,
+    suggestedText: string,
+    ownProps: string[],
+    inheritedProps: string[],
+    designing: boolean,
 }
 
 export class ConsolePage extends React.Component<Props, State> {
+    public readonly evalContext: any = {};
+    
+    private evalClosure(str: string): any {
+        return eval(str);
+    }
+
+    private evalInContext(str: string): any {
+        return this.evalClosure.call(this.evalContext, str);
+    }
+
+    private readonly ownPropsRef: React.RefObject<ScrollView> = React.createRef();
+    private readonly inheritedPropsRef: React.RefObject<ScrollView> = React.createRef();
+
     constructor(props: Props){
         super(props);
 
@@ -22,11 +42,46 @@ export class ConsolePage extends React.Component<Props, State> {
             ownPropsText: "",
             inheritedPropsText: "",
             outputText: "",
+            suggestedText: "",
+            ownProps: [],
+            inheritedProps: [],
+            designing: false,
         };
     }
 
     private readonly onSyntaxViewLoaded = () => {
 
+    };
+
+    private readonly onSyntaxViewTextChange = (args: EventData) => {
+        const { text } = args.object as TextView;
+
+        const ownProps = this.ownPropsRef.current;
+        if(ownProps){
+            ownProps.scrollToVerticalOffset(0, false);
+        }
+        const inheritedProps = this.inheritedPropsRef.current;
+        if(inheritedProps){
+            inheritedProps.scrollToVerticalOffset(0, false);
+        }
+
+        const payload = onSyntaxViewTextChange({
+            text,
+            ownProps: this.state.ownProps,
+            inheritedProps: this.state.inheritedProps,
+            suggestedText: this.state.suggestedText,
+            ownPropsText: this.state.ownPropsText,
+            inheritedPropsText: this.state.inheritedPropsText,
+            evalInContext: (str: string) => this.evalInContext(str),
+        });
+
+        this.setState({
+            ownProps: payload.ownProps,
+            inheritedProps: payload.inheritedProps,
+            suggestedText: payload.suggestedText,
+            ownPropsText: payload.ownPropsText,
+            inheritedPropsText: payload.inheritedPropsText,
+        });
     };
 
     private readonly onOwnPropsLoaded = () => {
@@ -92,14 +147,32 @@ export class ConsolePage extends React.Component<Props, State> {
                         iosOverflowSafeArea={false}
                         flexGrow={0}
                     >
-                        <$TextView
+                        {/* <$TextView
                             height={{ value: 100, unit: "%"}}
                             width={{ value: 100, unit: "%"}}
+                            autocorrect={false}
+                            autocapitalizationType={"none"}
+                            backgroundColor={new Color("rgb(25,25,25)")}
+                            color={new Color(0xffcccccc)}
+                            padding={0}
+                            margin={0}
+                        /> */}
+                        <SyntaxHighlighterTextView
+                            height={{ value: 100, unit: "%"}}
+                            width={{ value: 100, unit: "%"}}
+                            autocorrect={false}
+                            autocapitalizationType={"none"}
+                            backgroundColor={new Color("rgb(25,25,25)")}
+                            color={new Color(0xffcccccc)}
+                            returnDismissesKeyboard={false}
+                            suggestedTextToFillOnTabPress={this.state.suggestedText}
+                            onTextChange={this.onSyntaxViewTextChange}
                             padding={0}
                             margin={0}
                         />
                     </$StackLayout>
                     <$ScrollView
+                        ref={this.ownPropsRef}
                         row={1}
                         col={0}
                     >
@@ -111,13 +184,14 @@ export class ConsolePage extends React.Component<Props, State> {
                             onLoaded={this.onOwnPropsLoaded}
                             hint="(Own properties)"
                             text={ownPropsText}
-                            className="input input-border"
+                            className="input"
                             backgroundColor="rgb(220,240,240)"
                             padding={0}
                             margin={0}
                         />
                     </$ScrollView>
                     <$ScrollView
+                        ref={this.inheritedPropsRef}
                         row={2}
                         col={0}
                     >
@@ -129,7 +203,7 @@ export class ConsolePage extends React.Component<Props, State> {
                             onLoaded={this.onInheritedPropsLoaded}
                             hint="(Inherited properties)"
                             text={inheritedPropsText}
-                            className="input input-border"
+                            className="input"
                             backgroundColor="rgb(220,220,240)"
                             
                         />
@@ -146,7 +220,7 @@ export class ConsolePage extends React.Component<Props, State> {
                             onLoaded={this.onOutputLoaded}
                             hint="(Console output)"
                             text={outputText}
-                            className="input input-border"
+                            className="input"
                             backgroundColor="rgb(240,240,240)"
                         />
                     </$ScrollView>
