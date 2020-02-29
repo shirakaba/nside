@@ -1,7 +1,8 @@
 import * as React from "react";
-import { $Frame, $TabView, $TabViewItem } from "react-nativescript";
+import { $Frame, $TabView, $TabViewItem, $Page } from "react-nativescript";
 import { TabView } from "tns-core-modules/ui/tab-view/tab-view";
 import { isIOS } from "tns-core-modules/ui/page/page";
+import { FramedPage } from "./FramedPage";
 
 interface Props {
     forwardedRef: React.RefObject<TabView>
@@ -22,36 +23,40 @@ export class AppContainer extends React.Component<Props, State> {
                     title="Console"
                     iconSource={isIOS ? "res://tabIcons/create_new" : "res://create_new"}
                 >
-                    <$Frame
+                    <FramedPage
+                        pageFactory={() => null}
                         // defaultPage="console/console-page"
-                    ></$Frame>
+                    />
                 </$TabViewItem>
 
                 <$TabViewItem
                     title="Canvas"
                     iconSource={isIOS ? "res://tabIcons/health_data" : "res://health_data"}
                 >
-                    <$Frame
+                    <FramedPage
+                        pageFactory={() => null}
                         // defaultPage="canvas/canvas-page"
-                    ></$Frame>
+                    />
                 </$TabViewItem>
                 
                 <$TabViewItem
                     title="Examples"
                     iconSource={isIOS ? "res://tabIcons/list" : "res://list"}
                 >
-                    <$Frame
+                    <FramedPage
+                        pageFactory={() => null}
                         // defaultPage="examples/examples-items-page"
-                    ></$Frame>
+                    />
                 </$TabViewItem>
 
                 <$TabViewItem
                     title="About"
                     iconSource={isIOS ? "res://tabIcons/help" : "res://help"}
                 >
-                    <$Frame
+                    <FramedPage
+                        pageFactory={() => null}
                         // defaultPage="about/about-page"
-                    ></$Frame>
+                    />
                 </$TabViewItem>
             </$TabView>
         );
