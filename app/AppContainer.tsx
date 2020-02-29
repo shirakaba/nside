@@ -5,6 +5,7 @@ import { isIOS, TabView } from "@nativescript/core";
 import { FramedPage } from "./FramedPage";
 import { ConsolePage } from "./console/ConsolePage";
 import { CanvasPage } from './canvas/CanvasPage';
+import { FramedCorePage } from './FramedCorePage';
 
 interface Props {
     forwardedRef: React.RefObject<TabView>,
@@ -45,9 +46,8 @@ export class AppContainer extends React.Component<Props, State> {
                     title="Examples"
                     iconSource={isIOS ? "res://tabIcons/list" : "res://list"}
                 >
-                    <FramedPage
-                        pageFactory={() => null}
-                        // defaultPage="examples/examples-items-page"
+                    <FramedCorePage
+                        route="examples/examples-items-page"
                     />
                 </$TabViewItem>
 
@@ -55,9 +55,8 @@ export class AppContainer extends React.Component<Props, State> {
                     title="About"
                     iconSource={isIOS ? "res://tabIcons/help" : "res://help"}
                 >
-                    <FramedPage
-                        pageFactory={() => null}
-                        // defaultPage="about/about-page"
+                    <FramedCorePage
+                        route="about/about-page"
                     />
                 </$TabViewItem>
             </$TabView>
