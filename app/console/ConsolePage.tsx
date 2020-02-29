@@ -52,24 +52,24 @@ export class ConsolePage extends React.Component<Props, State> {
                 ref={forwardedRef}
                 backgroundSpanUnderStatusBar={true}
                 backgroundColor="black"
-                height={{ value: 100, unit: "%"}}
-                width={{ value: 100, unit: "%"}}
             >
-                <$StackLayout
-                    // flexDirection="column"
-                    // alignItems="center"
+                <$FlexboxLayout
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="flex-start"
 
                     height={{ value: 100, unit: "%"}}
                     width={{ value: 100, unit: "%"}}
                 >
                     <$StackLayout
                         id="SyntaxView"
-                        height={{ value: 45, unit: "%"}}
+                        // height={{ value: 45, unit: "%"}}
+                        // height={"45%" as any}
                         width={{ value: 100, unit: "%"}}
                         onLoaded={this.onSyntaxViewLoaded}
                         iosOverflowSafeArea={false}
                         backgroundColor="orange"
-                        // flexGrow={0}
+                        flexGrow={0}
                     >
                         <$TextView
                             height={{ value: 100, unit: "%"}}
@@ -138,7 +138,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         backgroundColor="rgb(240,240,200)"
                     >
                     </$ContentView>
-                </$StackLayout>
+                </$FlexboxLayout>
             </$Page>
         );
     }
