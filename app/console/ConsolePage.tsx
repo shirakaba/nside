@@ -1,7 +1,8 @@
 import * as React from "react";
-import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $StackLayout, $GridLayout } from "react-nativescript";
+import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $StackLayout, $GridLayout, $Button } from "react-nativescript";
 import { Page } from "@nativescript/core";
 import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
+import { Color } from "tns-core-modules/color/color";
 
 interface Props {
     forwardedRef: React.RefObject<Page>,
@@ -44,6 +45,22 @@ export class ConsolePage extends React.Component<Props, State> {
 
     };
 
+    private readonly onDesignButtonLoaded = () => {
+
+    };
+
+    private readonly onRunCodeButtonPress = () => {
+
+    };
+
+    private readonly onClearCodeButtonPress = () => {
+
+    };
+
+    private readonly onDesignButtonPress = () => {
+
+    };
+
     render(){
         const { forwardedRef } = this.props;
         const { ownPropsText, inheritedPropsText, outputText } = this.state;
@@ -61,6 +78,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         new ItemSpec(5, "star"),
                         new ItemSpec(5, "star"),
                         new ItemSpec(35, "star"),
+                        new ItemSpec(10, "star"),
                     ]}
 
                     height={{ value: 100, unit: "%"}}
@@ -72,7 +90,6 @@ export class ConsolePage extends React.Component<Props, State> {
                         col={0}
                         onLoaded={this.onSyntaxViewLoaded}
                         iosOverflowSafeArea={false}
-                        backgroundColor="orange"
                         flexGrow={0}
                     >
                         <$TextView
@@ -80,13 +97,11 @@ export class ConsolePage extends React.Component<Props, State> {
                             width={{ value: 100, unit: "%"}}
                             padding={0}
                             margin={0}
-                            backgroundColor="blue"
                         />
                     </$StackLayout>
                     <$ScrollView
                         row={1}
                         col={0}
-                        backgroundColor="purple"
                     >
                         <$TextView
                             id="ownProps"
@@ -98,7 +113,8 @@ export class ConsolePage extends React.Component<Props, State> {
                             text={ownPropsText}
                             className="input input-border"
                             backgroundColor="rgb(220,240,240)"
-                            
+                            padding={0}
+                            margin={0}
                         />
                     </$ScrollView>
                     <$ScrollView
@@ -142,6 +158,19 @@ export class ConsolePage extends React.Component<Props, State> {
                         backgroundColor="rgb(240,240,200)"
                     >
                     </$ContentView>
+                    <$FlexboxLayout
+                        row={4}
+                        col={0}
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="space-around"
+                        backgroundColor="rgb(25,25,25)"
+                    >
+                        {/* <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> */}
+                        <$Button text="Run code" onTap={this.onRunCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                        <$Button text="Clear" onTap={this.onClearCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                        <$Button id="designButton" onLoaded={this.onDesignButtonLoaded} text="Design" onTap={this.onDesignButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                    </$FlexboxLayout>
                 </$GridLayout>
             </$Page>
         );
