@@ -3,7 +3,8 @@ import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $S
 import { Page } from "@nativescript/core";
 import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { Color } from "tns-core-modules/color/color";
-import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
+import { $SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
+import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/syntax-highlighter-text-view.ios";
 import { EventData, TextView, ScrollView, ContentView } from "@nativescript/core";
 import { onSyntaxViewTextChange } from "./onConsoleTextChange";
 
@@ -12,6 +13,8 @@ interface Props {
 }
 
 interface State {
+    consoleText: string,
+    outputColour: Color,
     ownPropsText: string,
     inheritedPropsText: string,
     outputText: string,
@@ -32,6 +35,7 @@ export class ConsolePage extends React.Component<Props, State> {
         return this.evalClosure.call(this.evalContext, str);
     }
 
+    private readonly consoleRef: React.RefObject<SyntaxHighlighterTextView> = React.createRef();
     private readonly ownPropsRef: React.RefObject<ScrollView> = React.createRef();
     private readonly inheritedPropsRef: React.RefObject<ScrollView> = React.createRef();
 
@@ -39,6 +43,8 @@ export class ConsolePage extends React.Component<Props, State> {
         super(props);
 
         this.state = {
+            consoleText: "",
+            outputColour: new Color("green"),
             ownPropsText: "",
             inheritedPropsText: "",
             outputText: "",
@@ -49,12 +55,28 @@ export class ConsolePage extends React.Component<Props, State> {
         };
     }
 
+    static customStringify(v): string {
+        const cache = new Set();
+            const stringified: string = JSON.stringify(v, (key, value) => {
+                if(typeof value === 'object' && value !== null){
+                    if(cache.has(value)) return; // Circular reference found, discard key
+                    // Store value in our set
+                    cache.add(value);
+                }
+                return value;
+            },
+            2
+        );
+        return stringified === "{}" ? v.toString() : stringified;
+    };
+
     private readonly onSyntaxViewLoaded = () => {
 
     };
 
     private readonly onSyntaxViewTextChange = (args: EventData) => {
         const { text } = args.object as TextView;
+        console.log(`[onSyntaxViewTextChange] ${text}`);
 
         const ownProps = this.ownPropsRef.current;
         if(ownProps){
@@ -76,6 +98,7 @@ export class ConsolePage extends React.Component<Props, State> {
         });
 
         this.setState({
+            consoleText: text,
             ownProps: payload.ownProps,
             inheritedProps: payload.inheritedProps,
             suggestedText: payload.suggestedText,
@@ -99,6 +122,7 @@ export class ConsolePage extends React.Component<Props, State> {
     private readonly onDesignLoaded = (args: EventData) => {
         const design = args.object as ContentView;
         (design.ios as UIView).clipsToBounds = true;
+        (global as any).design = design;
     };
 
     private readonly onDesignButtonLoaded = () => {
@@ -106,15 +130,53 @@ export class ConsolePage extends React.Component<Props, State> {
     };
 
     private readonly onRunCodeButtonPress = () => {
+        const text: string = this.state.consoleText;
+        console.log(`[onRunCodeButtonPress]`);
 
+        try {
+            const value: any = this.evalInContext(
+                text
+                .replace(new RegExp('\u201c|\u201d', "g"), '"')
+                .replace(new RegExp('\u2018|\u2019', "g"), "'")
+            );
+
+            let outputValue: string = "";
+            if(typeof value === "undefined"){
+                outputValue = "undefined";
+            } else if(typeof value === "function"){
+                outputValue = value.toString();
+            } else if(typeof value === "object"){
+                // outputValue = value.toString() === "[object Object]" ? JSON.stringify(value, null, 2) : value;
+                outputValue = ConsolePage.customStringify(value);
+                // outputValue = this.customStringify2(value);
+            } else if(value === ""){
+                outputValue = '""';
+            } else {
+                outputValue = value;
+            }
+
+            this.setState({
+                outputColour: new Color("green"),
+                outputText: outputValue,
+            });
+        } catch(e){
+            this.setState({
+                outputColour: new Color("red"),
+                outputText: e,
+            });
+            console.error(e);
+        }
     };
 
     private readonly onClearCodeButtonPress = () => {
-
+        this.setState({
+            consoleText: "",
+            outputText: "",
+        });
     };
 
     private readonly onDesignButtonPress = () => {
-        this.setState({ designing: false });
+        this.setState((prevState) => ({ designing: !prevState.designing }));
     };
 
     render(){
@@ -158,7 +220,8 @@ export class ConsolePage extends React.Component<Props, State> {
                             padding={0}
                             margin={0}
                         /> */}
-                        <SyntaxHighlighterTextView
+                        <$SyntaxHighlighterTextView
+                            ref={this.consoleRef}
                             height={{ value: 100, unit: "%"}}
                             width={{ value: 100, unit: "%"}}
                             autocorrect={false}
@@ -168,6 +231,7 @@ export class ConsolePage extends React.Component<Props, State> {
                             returnDismissesKeyboard={false}
                             suggestedTextToFillOnTabPress={this.state.suggestedText}
                             onTextChange={this.onSyntaxViewTextChange}
+                            text={this.state.consoleText}
                             padding={0}
                             margin={0}
                         />
@@ -181,6 +245,10 @@ export class ConsolePage extends React.Component<Props, State> {
                             id="ownProps"
                             height={{ value: 100, unit: "%"}}
                             width={{ value: 100, unit: "%"}}
+                            style={{
+                                fontFamily: "Courier New",
+                                fontSize: 16,
+                            }}
                             editable={false}
                             onLoaded={this.onOwnPropsLoaded}
                             hint="(Own properties)"
@@ -200,6 +268,10 @@ export class ConsolePage extends React.Component<Props, State> {
                             id="inheritedProps"
                             height={{ value: 100, unit: "%"}}
                             width={{ value: 100, unit: "%"}}
+                            style={{
+                                fontFamily: "Courier New",
+                                fontSize: 16,
+                            }}
                             editable={false}
                             onLoaded={this.onInheritedPropsLoaded}
                             hint="(Inherited properties)"
@@ -212,19 +284,20 @@ export class ConsolePage extends React.Component<Props, State> {
                     <$ScrollView
                         row={3}
                         col={0}
+                        visibility={this.state.designing ? "collapse" : "visible"}
                     >
                         <$TextView
                             id="output"
-                            visibility={this.state.designing ? "collapse" : "visible"}
                             height={{ value: 100, unit: "%"}}
                             width={{ value: 100, unit: "%"}}
                             editable={false}
                             onLoaded={this.onOutputLoaded}
                             hint="(Console output)"
                             text={outputText}
-                            fontSize={16}
                             style={{
                                 fontFamily: "Courier New",
+                                fontSize: 16,
+                                color: this.state.outputColour,
                             }}
                             className="input"
                             backgroundColor="rgb(240,240,240)"
