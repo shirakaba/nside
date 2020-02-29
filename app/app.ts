@@ -1,9 +1,12 @@
-/*
-In NativeScript, the app.ts file is the entry point to your application.
-You can use this file to perform app-level initialization, but the primary
-purpose of the file is to pass control to the app’s first module.
-*/
-import * as app from "tns-core-modules/application";
+import 'react-hot-loader'; // Must be imported before React and ReactNativeScript.
+import * as React from "react";
+import * as app from "@nativescript/core/application/application";
+
+/* Controls react-nativescript log verbosity. true: all logs; false: only error logs. */
+Object.defineProperty(global, '__DEV__', { value: false });
+import * as ReactNativeScript from "react-nativescript";
+import { AppContainer } from "./AppContainer";
+
 (global as any).app = app;
 (global as any).UINode = function UINode(child) {
 	this.child = child;
@@ -45,7 +48,22 @@ app.on(app.uncaughtErrorEvent, function (args) {
 		/* Showing an alert dialogue has no effect, as the app unavoidably closes. */
     }
 });
-app.run({ moduleName: "app-root" });
+
+export const rootRef: React.RefObject<any> = React.createRef<any>();
+
+ReactNativeScript.start(
+    React.createElement(
+        AppContainer,
+        {
+            forwardedRef: rootRef
+        },
+        null
+    ),
+    /* This ref MUST match the ref that you pass into the base component of your app container. */
+    rootRef
+);
+
+// app.run({ moduleName: "app-root" });
 
 /*
 Do not place any code after the application has been started as it will not

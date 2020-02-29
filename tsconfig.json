@@ -6,6 +6,7 @@
         "emitDecoratorMetadata": true,
         "noEmitHelpers": true,
         "noEmitOnError": true,
+        "jsx": "react",
         "lib": [
             "es6",
             "dom"
@@ -16,7 +17,6 @@
                 "app/*"
             ],
             "*": [
-                "./node_modules/tns-core-modules/*",
                 "./node_modules/*"
             ]
         }
