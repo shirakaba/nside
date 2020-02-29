@@ -1,0 +1,29 @@
+// Start custom common variables
+@import '~@nativescript/theme/scss/variables/blue';
+// End custom common variables
+// Custom styles
+
+.page-content {
+    .page-placeholder {
+        /* These variables have been removed since updating to theme core.
+         * Unsure what they should be nowadays. */
+        // color: $page-icon-color;
+        // font-size: $page-content-placeholder-font-size;
+        vertical-align: center;
+        horizontal-align: center;
+    }
+
+    .page-icon {
+        font-size: 72;
+        vertical-align: top;
+        horizontal-align: center;
+        /* (Also removed) */
+        // color: $page-icon-color;
+        margin-top: 20%;
+    }
+}
+
+//Action bar
+ActionBar .action-bar-title {
+    horizontal-align: center;
+}

@@ -4,6 +4,7 @@ import { $Frame, $TabView, $TabViewItem, $Page } from "react-nativescript";
 import { isIOS, TabView } from "@nativescript/core";
 import { FramedPage } from "./FramedPage";
 import { ConsolePage } from "./console/ConsolePage";
+import { CanvasPage } from './canvas/CanvasPage';
 
 interface Props {
     forwardedRef: React.RefObject<TabView>,
@@ -35,7 +36,7 @@ export class AppContainer extends React.Component<Props, State> {
                     iconSource={isIOS ? "res://tabIcons/health_data" : "res://health_data"}
                 >
                     <FramedPage
-                        pageFactory={() => null}
+                        pageFactory={({ ref }) => <CanvasPage forwardedRef={ref}/>}
                         // defaultPage="canvas/canvas-page"
                     />
                 </$TabViewItem>
@@ -64,5 +65,5 @@ export class AppContainer extends React.Component<Props, State> {
     }
 }
 
-// export default AppContainer;
-export default hot(AppContainer); // Replace this line with the above line if you want to remove hot loading.
+export default AppContainer;
+// export default hot(AppContainer); // Replace this line with the above line if you want to remove hot loading.
