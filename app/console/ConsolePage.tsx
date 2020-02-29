@@ -4,7 +4,7 @@ import { Page } from "@nativescript/core";
 import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { Color } from "tns-core-modules/color/color";
 import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
-import { EventData, TextView, ScrollView } from "@nativescript/core";
+import { EventData, TextView, ScrollView, ContentView } from "@nativescript/core";
 import { onSyntaxViewTextChange } from "./onConsoleTextChange";
 
 interface Props {
@@ -96,8 +96,9 @@ export class ConsolePage extends React.Component<Props, State> {
 
     };
 
-    private readonly onDesignLoaded = () => {
-
+    private readonly onDesignLoaded = (args: EventData) => {
+        const design = args.object as ContentView;
+        (design.ios as UIView).clipsToBounds = true;
     };
 
     private readonly onDesignButtonLoaded = () => {
@@ -113,7 +114,7 @@ export class ConsolePage extends React.Component<Props, State> {
     };
 
     private readonly onDesignButtonPress = () => {
-
+        this.setState({ designing: false });
     };
 
     render(){
@@ -214,18 +215,24 @@ export class ConsolePage extends React.Component<Props, State> {
                     >
                         <$TextView
                             id="output"
+                            visibility={this.state.designing ? "collapse" : "visible"}
                             height={{ value: 100, unit: "%"}}
                             width={{ value: 100, unit: "%"}}
                             editable={false}
                             onLoaded={this.onOutputLoaded}
                             hint="(Console output)"
                             text={outputText}
+                            fontSize={16}
+                            style={{
+                                fontFamily: "Courier New",
+                            }}
                             className="input"
                             backgroundColor="rgb(240,240,240)"
                         />
                     </$ScrollView>
                     <$ContentView
                         id="design"
+                        visibility={this.state.designing ? "visible" : "collapse"}
                         row={3}
                         col={0}
                         onLoaded={this.onDesignLoaded}
@@ -243,7 +250,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         {/* <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> */}
                         <$Button text="Run code" onTap={this.onRunCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
                         <$Button text="Clear" onTap={this.onClearCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
-                        <$Button id="designButton" onLoaded={this.onDesignButtonLoaded} text="Design" onTap={this.onDesignButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                        <$Button id="designButton" onLoaded={this.onDesignButtonLoaded} text={this.state.designing ? "Debug" : "Design"} onTap={this.onDesignButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
                     </$FlexboxLayout>
                 </$GridLayout>
             </$Page>
