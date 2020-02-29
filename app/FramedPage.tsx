@@ -2,9 +2,9 @@ import * as React from "react";
 import { Frame, Page } from "@nativescript/core";
 import { $Frame } from "react-nativescript";
 import { PageComponentProps } from "react-nativescript/dist/components/Page";
-import { Ref } from "react";
+import { RefObject } from "react";
 
-type PageFactoryProps = PageComponentProps & { ref?: Ref<Page> };
+type PageFactoryProps = PageComponentProps & { ref?: RefObject<Page> };
 
 interface Props {
     pageFactory: (props: PageFactoryProps) => React.ReactNode,

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { $Frame, $TabView, $TabViewItem, $Page } from "react-nativescript";
-import { TabView } from "tns-core-modules/ui/tab-view/tab-view";
-import { isIOS } from "tns-core-modules/ui/page/page";
+import { isIOS, TabView } from "@nativescript/core";
 import { FramedPage } from "./FramedPage";
+import { ConsolePage } from "./console/ConsolePage";
 
 interface Props {
-    forwardedRef: React.RefObject<TabView>
+    forwardedRef: React.RefObject<TabView>,
 }
 
 interface State {
@@ -24,7 +24,7 @@ export class AppContainer extends React.Component<Props, State> {
                     iconSource={isIOS ? "res://tabIcons/create_new" : "res://create_new"}
                 >
                     <FramedPage
-                        pageFactory={() => null}
+                        pageFactory={({ ref }) => <ConsolePage forwardedRef={ref}/>}
                         // defaultPage="console/console-page"
                     />
                 </$TabViewItem>
