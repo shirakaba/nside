@@ -1,5 +1,5 @@
 import * as React from "react";
-import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView } from "react-nativescript";
+import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $StackLayout } from "react-nativescript";
 import { Page } from "@nativescript/core";
 
 interface Props {
@@ -48,18 +48,41 @@ export class ConsolePage extends React.Component<Props, State> {
         const { ownPropsText, inheritedPropsText, outputText } = this.state;
 
         return (
-            <$Page ref={forwardedRef}>
-                <$FlexboxLayout flexDirection="column" alignItems="center">
-                    <$ContentView
+            <$Page
+                ref={forwardedRef}
+                backgroundSpanUnderStatusBar={true}
+                backgroundColor="black"
+                height={{ value: 100, unit: "%"}}
+                width={{ value: 100, unit: "%"}}
+            >
+                <$StackLayout
+                    // flexDirection="column"
+                    // alignItems="center"
+
+                    height={{ value: 100, unit: "%"}}
+                    width={{ value: 100, unit: "%"}}
+                >
+                    <$StackLayout
                         id="SyntaxView"
                         height={{ value: 45, unit: "%"}}
                         width={{ value: 100, unit: "%"}}
                         onLoaded={this.onSyntaxViewLoaded}
                         iosOverflowSafeArea={false}
-                    ></$ContentView>
+                        backgroundColor="orange"
+                        // flexGrow={0}
+                    >
+                        <$TextView
+                            height={{ value: 100, unit: "%"}}
+                            width={{ value: 100, unit: "%"}}
+                            padding={0}
+                            margin={0}
+                            backgroundColor="blue"
+                        />
+                    </$StackLayout>
                     <$ScrollView
                         height={{ value: 5, unit: "%"}}
                         width={{ value: 100, unit: "%"}}
+                        backgroundColor="purple"
                     >
                         <$TextView
                             id="ownProps"
@@ -115,7 +138,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         backgroundColor="rgb(240,240,200)"
                     >
                     </$ContentView>
-                </$FlexboxLayout>
+                </$StackLayout>
             </$Page>
         );
     }
