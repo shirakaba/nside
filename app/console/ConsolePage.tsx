@@ -1,6 +1,7 @@
 import * as React from "react";
-import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $StackLayout } from "react-nativescript";
+import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $StackLayout, $GridLayout } from "react-nativescript";
 import { Page } from "@nativescript/core";
+import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 
 interface Props {
     forwardedRef: React.RefObject<Page>,
@@ -53,19 +54,22 @@ export class ConsolePage extends React.Component<Props, State> {
                 backgroundSpanUnderStatusBar={true}
                 backgroundColor="black"
             >
-                <$FlexboxLayout
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="flex-start"
+                <$GridLayout
+                    columns={[new ItemSpec(1, "star")]}
+                    rows={[
+                        new ItemSpec(45, "star"),
+                        new ItemSpec(5, "star"),
+                        new ItemSpec(5, "star"),
+                        new ItemSpec(35, "star"),
+                    ]}
 
                     height={{ value: 100, unit: "%"}}
                     width={{ value: 100, unit: "%"}}
                 >
                     <$StackLayout
                         id="SyntaxView"
-                        // height={{ value: 45, unit: "%"}}
-                        // height={"45%" as any}
-                        width={{ value: 100, unit: "%"}}
+                        row={0}
+                        col={0}
                         onLoaded={this.onSyntaxViewLoaded}
                         iosOverflowSafeArea={false}
                         backgroundColor="orange"
@@ -80,8 +84,8 @@ export class ConsolePage extends React.Component<Props, State> {
                         />
                     </$StackLayout>
                     <$ScrollView
-                        height={{ value: 5, unit: "%"}}
-                        width={{ value: 100, unit: "%"}}
+                        row={1}
+                        col={0}
                         backgroundColor="purple"
                     >
                         <$TextView
@@ -98,8 +102,8 @@ export class ConsolePage extends React.Component<Props, State> {
                         />
                     </$ScrollView>
                     <$ScrollView
-                        height={{ value: 5, unit: "%"}}
-                        width={{ value: 100, unit: "%"}}
+                        row={2}
+                        col={0}
                     >
                         <$TextView
                             id="inheritedProps"
@@ -115,8 +119,8 @@ export class ConsolePage extends React.Component<Props, State> {
                         />
                     </$ScrollView>
                     <$ScrollView
-                        height={{ value: 35, unit: "%"}}
-                        // width={{ value: 100, unit: "%"}}
+                        row={3}
+                        col={0}
                     >
                         <$TextView
                             id="output"
@@ -132,13 +136,13 @@ export class ConsolePage extends React.Component<Props, State> {
                     </$ScrollView>
                     <$ContentView
                         id="design"
-                        height={{ value: 35, unit: "%"}}
-                        width={{ value: 100, unit: "%"}}
+                        row={3}
+                        col={0}
                         onLoaded={this.onDesignLoaded}
                         backgroundColor="rgb(240,240,200)"
                     >
                     </$ContentView>
-                </$FlexboxLayout>
+                </$GridLayout>
             </$Page>
         );
     }
