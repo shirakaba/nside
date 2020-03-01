@@ -93,7 +93,7 @@ export function onSyntaxViewTextChange({
                     payload.inheritedProps = value.inherited.sort();
                     const bestSuggestion: string = makeBestSuggestion(payload.ownProps, payload.inheritedProps);
                     const diff: string = bestSuggestion.slice(incomplete.length);
-                    console.log(`bestSuggestion 1: ${bestSuggestion}; diff: ${diff}`);
+                    // console.log(`bestSuggestion 1: ${bestSuggestion}; diff: ${diff}`);
                     payload.suggestedText = text + diff;
                 } else {
                     let parent: string;
@@ -134,7 +134,7 @@ export function onSyntaxViewTextChange({
                     payload.inheritedProps = value.inherited.sort();
                     const bestSuggestion: string = makeBestSuggestion(payload.ownProps, payload.inheritedProps);
                     const diff: string = bestSuggestion.slice(toSlice.length);
-                    console.log(`bestSuggestion 2: ${bestSuggestion}; diff: ${diff}`);
+                    // console.log(`bestSuggestion 2: ${bestSuggestion}; diff: ${diff}`);
                     payload.suggestedText = text + diff;
                 }
             } catch (e) {
@@ -148,7 +148,7 @@ export function onSyntaxViewTextChange({
             payload.suggestedText = text;
         }
     } else {
-        console.log("NO MATCH");
+        // console.log("NO MATCH");
         payload.ownProps = [];
         payload.inheritedProps = [];
         payload.suggestedText = text;
