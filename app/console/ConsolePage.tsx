@@ -76,7 +76,7 @@ export class ConsolePage extends React.Component<Props, State> {
 
     private readonly onSyntaxViewTextChange = (args: EventData) => {
         const { text } = args.object as TextView;
-        console.log(`[onSyntaxViewTextChange] ${text}`);
+        // console.log(`[onSyntaxViewTextChange] ${text}`);
 
         const ownProps = this.ownPropsRef.current;
         if(ownProps){

@@ -47,7 +47,7 @@ export function onSyntaxViewTextChange({
         const lastIndex: number = finalLine.lastIndexOf(".");
         const token: string = lastIndex > -1 ? finalLine.slice(0, lastIndex) : finalLine;
         const incomplete: string = lastIndex > -1 ? finalLine.slice(lastIndex + ".".length) : "";
-        console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
+        // console.log("lastIndex: " + lastIndex + "; token: " + token + "; incomplete: " + incomplete);
         // Object.keys(global).forEach((key) => console.log(key));
         // for(let key in global){ console.log(key); }
         if (token !== "") {
