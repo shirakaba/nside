@@ -202,107 +202,82 @@ export class ConsolePage extends React.Component<Props, State> {
                     height={{ value: 100, unit: "%"}}
                     width={{ value: 100, unit: "%"}}
                 >
-                    <$StackLayout
-                        id="SyntaxView"
+                    <$SyntaxHighlighterTextView
+                        ref={this.consoleRef}
                         row={0}
                         col={0}
                         onLoaded={this.onSyntaxViewLoaded}
                         iosOverflowSafeArea={false}
-                        flexGrow={0}
-                    >
-                        {/* <$TextView
-                            height={{ value: 100, unit: "%"}}
-                            width={{ value: 100, unit: "%"}}
-                            autocorrect={false}
-                            autocapitalizationType={"none"}
-                            backgroundColor={new Color("rgb(25,25,25)")}
-                            color={new Color(0xffcccccc)}
-                            padding={0}
-                            margin={0}
-                        /> */}
-                        <$SyntaxHighlighterTextView
-                            ref={this.consoleRef}
-                            height={{ value: 100, unit: "%"}}
-                            width={{ value: 100, unit: "%"}}
-                            autocorrect={false}
-                            autocapitalizationType={"none"}
-                            backgroundColor={new Color("rgb(25,25,25)")}
-                            color={new Color(0xffcccccc)}
-                            returnDismissesKeyboard={false}
-                            suggestedTextToFillOnTabPress={this.state.suggestedText}
-                            onTextChange={this.onSyntaxViewTextChange}
-                            text={this.state.consoleText}
-                            padding={0}
-                            margin={0}
-                        />
-                    </$StackLayout>
-                    <$ScrollView
-                        ref={this.ownPropsRef}
+                        height={{ value: 100, unit: "%"}}
+                        width={{ value: 100, unit: "%"}}
+                        autocorrect={false}
+                        autocapitalizationType={"none"}
+                        backgroundColor={new Color("rgb(25,25,25)")}
+                        color={new Color(0xffcccccc)}
+                        returnDismissesKeyboard={false}
+                        suggestedTextToFillOnTabPress={this.state.suggestedText}
+                        onTextChange={this.onSyntaxViewTextChange}
+                        text={this.state.consoleText}
+                        padding={0}
+                        margin={0}
+                    />
+                    <$TextView
+                        id="ownProps"
+                        // ref={this.ownPropsRef}
                         row={1}
                         col={0}
-                    >
-                        <$TextView
-                            id="ownProps"
-                            height={{ value: 100, unit: "%"}}
-                            width={{ value: 100, unit: "%"}}
-                            style={{
-                                fontFamily: "Courier New",
-                                fontSize: 16,
-                            }}
-                            editable={false}
-                            onLoaded={this.onOwnPropsLoaded}
-                            hint="(Own properties)"
-                            text={ownPropsText}
-                            className="input"
-                            backgroundColor="rgb(220,240,240)"
-                            padding={0}
-                            margin={0}
-                        />
-                    </$ScrollView>
-                    <$ScrollView
-                        ref={this.inheritedPropsRef}
+                        height={{ value: 100, unit: "%"}}
+                        width={{ value: 100, unit: "%"}}
+                        style={{
+                            fontFamily: "Courier New",
+                            fontSize: 16,
+                        }}
+                        editable={false}
+                        onLoaded={this.onOwnPropsLoaded}
+                        hint="(Own properties)"
+                        text={ownPropsText}
+                        className="input"
+                        backgroundColor="rgb(220,240,240)"
+                        padding={0}
+                        margin={0}
+                    />
+                    <$TextView
+                        id="inheritedProps"
                         row={2}
                         col={0}
-                    >
-                        <$TextView
-                            id="inheritedProps"
-                            height={{ value: 100, unit: "%"}}
-                            width={{ value: 100, unit: "%"}}
-                            style={{
-                                fontFamily: "Courier New",
-                                fontSize: 16,
-                            }}
-                            editable={false}
-                            onLoaded={this.onInheritedPropsLoaded}
-                            hint="(Inherited properties)"
-                            text={inheritedPropsText}
-                            className="input"
-                            backgroundColor="rgb(220,220,240)"
-                            
-                        />
-                    </$ScrollView>
-                    <$ScrollView
+                        height={{ value: 100, unit: "%"}}
+                        width={{ value: 100, unit: "%"}}
+                        style={{
+                            fontFamily: "Courier New",
+                            fontSize: 16,
+                        }}
+                        editable={false}
+                        onLoaded={this.onInheritedPropsLoaded}
+                        hint="(Inherited properties)"
+                        text={inheritedPropsText}
+                        className="input"
+                        backgroundColor="rgb(220,220,240)"
+                        
+                    />
+                    <$TextView
+                        id="output"
                         row={3}
                         col={0}
                         visibility={this.state.designing ? "collapse" : "visible"}
-                    >
-                        <$TextView
-                            id="output"
-                            height={{ value: 100, unit: "%"}}
-                            width={{ value: 100, unit: "%"}}
-                            editable={false}
-                            onLoaded={this.onOutputLoaded}
-                            hint="(Console output)"
-                            text={outputText}
-                            style={{
-                                fontFamily: "Courier New",
-                                fontSize: 16,
-                                color: this.state.outputColour,
-                            }}
-                            className="input"
-                            backgroundColor="rgb(240,240,240)"
-                        />
-                    </$ScrollView>
+                        height={{ value: 100, unit: "%"}}
+                        width={{ value: 100, unit: "%"}}
+                        editable={false}
+                        onLoaded={this.onOutputLoaded}
+                        hint="(Console output)"
+                        text={outputText}
+                        style={{
+                            fontFamily: "Courier New",
+                            fontSize: 16,
+                            color: this.state.outputColour,
+                        }}
+                        className="input"
+                        backgroundColor="rgb(240,240,240)"
+                    />
                     <$ContentView
                         id="design"
                         visibility={this.state.designing ? "visible" : "collapse"}
