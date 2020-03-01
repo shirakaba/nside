@@ -236,7 +236,6 @@ export class ConsolePage extends React.Component<Props, State> {
                         onLoaded={this.onOwnPropsLoaded}
                         hint="(Own properties)"
                         text={ownPropsText}
-                        className="input"
                         backgroundColor="rgb(220,240,240)"
                         padding={0}
                         margin={0}
@@ -255,7 +254,6 @@ export class ConsolePage extends React.Component<Props, State> {
                         onLoaded={this.onInheritedPropsLoaded}
                         hint="(Inherited properties)"
                         text={inheritedPropsText}
-                        className="input"
                         backgroundColor="rgb(220,220,240)"
                         
                     />
@@ -275,7 +273,6 @@ export class ConsolePage extends React.Component<Props, State> {
                             fontSize: 16,
                             color: this.state.outputColour,
                         }}
-                        className="input"
                         backgroundColor="rgb(240,240,240)"
                     />
                     <$ContentView
