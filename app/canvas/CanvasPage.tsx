@@ -29,7 +29,7 @@ export class CanvasPage extends React.Component<Props, State> {
                 ref={forwardedRef}
                 className="page"
             >
-                <$ActionBar className="action-bar" backgroundColor="black">
+                <$ActionBar className="action-bar" backgroundColor="gray">
                     <$Label className="action-bar-title" text="Canvas" color={new Color("white")}/>
                 </$ActionBar>
 
