@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@nativescript/theme": "^2.3.2",
-    "nativescript-syntax-highlighter": "file:../nativescript-syntax-highlighter/src",
     "react": "^16.9.0",
     "react-nativescript": "^0.18.0",
     "tns-core-modules": "~6.4.0"

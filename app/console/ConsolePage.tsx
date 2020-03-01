@@ -1,10 +1,8 @@
 import * as React from "react";
-import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $StackLayout, $GridLayout, $Button } from "react-nativescript";
+import { $Page, $FlexboxLayout, $ContentView, $TextView, $GridLayout, $Button } from "react-nativescript";
 import { Page } from "@nativescript/core";
 import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
 import { Color } from "tns-core-modules/color/color";
-import { $SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
-import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/syntax-highlighter-text-view.ios";
 import { EventData, TextView, ScrollView, ContentView } from "@nativescript/core";
 import { onSyntaxViewTextChange } from "./onConsoleTextChange";
 
@@ -35,7 +33,6 @@ export class ConsolePage extends React.Component<Props, State> {
         return this.evalClosure.call(this.evalContext, str);
     }
 
-    private readonly consoleRef: React.RefObject<SyntaxHighlighterTextView> = React.createRef();
     private readonly ownPropsRef: React.RefObject<ScrollView> = React.createRef();
     private readonly inheritedPropsRef: React.RefObject<ScrollView> = React.createRef();
 
@@ -107,26 +104,10 @@ export class ConsolePage extends React.Component<Props, State> {
         });
     };
 
-    private readonly onOwnPropsLoaded = () => {
-
-    };
-
-    private readonly onInheritedPropsLoaded = () => {
-
-    };
-
-    private readonly onOutputLoaded = () => {
-
-    };
-
     private readonly onDesignLoaded = (args: EventData) => {
         const design = args.object as ContentView;
         (design.ios as UIView).clipsToBounds = true;
         (global as any).design = design;
-    };
-
-    private readonly onDesignButtonLoaded = () => {
-
     };
 
     private readonly onRunCodeButtonPress = () => {
@@ -192,18 +173,17 @@ export class ConsolePage extends React.Component<Props, State> {
                 <$GridLayout
                     columns={[new ItemSpec(1, "star")]}
                     rows={[
-                        new ItemSpec(45, "star"),
-                        new ItemSpec(5, "star"),
-                        new ItemSpec(5, "star"),
-                        new ItemSpec(35, "star"),
-                        new ItemSpec(10, "star"),
+                        new ItemSpec(1, "star"),
+                        new ItemSpec(1, "star"),
+                        new ItemSpec(1, "star"),
+                        new ItemSpec(1, "star"),
+                        new ItemSpec(1, "star"),
                     ]}
 
                     height={{ value: 100, unit: "%"}}
                     width={{ value: 100, unit: "%"}}
                 >
-                    <$SyntaxHighlighterTextView
-                        ref={this.consoleRef}
+                    <$TextView
                         row={0}
                         col={0}
                         onLoaded={this.onSyntaxViewLoaded}
@@ -214,8 +194,8 @@ export class ConsolePage extends React.Component<Props, State> {
                         autocapitalizationType={"none"}
                         backgroundColor={new Color("rgb(25,25,25)")}
                         color={new Color(0xffcccccc)}
-                        returnDismissesKeyboard={false}
-                        suggestedTextToFillOnTabPress={this.state.suggestedText}
+                        // returnDismissesKeyboard={false}
+                        // suggestedTextToFillOnTabPress={this.state.suggestedText}
                         onTextChange={this.onSyntaxViewTextChange}
                         text={this.state.consoleText}
                         padding={0}
@@ -233,7 +213,6 @@ export class ConsolePage extends React.Component<Props, State> {
                             fontSize: 16,
                         }}
                         editable={false}
-                        onLoaded={this.onOwnPropsLoaded}
                         hint="(Own properties)"
                         text={ownPropsText}
                         backgroundColor="rgb(220,240,240)"
@@ -251,7 +230,6 @@ export class ConsolePage extends React.Component<Props, State> {
                             fontSize: 16,
                         }}
                         editable={false}
-                        onLoaded={this.onInheritedPropsLoaded}
                         hint="(Inherited properties)"
                         text={inheritedPropsText}
                         backgroundColor="rgb(220,220,240)"
@@ -265,7 +243,6 @@ export class ConsolePage extends React.Component<Props, State> {
                         height={{ value: 100, unit: "%"}}
                         width={{ value: 100, unit: "%"}}
                         editable={false}
-                        onLoaded={this.onOutputLoaded}
                         hint="(Console output)"
                         text={outputText}
                         style={{
@@ -295,7 +272,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         {/* <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> */}
                         <$Button text="Run code" onTap={this.onRunCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
                         <$Button text="Clear" onTap={this.onClearCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
-                        <$Button id="designButton" onLoaded={this.onDesignButtonLoaded} text={this.state.designing ? "Debug" : "Design"} onTap={this.onDesignButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                        <$Button id="designButton" text={this.state.designing ? "Debug" : "Design"} onTap={this.onDesignButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
                     </$FlexboxLayout>
                 </$GridLayout>
             </$Page>
