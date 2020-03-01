@@ -22,9 +22,9 @@ export function onPageLoaded(args) {
     console.log("ON PAGE LOADED. page.bindingContext:", page.bindingContext);
     // console.log("ON PAGE LOADED. page._context:", page._context);
 
-    const cv: ContentView = page.getViewById<ContentView>("SyntaxView");
-    insertSyntaxView(cv);
-    textView!.text = page.bindingContext.description as string;
+    // const cv: ContentView = page.getViewById<ContentView>("SyntaxView");
+    // insertSyntaxView(cv);
+    // textView!.text = page.bindingContext.description as string;
 }
 
 let textView: UITextView | undefined;

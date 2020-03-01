@@ -7,6 +7,7 @@ Feel free to customize layouts and components to change how the tab view looks.
     navigatingTo="onNavigatingTo"
     loaded="onPageLoaded"
     xmlns="http://schemas.nativescript.org/tns.xsd"
+    xmlns:ui="nativescript-syntax-highlighter/syntax-highlighter-view"
 >
 
     <ActionBar class="action-bar" backgroundColor="black">
@@ -14,9 +15,7 @@ Feel free to customize layouts and components to change how the tab view looks.
         <Label class="action-bar-title" text="{{ name }}"></Label>
     </ActionBar>
     <GridLayout>
-        <!-- <ScrollView height="100%" width="100%" iosOverflowSafeArea="false"> -->
-            <!-- <TextView class="m-10 h3" verticalAlignment="top" text="{{ description }}" editable="false" style="font-family: Courier New;"></TextView> -->
-            <ContentView height="100%" width="100%" id="SyntaxView" text="{{ description }}"></ContentView>
-        <!-- </ScrollView> -->
+            <!-- <ContentView height="100%" width="100%" id="SyntaxView" text="{{ description }}"></ContentView> -->
+            <ui:SyntaxHighlighterView id="SyntaxView" languageName="javascript" theme="pojoaque" height="100%" width="100%" code="{{ description }}"/>
     </GridLayout>
 </Page>
