@@ -7,7 +7,6 @@ Feel free to customize layouts and components to change how the tab view looks.
     navigatingTo="onNavigatingTo"
     loaded="onPageLoaded"
     xmlns="http://schemas.nativescript.org/tns.xsd"
-    xmlns:ui="nativescript-syntax-highlighter/syntax-highlighter-text-view.ios"
 >
 
     <ActionBar class="action-bar" backgroundColor="gray">
