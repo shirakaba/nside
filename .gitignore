@@ -1,14 +1,15 @@
 # NativeScript
-hooks/
+hooks/*
 node_modules/
 platforms/
+.update_backup
+.migration_backup
 
 # NativeScript Template
 *.js.map
 *.js
-!notes/*.js
-!webpack.config.js
-*.css
+!react-nativescript.webpack.config.js
+!hooks/after-createProject/after-createProject.js
 
 # Logs
 logs
@@ -33,4 +34,6 @@ typings/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
 .awcache
+!notes/*.js
