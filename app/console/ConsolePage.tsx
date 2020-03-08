@@ -167,17 +167,19 @@ export class ConsolePage extends React.Component<Props, State> {
         return (
             <$Page
                 ref={forwardedRef}
-                backgroundSpanUnderStatusBar={true}
-                backgroundColor="black"
+                height={{ value: 100, unit: "%"}}
+                width={{ value: 100, unit: "%"}}
+                backgroundColor={new Color("rgb(25,25,25)")}
             >
                 <$GridLayout
+                    iosOverflowSafeArea={true}
                     columns={[new ItemSpec(1, "star")]}
                     rows={[
                         new ItemSpec(1, "star"),
-                        new ItemSpec(1, "star"),
-                        new ItemSpec(1, "star"),
-                        new ItemSpec(1, "star"),
-                        new ItemSpec(1, "star"),
+                        new ItemSpec(1, "auto"),
+                        new ItemSpec(1, "auto"),
+                        new ItemSpec(1, "auto"),
+                        new ItemSpec(1, "auto"),
                     ]}
 
                     height={{ value: 100, unit: "%"}}
@@ -187,7 +189,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         row={0}
                         col={0}
                         onLoaded={this.onSyntaxViewLoaded}
-                        iosOverflowSafeArea={false}
+                        iosOverflowSafeArea={true}
                         height={{ value: 100, unit: "%"}}
                         width={{ value: 100, unit: "%"}}
                         autocorrect={false}
@@ -198,7 +200,8 @@ export class ConsolePage extends React.Component<Props, State> {
                         // suggestedTextToFillOnTabPress={this.state.suggestedText}
                         onTextChange={this.onSyntaxViewTextChange}
                         text={this.state.consoleText}
-                        padding={0}
+                        verticalAlignment={"top"}
+                        padding={"5 5 0 5"}
                         margin={0}
                     />
                     <$TextView
@@ -206,7 +209,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         // ref={this.ownPropsRef}
                         row={1}
                         col={0}
-                        height={{ value: 100, unit: "%"}}
+                        height={{ value: 75, unit: "dip"}}
                         width={{ value: 100, unit: "%"}}
                         style={{
                             fontFamily: "Courier New",
@@ -223,7 +226,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         id="inheritedProps"
                         row={2}
                         col={0}
-                        height={{ value: 100, unit: "%"}}
+                        height={{ value: 75, unit: "dip"}}
                         width={{ value: 100, unit: "%"}}
                         style={{
                             fontFamily: "Courier New",
@@ -233,6 +236,8 @@ export class ConsolePage extends React.Component<Props, State> {
                         hint="(Inherited properties)"
                         text={inheritedPropsText}
                         backgroundColor="rgb(220,220,240)"
+                        padding={0}
+                        margin={0}
                         
                     />
                     <$TextView
@@ -240,7 +245,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         row={3}
                         col={0}
                         visibility={this.state.designing ? "collapse" : "visible"}
-                        height={{ value: 100, unit: "%"}}
+                        height={{ value: 100, unit: "dip"}}
                         width={{ value: 100, unit: "%"}}
                         editable={false}
                         hint="(Console output)"
@@ -251,6 +256,8 @@ export class ConsolePage extends React.Component<Props, State> {
                             color: this.state.outputColour,
                         }}
                         backgroundColor="rgb(240,240,240)"
+                        padding={0}
+                        margin={0}
                     />
                     <$ContentView
                         id="design"
@@ -259,6 +266,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         col={0}
                         onLoaded={this.onDesignLoaded}
                         backgroundColor="rgb(240,240,200)"
+                        height={{ value: 75, unit: "dip"}}
                     >
                     </$ContentView>
                     <$FlexboxLayout
