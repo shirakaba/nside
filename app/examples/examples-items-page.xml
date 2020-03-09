@@ -14,7 +14,7 @@ Feel free to customize layouts and components to change how the tab view looks.
     <ListView items="{{ items }}" itemTap="onItemTap" class="list-group">
         <ListView.itemTemplate>
             <StackLayout orientation="horizontal" class="list-group-item">
-                <Label text="{{ name }}" textWrap="true"></Label>
+                <Label text="{{ name }}" fontSize="20" padding="7" textWrap="true"></Label>
             </StackLayout>
         </ListView.itemTemplate>
     </ListView>

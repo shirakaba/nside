@@ -293,9 +293,9 @@ export class ConsolePage extends React.Component<Props, State> {
                         backgroundColor="rgb(25,25,25)"
                     >
                         {/* <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> */}
-                        <$Button text="Run code" onTap={this.onRunCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
-                        <$Button text="Clear" onTap={this.onClearCodeButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
-                        <$Button id="designButton" onLoaded={this.onDesignButtonLoaded} text={this.state.designing ? "Debug" : "Design"} onTap={this.onDesignButtonPress} className="btn btn-primary btn-active" backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                        <$Button text="Run code" onTap={this.onRunCodeButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                        <$Button text="Clear" onTap={this.onClearCodeButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
+                        <$Button id="designButton" onLoaded={this.onDesignButtonLoaded} text={this.state.designing ? "Debug" : "Design"} onTap={this.onDesignButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
                     </$FlexboxLayout>
                 </$GridLayout>
             </$Page>
