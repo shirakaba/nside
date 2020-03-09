@@ -196,7 +196,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         new ItemSpec(5, "star"),
                         new ItemSpec(5, "star"),
                         new ItemSpec(35, "star"),
-                        new ItemSpec(10, "star"),
+                        new ItemSpec(1, "auto"),
                     ]}
 
                     height={{ value: 100, unit: "%"}}
@@ -291,6 +291,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         alignItems="center"
                         justifyContent="space-around"
                         backgroundColor="rgb(25,25,25)"
+                        padding={8}
                     >
                         {/* <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> */}
                         <$Button text="Run code" onTap={this.onRunCodeButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
