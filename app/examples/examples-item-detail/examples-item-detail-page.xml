@@ -9,13 +9,9 @@ Feel free to customize layouts and components to change how the tab view looks.
     xmlns="http://schemas.nativescript.org/tns.xsd"
     xmlns:ui="nativescript-syntax-highlighter/syntax-highlighter-text-view.ios"
 >
-
     <ActionBar class="action-bar" backgroundColor="gray">
         <NavigationButton tap="onBackButtonTap" android.systemIcon="ic_menu_back"/>
         <Label class="action-bar-title" color="white" text="{{ name }}"></Label>
     </ActionBar>
-    <!-- <ContentView height="100%" width="100%" id="SyntaxView" text="{{ description }}"></ContentView> -->
-    <!-- Layout clearly incorrect - TODO: try removing onLayout! -->
-    <!-- <ui:SyntaxHighlighterTextView id="SyntaxView" languageName="javascript" backgroundColor="#191919" theme="pojoaque" height="100%" width="100%" code="{{ description }}"/> -->
-    <TextView id="SyntaxView" backgroundColor="#191919" color="white" fontFamily="Courier New" height="100%" width="100%" text="{{ description }}"/>
+    <ui:SyntaxHighlighterTextView id="SyntaxView" languageName="javascript" backgroundColor="#191919" theme="pojoaque" height="100%" width="100%" text="{{ description }}"/>
 </Page>
