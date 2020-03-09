@@ -64,5 +64,5 @@ export class AppContainer extends React.Component<Props, State> {
     }
 }
 
-export default AppContainer;
-// export default hot(AppContainer); // Replace this line with the above line if you want to remove hot loading.
+// export default AppContainer;
+export default hot(AppContainer); // Replace this line with the above line if you want to remove hot loading.
