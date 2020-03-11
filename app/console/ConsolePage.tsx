@@ -115,8 +115,11 @@ export class ConsolePage extends React.Component<Props, State> {
 
     };
 
-    private readonly onOutputLoaded = () => {
-
+    private readonly onOutputLoaded = (args: EventData) => {
+        const textView = args.object as TextView;
+        /* Hacky workaround to resolve inexplicable bug of text getting clipped off until relayout. */
+        textView.lineHeight += 1;
+        textView.lineHeight -= 1;
     };
 
     private readonly onDesignLoaded = (args: EventData) => {
