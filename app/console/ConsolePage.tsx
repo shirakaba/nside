@@ -190,7 +190,7 @@ export class ConsolePage extends React.Component<Props, State> {
             <$Page
                 ref={forwardedRef}
                 backgroundSpanUnderStatusBar={true}
-                backgroundColor="black"
+                backgroundColor={new Color("rgb(25,25,25)")}
             >
                 <$GridLayout
                     columns={[new ItemSpec(1, "star")]}
@@ -221,7 +221,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         suggestedTextToFillOnTabPress={this.state.suggestedText}
                         onTextChange={this.onSyntaxViewTextChange}
                         text={this.state.consoleText}
-                        padding={0}
+                        padding={8}
                         margin={0}
                     />
                     <$TextView
