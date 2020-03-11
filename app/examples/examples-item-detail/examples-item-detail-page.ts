@@ -19,5 +19,5 @@ export function onBackButtonTap(args: EventData) {
 
 export function onPageLoaded(args) {
     const page: Page = args.object;
-    console.log("ON PAGE LOADED. page.bindingContext:", page.bindingContext);
+    // console.log("ON PAGE LOADED. page.bindingContext:", page.bindingContext);
 }
