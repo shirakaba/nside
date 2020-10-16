@@ -1,7 +1,4 @@
-import { Observable } from "tns-core-modules/data/observable";
-import { Page, NavigatedData } from "tns-core-modules/ui/page/page";
-import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
-import { TextView } from "tns-core-modules/ui/text-view/text-view";
+import { Observable, Page, NavigatedData, GridLayout, TextView } from "@nativescript/core";
 
 export class AboutViewModel extends Observable {
     private static text: string = `ABOUT NS:IDE

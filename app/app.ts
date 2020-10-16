@@ -1,11 +1,13 @@
 import * as React from "react";
 
 /* Controls react-nativescript log verbosity. true: all logs; false: only error logs. */
-Object.defineProperty(global, '__DEV__', { value: true });
+Object.defineProperty(global, '__DEV__', { value: false });
 
-import * as ReactNativeScript from "react-nativescript/dist/index";
+import { registerElement, start as RNSStart } from "react-nativescript";
 import AppContainer from "./AppContainer";
 import { Application } from "@nativescript/core";
+
+registerElement('syntaxHighlighterTextView', () => require('nativescript-syntax-highlighter').Gradient);
 
 (global as any).app = Application;
 (global as any).UINode = function UINode(child) {
@@ -49,7 +51,7 @@ Application.on(Application.uncaughtErrorEvent, function (args) {
     }
 });
 
-ReactNativeScript.start(React.createElement(AppContainer, {}, null));
+RNSStart(React.createElement(AppContainer, {}, null));
 
 /*
 Do not place any code after the application has been started as it will not

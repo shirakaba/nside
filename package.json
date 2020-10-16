@@ -1,4 +1,5 @@
 {
+  "main": "app.js",
   "description": "NativeScript IDE",
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
@@ -7,11 +8,11 @@
     "lint": "tslint \"app/**/*.ts\""
   },
   "dependencies": {
+    "@nativescript/core": "~7.0.0",
+    "@react-navigation/native": "^5.4.3",
     "nativescript-syntax-highlighter": "file:../nativescript-syntax-highlighter/src",
     "react": "^16.13.1",
-    "react-nativescript": "^2.0.0",
-    "@react-navigation/native": "^5.4.3",
-    "@nativescript/core": "~7.0.0"
+    "react-nativescript": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",

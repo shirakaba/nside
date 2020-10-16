@@ -2,6 +2,7 @@ import * as React from "react";
 import { Color } from "@nativescript/core";
 import { EventData, TextView, ContentView } from "@nativescript/core";
 import { onSyntaxViewTextChange } from "./onConsoleTextChange";
+import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
 
 interface Props {
 }
@@ -167,7 +168,7 @@ export class ConsolePage extends React.Component<Props, State> {
                     height="100%"
                     width="100%"
                 >
-                    {/* <syntaxHighlighterTextView
+                    <SyntaxHighlighterTextView
                         row={0}
                         col={0}
                         iosOverflowSafeArea={false}
@@ -186,7 +187,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         }}
                         padding={8}
                         margin={0}
-                    /> */}
+                    />
                     <textView
                         id="ownProps"
                         row={1}

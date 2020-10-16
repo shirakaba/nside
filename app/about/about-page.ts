@@ -1,4 +1,4 @@
-import { NavigatedData, Page } from "tns-core-modules/ui/page";
+import { NavigatedData, Page } from "@nativescript/core";
 import { AboutViewModel } from "./about-view-model";
 
 export function onNavigatingTo(args: NavigatedData) {
