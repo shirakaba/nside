@@ -1,13 +1,4 @@
 {
-  "nativescript": {
-    "id": "uk.co.bottledlogic.NSIDE",
-    "tns-android": {
-      "version": "6.4.1"
-    },
-    "tns-ios": {
-      "version": "6.4.0"
-    }
-  },
   "description": "NativeScript IDE",
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
@@ -15,26 +6,26 @@
     "lint": "tslint \"app/**/*.ts\""
   },
   "dependencies": {
-    "@nativescript/theme": "^2.3.2",
     "nativescript-syntax-highlighter": "file:../nativescript-syntax-highlighter/src",
-    "react": "^16.9.0",
-    "react-nativescript": "^0.18.0",
-    "tns-core-modules": "~6.4.0"
+    "react": "^16.13.1",
+    "react-nativescript": "^2.0.0",
+    "@react-navigation/native": "^5.4.3",
+    "@nativescript/core": "~7.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-react": "^7.8.3",
-    "@types/react": "^16.9.23",
-    "awesome-typescript-loader": "^5.2.1",
-    "babel-loader": "^8.0.6",
-    "fork-ts-checker-webpack-plugin": "^4.0.5",
-    "nativescript-dev-webpack": "~1.5.0",
-    "node-sass": "4.12.0",
-    "react-hot-loader": "^4.12.19",
-    "tns-platform-declarations": "6.0.1",
-    "tslint": "~5.11.0",
-    "typescript": "^3.4.5"
+    "@babel/core": "^7.4.5",
+    "@nativescript/android": "^7.0.0",
+    "@nativescript/ios": "7.0.1",
+    "@nativescript/types": "7.0.1",
+    "@nativescript/webpack": "~3.0.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
+    "@types/react": "16.9.34",
+    "babel-loader": "8.0.6",
+    "copy-webpack-plugin": "4.6.0",
+    "fork-ts-checker-webpack-plugin": "^5.1.0",
+    "patch-package": "^6.2.2",
+    "react-refresh": "^0.8.3",
+    "typescript": "^3.9.5"
   },
   "readme": "NativeScript IDE"
 }

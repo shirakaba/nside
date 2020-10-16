@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "target": "es2017",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noEmitHelpers": true,
         "noEmitOnError": true,
-        "skipLibCheck": true,
         "jsx": "react",
         "lib": [
             "es6",
@@ -14,16 +14,21 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "~/*": [
-                "app/*"
-            ],
             "*": [
                 "./node_modules/*"
+            ],
+            "~/*": [
+                "app/*"
             ]
         }
     },
+    "include": [
+        // "../react-nativescript",
+        "**/*"
+    ],
     "exclude": [
         "node_modules",
+        "../react-nativescript/node_modules",
         "platforms"
     ]
 }
