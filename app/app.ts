@@ -4,10 +4,20 @@ import * as React from "react";
 Object.defineProperty(global, '__DEV__', { value: false });
 
 import { registerElement, start as RNSStart } from "react-nativescript";
+registerElement(
+	'syntaxHighlighterTextView',
+	() => require('nativescript-syntax-highlighter/syntax-highlighter-text-view').SyntaxHighlighterTextView,
+	{
+		model: {
+			prop: 'text',
+			event: 'textChange',
+		},
+	}
+);
+
 import AppContainer from "./AppContainer";
 import { Application } from "@nativescript/core";
 
-registerElement('syntaxHighlighterTextView', () => require('nativescript-syntax-highlighter').Gradient);
 
 (global as any).app = Application;
 (global as any).UINode = function UINode(child) {
