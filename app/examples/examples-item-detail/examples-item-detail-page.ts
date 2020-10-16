@@ -1,8 +1,5 @@
-import { EventData, View } from "tns-core-modules/ui/core/view";
-import { NavigatedData, Page, ContentView } from "tns-core-modules/ui/page";
+import { EventData, View, NavigatedData, Page } from "@nativescript/core";
 import { Item } from "../shared/item";
-import { CodeAttributedStringWrapper } from "nativescript-syntax-highlighter/code-attributed-string-wrapper.ios";
-import { MyTextView, MyUITextViewDelegateImpl } from "../../MyUITextViewDelegateImpl.ios";
 
 export function onNavigatingTo(args: NavigatedData) {
     const page = args.object as Page;

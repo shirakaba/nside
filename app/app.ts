@@ -1,13 +1,13 @@
-import 'react-hot-loader'; // Must be imported before React and ReactNativeScript.
 import * as React from "react";
-import * as app from "@nativescript/core/application/application";
 
 /* Controls react-nativescript log verbosity. true: all logs; false: only error logs. */
-Object.defineProperty(global, '__DEV__', { value: false });
-import * as ReactNativeScript from "react-nativescript";
-import AppContainer from "./AppContainer";
+Object.defineProperty(global, '__DEV__', { value: true });
 
-(global as any).app = app;
+import * as ReactNativeScript from "react-nativescript/dist/index";
+import AppContainer from "./AppContainer";
+import { Application } from "@nativescript/core";
+
+(global as any).app = Application;
 (global as any).UINode = function UINode(child) {
 	this.child = child;
 	this.name = child.typeName;
@@ -35,7 +35,7 @@ import AppContainer from "./AppContainer";
 		return buffer;
 	}
 };
-app.on(app.uncaughtErrorEvent, function (args) {
+Application.on(Application.uncaughtErrorEvent, function (args) {
     if (args.android) {
         // For Android applications, args.android is an NativeScriptError.
         console.log(" *** NativeScriptError *** : " + args.android);
@@ -49,19 +49,7 @@ app.on(app.uncaughtErrorEvent, function (args) {
     }
 });
 
-export const rootRef: React.RefObject<any> = React.createRef<any>();
-
-ReactNativeScript.start(
-    React.createElement(
-        AppContainer,
-        {
-            forwardedRef: rootRef
-        },
-        null
-    ),
-    /* This ref MUST match the ref that you pass into the base component of your app container. */
-    rootRef
-);
+ReactNativeScript.start(React.createElement(AppContainer, {}, null));
 
 /*
 Do not place any code after the application has been started as it will not

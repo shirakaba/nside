@@ -3,6 +3,7 @@
   "license": "SEE LICENSE IN <your-license-filename>",
   "repository": "<fill-your-repository-here>",
   "scripts": {
+    "postinstall": "patch-package",
     "lint": "tslint \"app/**/*.ts\""
   },
   "dependencies": {

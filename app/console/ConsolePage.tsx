@@ -1,20 +1,14 @@
 import * as React from "react";
-import { $Page, $Label, $FlexboxLayout, $ContentView, $ScrollView, $TextView, $StackLayout, $GridLayout, $Button } from "react-nativescript";
-import { Page } from "@nativescript/core";
-import { ItemSpec } from "tns-core-modules/ui/layouts/grid-layout/grid-layout";
-import { Color } from "tns-core-modules/color/color";
-import { $SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
-import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/syntax-highlighter-text-view.ios";
-import { EventData, TextView, ScrollView, ContentView } from "@nativescript/core";
+import { Color } from "@nativescript/core";
+import { EventData, TextView, ContentView } from "@nativescript/core";
 import { onSyntaxViewTextChange } from "./onConsoleTextChange";
 
 interface Props {
-    forwardedRef: React.RefObject<Page>,
 }
 
 interface State {
     consoleText: string,
-    outputColour: Color,
+    outputColour: string|Color,
     ownPropsText: string,
     inheritedPropsText: string,
     outputText: string,
@@ -35,16 +29,12 @@ export class ConsolePage extends React.Component<Props, State> {
         return this.evalClosure.call(this.evalContext, str);
     }
 
-    private readonly consoleRef: React.RefObject<SyntaxHighlighterTextView> = React.createRef();
-    private readonly ownPropsRef: React.RefObject<ScrollView> = React.createRef();
-    private readonly inheritedPropsRef: React.RefObject<ScrollView> = React.createRef();
-
     constructor(props: Props){
         super(props);
 
         this.state = {
             consoleText: "",
-            outputColour: new Color("green"),
+            outputColour: "green",
             ownPropsText: "",
             inheritedPropsText: "",
             outputText: "",
@@ -55,7 +45,7 @@ export class ConsolePage extends React.Component<Props, State> {
         };
     }
 
-    static customStringify(v): string {
+    static customStringify(v: any): string {
         const cache = new Set();
             const stringified: string = JSON.stringify(v, (key, value) => {
                 if(typeof value === 'object' && value !== null){
@@ -70,22 +60,9 @@ export class ConsolePage extends React.Component<Props, State> {
         return stringified === "{}" ? v.toString() : stringified;
     };
 
-    private readonly onSyntaxViewLoaded = () => {
-
-    };
-
     private readonly onSyntaxViewTextChange = (args: EventData) => {
         const { text } = args.object as TextView;
         // console.log(`[onSyntaxViewTextChange] ${text}`);
-
-        const ownProps = this.ownPropsRef.current;
-        if(ownProps){
-            ownProps.scrollToVerticalOffset(0, false);
-        }
-        const inheritedProps = this.inheritedPropsRef.current;
-        if(inheritedProps){
-            inheritedProps.scrollToVerticalOffset(0, false);
-        }
 
         const payload = onSyntaxViewTextChange({
             text,
@@ -105,14 +82,6 @@ export class ConsolePage extends React.Component<Props, State> {
             ownPropsText: payload.ownPropsText,
             inheritedPropsText: payload.inheritedPropsText,
         });
-    };
-
-    private readonly onOwnPropsLoaded = () => {
-
-    };
-
-    private readonly onInheritedPropsLoaded = () => {
-
     };
 
     private readonly onOutputLoaded = (args: EventData) => {
@@ -161,12 +130,12 @@ export class ConsolePage extends React.Component<Props, State> {
             }
 
             this.setState({
-                outputColour: new Color("green"),
+                outputColour: "green",
                 outputText: outputValue,
             });
         } catch(e){
             this.setState({
-                outputColour: new Color("red"),
+                outputColour: "red",
                 outputText: e,
             });
             console.error(e);
@@ -185,40 +154,29 @@ export class ConsolePage extends React.Component<Props, State> {
     };
 
     render(){
-        const { forwardedRef } = this.props;
         const { ownPropsText, inheritedPropsText, outputText } = this.state;
 
         return (
-            <$Page
-                ref={forwardedRef}
+            <page
                 backgroundSpanUnderStatusBar={true}
-                backgroundColor={new Color("rgb(25,25,25)")}
+                backgroundColor="rgb(25,25,25)"
             >
-                <$GridLayout
-                    columns={[new ItemSpec(1, "star")]}
-                    rows={[
-                        new ItemSpec(65, "star"),
-                        new ItemSpec(5, "star"),
-                        new ItemSpec(5, "star"),
-                        new ItemSpec(20, "star"),
-                        new ItemSpec(1, "auto"),
-                    ]}
-
-                    height={{ value: 100, unit: "%"}}
-                    width={{ value: 100, unit: "%"}}
+                <gridLayout
+                    columns="*"
+                    rows="65*, 5*, 5*, 20*, auto"
+                    height="100%"
+                    width="100%"
                 >
-                    <$SyntaxHighlighterTextView
-                        ref={this.consoleRef}
+                    {/* <syntaxHighlighterTextView
                         row={0}
                         col={0}
-                        onLoaded={this.onSyntaxViewLoaded}
                         iosOverflowSafeArea={false}
-                        height={{ value: 100, unit: "%"}}
-                        width={{ value: 100, unit: "%"}}
+                        height="100%"
+                        width="100%"
                         autocorrect={false}
                         autocapitalizationType={"none"}
-                        backgroundColor={new Color("rgb(25,25,25)")}
-                        color={new Color(0xffcccccc)}
+                        backgroundColor={"rgb(25,25,25)"}
+                        color={"rgba(255,204,204,0.8)"}
                         returnDismissesKeyboard={false}
                         suggestedTextToFillOnTabPress={this.state.suggestedText}
                         onTextChange={this.onSyntaxViewTextChange}
@@ -228,50 +186,46 @@ export class ConsolePage extends React.Component<Props, State> {
                         }}
                         padding={8}
                         margin={0}
-                    />
-                    <$TextView
+                    /> */}
+                    <textView
                         id="ownProps"
-                        // ref={this.ownPropsRef}
                         row={1}
                         col={0}
-                        height={{ value: 100, unit: "%"}}
-                        width={{ value: 100, unit: "%"}}
+                        height="100%"
+                        width="100%"
                         style={{
                             fontFamily: "Courier New",
                             fontSize: 16,
                         }}
                         editable={false}
-                        onLoaded={this.onOwnPropsLoaded}
                         hint="(Own properties)"
                         text={ownPropsText}
                         backgroundColor="rgb(220,240,240)"
                         padding={0}
                         margin={0}
                     />
-                    <$TextView
+                    <textView
                         id="inheritedProps"
                         row={2}
                         col={0}
-                        height={{ value: 100, unit: "%"}}
-                        width={{ value: 100, unit: "%"}}
+                        height="100%"
+                        width="100%"
                         style={{
                             fontFamily: "Courier New",
                             fontSize: 16,
                         }}
                         editable={false}
-                        onLoaded={this.onInheritedPropsLoaded}
                         hint="(Inherited properties)"
                         text={inheritedPropsText}
                         backgroundColor="rgb(220,220,240)"
-                        
                     />
-                    <$TextView
+                    <textView
                         id="output"
                         row={3}
                         col={0}
                         visibility={this.state.designing ? "collapse" : "visible"}
-                        height={{ value: 100, unit: "%"}}
-                        width={{ value: 100, unit: "%"}}
+                        height="100%"
+                        width="100%"
                         editable={false}
                         onLoaded={this.onOutputLoaded}
                         hint="(Console output)"
@@ -283,7 +237,7 @@ export class ConsolePage extends React.Component<Props, State> {
                         }}
                         backgroundColor="rgb(240,240,240)"
                     />
-                    <$ContentView
+                    <contentView
                         id="design"
                         visibility={this.state.designing ? "visible" : "collapse"}
                         row={3}
@@ -291,8 +245,8 @@ export class ConsolePage extends React.Component<Props, State> {
                         onLoaded={this.onDesignLoaded}
                         backgroundColor="rgb(240,240,200)"
                     >
-                    </$ContentView>
-                    <$FlexboxLayout
+                    </contentView>
+                    <flexboxLayout
                         row={4}
                         col={0}
                         flexDirection="row"
@@ -302,12 +256,12 @@ export class ConsolePage extends React.Component<Props, State> {
                         padding={8}
                     >
                         {/* <Button text="View output" tap="{{ output }}" class="btn btn-primary btn-active"/> */}
-                        <$Button text="Run code" onTap={this.onRunCodeButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
-                        <$Button text="Clear" onTap={this.onClearCodeButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
-                        <$Button id="designButton" onLoaded={this.onDesignButtonLoaded} text={this.state.designing ? "Debug" : "Design"} onTap={this.onDesignButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color={new Color("rgb(255, 255, 255)")}/>
-                    </$FlexboxLayout>
-                </$GridLayout>
-            </$Page>
+                        <button text="Run code" onTap={this.onRunCodeButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color="white"/>
+                        <button text="Clear" onTap={this.onClearCodeButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color="white"/>
+                        <button id="designButton" onLoaded={this.onDesignButtonLoaded} text={this.state.designing ? "Debug" : "Design"} onTap={this.onDesignButtonPress} padding={7} backgroundColor="rgb(171, 130, 1)" color="rgb(255, 255, 255)"/>
+                    </flexboxLayout>
+                </gridLayout>
+            </page>
         );
     }
 }

@@ -1,6 +1,4 @@
-import { View } from "tns-core-modules/ui/core/view";
-import { ItemEventData } from "tns-core-modules/ui/list-view";
-import { NavigatedData, Page } from "tns-core-modules/ui/page";
+import { View, ItemEventData, NavigatedData, Page } from "@nativescript/core";
 
 import { ExamplesViewModel } from "./examples-view-model";
 import { Item } from "./shared/item";

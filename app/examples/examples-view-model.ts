@@ -1,4 +1,4 @@
-import { Observable } from "tns-core-modules/data/observable";
+import { Observable } from "@nativescript/core";
 import { Item } from "./shared/item";
 
 export class ExamplesViewModel extends Observable {
