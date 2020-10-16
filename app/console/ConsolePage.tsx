@@ -119,7 +119,9 @@ export class ConsolePage extends React.Component<Props, State> {
         const textView = args.object as TextView;
         /* Hacky workaround to resolve inexplicable bug of text getting clipped off until relayout. */
         textView.lineHeight += 1;
-        textView.lineHeight -= 1;
+        setTimeout(() => {
+            textView.lineHeight -= 1;
+        }, 15);
     };
 
     private readonly onDesignLoaded = (args: EventData) => {
@@ -195,10 +197,10 @@ export class ConsolePage extends React.Component<Props, State> {
                 <$GridLayout
                     columns={[new ItemSpec(1, "star")]}
                     rows={[
-                        new ItemSpec(45, "star"),
+                        new ItemSpec(65, "star"),
                         new ItemSpec(5, "star"),
                         new ItemSpec(5, "star"),
-                        new ItemSpec(35, "star"),
+                        new ItemSpec(20, "star"),
                         new ItemSpec(1, "auto"),
                     ]}
 
@@ -221,6 +223,9 @@ export class ConsolePage extends React.Component<Props, State> {
                         suggestedTextToFillOnTabPress={this.state.suggestedText}
                         onTextChange={this.onSyntaxViewTextChange}
                         text={this.state.consoleText}
+                        style={{
+                            fontSize: 22,
+                        }}
                         padding={8}
                         margin={0}
                     />
