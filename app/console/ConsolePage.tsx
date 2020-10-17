@@ -37,7 +37,7 @@ export class ConsolePage extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            consoleText: "UIView.alloc().init()",
+            consoleText: "",
             outputColour: "green",
             ownPropsText: "",
             inheritedPropsText: "",
