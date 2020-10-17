@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@nativescript/core": "~7.0.0",
-    "@react-navigation/native": "^5.4.3",
     "nativescript-syntax-highlighter": "file:../nativescript-syntax-highlighter/src",
     "react": "^16.13.1",
     "react-nativescript": "^2.0.0"

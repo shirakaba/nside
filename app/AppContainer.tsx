@@ -4,6 +4,7 @@ import { isIOS, EventData, TabView } from "@nativescript/core";
 import { ConsolePage } from "./console/ConsolePage";
 import { CanvasPage } from './canvas/CanvasPage';
 import { FramedCorePage } from './FramedCorePage';
+import { ExamplesItemsFrame } from "./examples/ExamplesItemsPage";
 
 export function AppContainer({}){
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -42,7 +43,8 @@ export function AppContainer({}){
                 title="Examples"
                 iconSource={isIOS ? "res://tabIcons/list" : "res://list"}
             >
-                <FramedCorePage _nodeRole={"view"} route="examples/examples-items-page"/>
+                <ExamplesItemsFrame _nodeRole={"view"} />
+                {/* <FramedCorePage _nodeRole={"view"} route="examples/examples-items-page"/> */}
             </tabViewItem>
     
             <tabViewItem

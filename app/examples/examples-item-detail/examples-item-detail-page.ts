@@ -1,5 +1,5 @@
 import { EventData, View, NavigatedData, Page } from "@nativescript/core";
-import { Item } from "../shared/item";
+import { Item } from "../items";
 
 export function onNavigatingTo(args: NavigatedData) {
     const page = args.object as Page;
