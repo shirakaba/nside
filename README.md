@@ -1,6 +1,6 @@
 <h1 align=center>
-    <a href="https://github.com/shirakaba/nside/blob/master/app/App_Resources/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png" title="NS:IDE">
-        <img alt="NS:IDE" src="/app/App_Resources/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png" height="256" />
+    <a href="https://github.com/shirakaba/nside/blob/master/App_Resources/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png" title="NS:IDE">
+        <img alt="NS:IDE" src="/App_Resources/iOS/Assets.xcassets/AppIcon.appiconset/icon-1024.png" height="256" />
     </a>
     <br>
     NS:IDE
