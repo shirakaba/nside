@@ -9,7 +9,7 @@ export function CanvasPage({}){
     useEffect(() => {
         (global as any).canvasPage = pageRef.current.nativeView;
         (global as any).canvas = pageRef.current.nativeView.content;
-        // pageRef.current.nativeView.addCssFile("./canvas/CanvasPage.scss");
+        pageRef.current.nativeView.addCssFile("./canvas/CanvasPage.css"); // No need to cleanup on unmount.
     }, []);
 
     return (

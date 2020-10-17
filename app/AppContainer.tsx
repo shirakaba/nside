@@ -1,17 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
-import { isIOS, PropertyChangeData, SelectedIndexChangedEventData } from "@nativescript/core";
-// import { FramedPage } from "./FramedPage";
+import { isIOS, EventData, TabView } from "@nativescript/core";
 import { ConsolePage } from "./console/ConsolePage";
 import { CanvasPage } from './canvas/CanvasPage';
 import { FramedCorePage } from './FramedCorePage';
-
-interface Props {
-}
-
-interface State {
-
-}
 
 export function AppContainer({}){
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -20,9 +12,8 @@ export function AppContainer({}){
         <tabView
             androidTabsPosition="bottom"
             selectedIndex={selectedIndex}
-            onSelectedIndexChange={(args: PropertyChangeData) => {
-                const { oldIndex, newIndex } = args as unknown as SelectedIndexChangedEventData;
-                setSelectedIndex(newIndex);
+            onSelectedIndexChange={(args: EventData) => {
+                setSelectedIndex((args.object as TabView).selectedIndex);
             }}
         >
             {/* Icons from: https://icons8.com/ios */}
@@ -41,7 +32,6 @@ export function AppContainer({}){
                 title="Canvas"
                 iconSource={isIOS ? "res://tabIcons/health_data" : "res://health_data"}
             >
-                <label text="TODO" />
                 <frame nodeRole="view">
                     <CanvasPage/>
                 </frame>

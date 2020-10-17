@@ -7,12 +7,6 @@ import { registerElement, start as RNSStart } from "react-nativescript";
 registerElement(
 	'syntaxHighlighterTextView',
 	() => require('nativescript-syntax-highlighter/syntax-highlighter-text-view').SyntaxHighlighterTextView,
-	{
-		model: {
-			prop: 'text',
-			event: 'textChange',
-		},
-	}
 );
 
 import AppContainer from "./AppContainer";

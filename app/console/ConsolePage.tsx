@@ -63,7 +63,6 @@ export class ConsolePage extends React.Component<Props, State> {
 
     private readonly onSyntaxViewTextChange = (args: EventData) => {
         const { text } = args.object as TextView;
-        // console.log(`[onSyntaxViewTextChange] ${text}`);
 
         const payload = onSyntaxViewTextChange({
             text,
@@ -106,7 +105,6 @@ export class ConsolePage extends React.Component<Props, State> {
 
     private readonly onRunCodeButtonPress = () => {
         const text: string = this.state.consoleText;
-        console.log(`[onRunCodeButtonPress]`);
 
         try {
             const value: any = this.evalInContext(
