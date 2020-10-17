@@ -37,14 +37,12 @@ export function AppContainer({}){
                 </frame>
             </tabViewItem>
             
-            {/* <tabViewItem
+            <tabViewItem
                 nodeRole="items"
                 title="Examples"
                 iconSource={isIOS ? "res://tabIcons/list" : "res://list"}
             >
-                <FramedCorePage
-                    route="examples/examples-items-page"
-                />
+                <FramedCorePage _nodeRole={"view"} route="examples/examples-items-page"/>
             </tabViewItem>
     
             <tabViewItem
@@ -52,10 +50,8 @@ export function AppContainer({}){
                 title="About"
                 iconSource={isIOS ? "res://tabIcons/help" : "res://help"}
             >
-                <FramedCorePage
-                    route="about/about-page"
-                />
-            </tabViewItem> */}
+                <FramedCorePage _nodeRole={"view"} route="about/about-page"/>
+            </tabViewItem>
         </tabView>
     );
 }

@@ -1,28 +1,29 @@
 import * as React from "react";
-import { Frame, Page } from "@nativescript/core";
-import { $Frame } from "react-nativescript";
+import { useEffect, useRef } from "react";
+import { Frame } from "@nativescript/core";
+import { NSVElement, NativeScriptProps, FrameAttributes } from "react-nativescript";
 
-interface Props {
+interface Props extends NativeScriptProps<FrameAttributes, Frame> {
+    /**
+     * "nodeRole" is a special prop, like "key" or "ref", which applies to the component
+     * immediately (in this case FramedCorePage) and can't be passed down to children.
+     * 
+     * So, to pass it on to the frame element within, we use "_nodeRole".
+     */
+    _nodeRole: string,
     route: string,
 }
 
-export class FramedCorePage extends React.Component<Props, {}> {
-    private readonly frameRef: React.RefObject<Frame> = React.createRef();
+export function FramedCorePage(props: Props){
+    const { route, _nodeRole, ...rest } = props;
 
-    componentDidMount(){
-        const frame: Frame|null = this.frameRef.current;
-        if(!frame){
-            console.warn(`[FramedCorePage] Frame ref unpopulated!`);
-            return;
-        }
+    const frameRef = useRef<NSVElement<Frame>>(null);
 
-        console.log(`[FramedCorePage] componentDidMount; shall navigate to page within.`);
-        frame.navigate(this.props.route);
-    }
+    useEffect(() => {
+        frameRef.current?.nativeView.navigate(route);
+    }, []);
 
-    render(){
-        return (
-            <$Frame ref={this.frameRef}/>
-        );
-    }
+    return (
+        <frame {...rest} nodeRole={_nodeRole} ref={frameRef}/>
+    );
 }
