@@ -44,7 +44,6 @@ export function AppContainer({}){
                 iconSource={isIOS ? "res://tabIcons/list" : "res://list"}
             >
                 <ExamplesItemsFrame _nodeRole={"view"} />
-                {/* <FramedCorePage _nodeRole={"view"} route="examples/examples-items-page"/> */}
             </tabViewItem>
     
             <tabViewItem

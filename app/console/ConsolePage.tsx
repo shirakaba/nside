@@ -3,6 +3,7 @@ import { Color } from "@nativescript/core";
 import { EventData, TextView, ContentView } from "@nativescript/core";
 import { onSyntaxViewTextChange } from "./onConsoleTextChange";
 import { SyntaxHighlighterTextView } from "nativescript-syntax-highlighter/react/SyntaxHighlighterTextView.ios";
+import { NSVElement } from "react-nativescript";
 
 interface Props {
 }
@@ -20,6 +21,8 @@ interface State {
 }
 
 export class ConsolePage extends React.Component<Props, State> {
+    private readonly outputTextViewRef: React.RefObject<NSVElement<TextView>> = React.createRef();
+
     public readonly evalContext: any = {};
     
     private evalClosure(str: string): any {
@@ -34,7 +37,7 @@ export class ConsolePage extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            consoleText: "",
+            consoleText: "UIView.alloc().init()",
             outputColour: "green",
             ownPropsText: "",
             inheritedPropsText: "",
@@ -86,16 +89,23 @@ export class ConsolePage extends React.Component<Props, State> {
 
     private readonly onOutputLoaded = (args: EventData) => {
         const textView = args.object as TextView;
-        /* Hacky workaround to resolve inexplicable bug of text getting clipped off until relayout. */
-        textView.lineHeight += 1;
-        setTimeout(() => {
-            textView.lineHeight -= 1;
-        }, 15);
+        this.forceTextViewReflow(textView);
+    };
+
+    private readonly forceTextViewReflow = (textView: TextView) => {
+        /*
+         * Hacky workaround to resolve inexplicable bug of text getting clipped off until relayout.
+         * Can also be done by toggling fontSize, lineHeight, fontStyle, etc.
+         */
+        textView.style.textAlignment = "left";
+        textView.style.textAlignment = "initial";
+        textView.style.textAlignment = "left";
     };
 
     private readonly onDesignLoaded = (args: EventData) => {
         const design = args.object as ContentView;
-        (design.ios as UIView).clipsToBounds = true;
+        // (design.ios as UIView).clipsToBounds = true;
+        (design.ios as any).clipsToBounds = true;
         (global as any).design = design;
     };
 
@@ -131,11 +141,15 @@ export class ConsolePage extends React.Component<Props, State> {
             this.setState({
                 outputColour: "green",
                 outputText: outputValue,
+            }, () => {
+                this.forceTextViewReflow(this.outputTextViewRef.current!.nativeView);
             });
         } catch(e){
             this.setState({
                 outputColour: "red",
                 outputText: e,
+            }, () => {
+                this.forceTextViewReflow(this.outputTextViewRef.current!.nativeView);
             });
             console.error(e);
         }
@@ -219,17 +233,18 @@ export class ConsolePage extends React.Component<Props, State> {
                         backgroundColor="rgb(220,220,240)"
                     />
                     <textView
+                        ref={this.outputTextViewRef}
                         id="output"
                         row={3}
                         col={0}
                         visibility={this.state.designing ? "collapse" : "visible"}
-                        height="100%"
-                        width="100%"
                         editable={false}
                         onLoaded={this.onOutputLoaded}
                         hint="(Console output)"
                         text={outputText}
                         style={{
+                            height: "100%",
+                            width: "100%",
                             fontFamily: "Courier New",
                             fontSize: 16,
                             color: this.state.outputColour,
