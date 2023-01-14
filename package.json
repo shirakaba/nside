@@ -17,7 +17,7 @@
     "@babel/core": "^7.4.5",
     "@nativescript/ios": "7.0.3",
     "@nativescript/types": "7.0.1",
-    "@nativescript/webpack": "~3.0.0",
+    "@nativescript/webpack": "~5.0.12",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.0-beta.5",
     "@types/react": "16.9.34",
     "babel-loader": "8.0.6",
